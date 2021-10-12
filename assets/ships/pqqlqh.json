@@ -1,0 +1,60 @@
+{
+   "Name": "Screaming Angel-Panther",
+   "Creation Date": 1631985897,
+   "Nose Number": 5,
+   "Body Number": 8,
+   "Wings Number": 9,
+   "Engine Number": 7,
+   "Weapons Dict": {
+      "blaster1": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster1",
+         "Max Charge": 73,
+         "Current Charge": 73,
+         "Power": 16
+      },
+      "blaster2": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster2",
+         "Max Charge": 73,
+         "Current Charge": 73,
+         "Power": 16
+      },
+      "blaster3": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster3",
+         "Max Charge": 73,
+         "Current Charge": 73,
+         "Power": 16
+      },
+      "pod1": {
+         "Position": [
+            0,
+            30
+         ],
+         "Name": "pod1",
+         "Max Number Missles": 85,
+         "Current Missles": 85,
+         "Missle Power": 29
+      },
+      "pod2": {
+         "Position": [
+            0,
+            33
+         ],
+         "Name": "pod2",
+         "Max Number Missles": 85,
+         "Current Missles": 85,
+         "Missle Power": 29
+      }
+   }
+}

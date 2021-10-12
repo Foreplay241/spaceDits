@@ -1,0 +1,60 @@
+{
+   "Name": "Fast Blue-Crow",
+   "Creation Date": 1627234051,
+   "Nose Number": 4,
+   "Body Number": 0,
+   "Wings Number": 5,
+   "Engine Number": 1,
+   "Weapons Dict": {
+      "blaster1": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster1",
+         "Max Charge": 47,
+         "Current Charge": 47,
+         "Power": 19
+      },
+      "blaster2": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster2",
+         "Max Charge": 47,
+         "Current Charge": 47,
+         "Power": 19
+      },
+      "blaster3": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "blaster3",
+         "Max Charge": 47,
+         "Current Charge": 47,
+         "Power": 19
+      },
+      "pod1": {
+         "Position": [
+            0,
+            30
+         ],
+         "Name": "pod1",
+         "Max Number Missles": 85,
+         "Current Missles": 85,
+         "Missle Power": 28
+      },
+      "pod2": {
+         "Position": [
+            0,
+            33
+         ],
+         "Name": "pod2",
+         "Max Number Missles": 85,
+         "Current Missles": 85,
+         "Missle Power": 28
+      }
+   }
+}
