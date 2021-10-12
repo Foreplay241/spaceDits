@@ -66,16 +66,20 @@ class Game(GameState):
                 self.player.x_vel += 1
             if event.key == pg.K_w:
                 self.player.y_vel -= 1
+                self.player.fuel_usage = self.player.y_vel
             if event.key == pg.K_s:
                 self.player.y_vel += 1
+                self.player.fuel_usage = self.player.y_vel
             if event.key == pg.K_KP4:
                 self.enemy.x_vel -= 1
             if event.key == pg.K_KP6:
                 self.enemy.x_vel += 1
             if event.key == pg.K_KP8:
                 self.enemy.y_vel -= 1
+                self.enemy.fuel_usage = self.enemy.y_vel
             if event.key == pg.K_KP5:
                 self.enemy.y_vel += 1
+                self.enemy.fuel_usage = self.enemy.y_vel
             if event.key == pg.K_p:
                 self.persist = {
                     "Player Redilot": self.player.redilot,
@@ -90,13 +94,13 @@ class Game(GameState):
 
         keys = pg.key.get_pressed()
         if keys[pg.K_q]:
-            self.player.shoot()
+            self.player.shoot(None)
         if keys[pg.K_e]:
-            self.player.fire_missle()
+            self.player.fire_missle(None)
         if keys[pg.K_KP7]:
-            self.enemy.shoot()
+            self.enemy.shoot(None)
         if keys[pg.K_KP9]:
-            self.enemy.fire_missle()
+            self.enemy.fire_missle(None)
 
     def update(self, dt):
         self.all_sprites.update()

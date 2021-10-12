@@ -86,7 +86,7 @@ class PauseMenu(Menu):
         # self.text_edit_button_2.update()
 
     def draw(self, screen):
-        screen.fill(PERU)
+        screen.fill(FIREBRICK)
         for b in self.all_buttons:
             b.draw(screen)
         # self.return_to_game_button.draw(screen)

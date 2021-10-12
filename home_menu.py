@@ -44,10 +44,10 @@ class HomeMenu(Menu):
                                                    textcolor=SEASHELL, optiontype="Reddit", optioncolor=MEDIUM_PURPLE,
                                                    col=2, max_col=3, row=17, max_row=22)
         # SETUP BUTTONS ON HOME MENU
-        self.player_redilot_preview = Button((0, 0), "blank", col=1, max_col=3, row=8, max_row=22)
-        self.enemy_redilot_preview = Button((0, 0), "blank", col=2, max_col=3, row=8, max_row=22)
-        self.player_shidpit_preview = Button((0, 0), "blank", col=1, max_col=3, row=13, max_row=22)
-        self.enemy_shidpit_preview = Button((0, 0), "blank", col=2, max_col=3, row=13, max_row=22)
+        self.player_redilot_preview = Button((0, 0), "click_here", col=1, max_col=3, row=8, max_row=22)
+        self.enemy_redilot_preview = Button((0, 0), "click_here", col=2, max_col=3, row=8, max_row=22)
+        self.player_shidpit_preview = Button((0, 0), "click_here", col=1, max_col=3, row=13, max_row=22)
+        self.enemy_shidpit_preview = Button((0, 0), "click_here", col=2, max_col=3, row=13, max_row=22)
 
         # PUT BUTTONS IN A LIST FOR EASY EXECUTION
         self.all_buttons = []
@@ -158,7 +158,8 @@ class HomeMenu(Menu):
 
             # START RANDOM GAME.
             if self.start_random_game_button.rect.collidepoint(self.mouse_pos):
-                self.enemy_redilot = Redilot(name=self.enemy_redilot_button.text)
+                self.player_redilot = Redilot()
+                self.enemy_redilot = Redilot()
                 self.player_ship = Shidpit()
                 self.enemy_ship = Shidpit()
                 self.persist = {
@@ -203,7 +204,7 @@ class HomeMenu(Menu):
             b.update()
 
     def draw(self, screen):
-        screen.fill(FIREBRICK)
+        screen.fill(MIDNIGHT_BLUE)
         for b in self.all_buttons:
             b.draw(screen)
         pg.display.flip()

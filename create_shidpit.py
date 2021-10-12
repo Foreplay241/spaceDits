@@ -205,6 +205,9 @@ class Shidpit:
         self.print_ship_stats()
         self.ship_rank = 1
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
+        self.fuel_usage = 2
+        self.max_fuel = 100
+        self.current_fuel = 100
 
     def generate_random_shidpit(self):
         self.creation_date = random.randint(1119553200, 1633120253)
@@ -231,6 +234,9 @@ class Shidpit:
         }
         self.print_ship_stats()
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
+        self.fuel_usage = 2
+        self.max_fuel = 100
+        self.current_fuel = 100
 
 
 def roundpartial(value, resolution):

@@ -30,6 +30,9 @@ class Ship(pg.sprite.Sprite):
         self.laser_power = .15
         self.missle_power = .25
         self.engine_power = 10
+        self.fuel_usage = 2
+        self.max_fuel = 100
+        self.current_fuel = 100
 
         # WEAPON STUFF
         self.laser = None
@@ -77,6 +80,11 @@ class Ship(pg.sprite.Sprite):
             self.shield += self.shield_recharge_rate
         if self.shield > self.max_shield:
             self.shield = self.max_shield
+
+        # USE FUEL
+        self.current_fuel -= self.fuel_usage * .2
+        if self.current_fuel <= 0:
+            self.death()
 
     def draw(self, window):
         pass

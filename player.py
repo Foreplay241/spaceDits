@@ -13,15 +13,22 @@ class Player(Ship):
         self.colorImage.fill(RANDOM_BLUE)
         self.image.blit(self.colorImage, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
         self.rect = self.image.get_rect()
+        self.redilot = redilot
+        self.shidpit = shidpit
+        self.fuel_usage = self.shidpit.fuel_usage
+        self.current_fuel = self.shidpit.current_fuel
+        self.max_shield = self.shidpit.max_fuel
 
     def update(self):
         super(Player, self).update()
+        print(self.fuel_usage)
 
     def draw(self, window):
         super().draw(window)
         self.HUD.draw_player_name(window, self.redilot.name)
         self.HUD.draw_hullbar(window, self.health, self.max_health)
         self.HUD.draw_shieldbar(window, self.shield, self.max_shield)
+        self.HUD.draw_fuel_bar(window, self.fuel_usage, self.current_fuel, self.max_fuel)
         if self.HUD.can_see_enemy_name:
             self.HUD.draw_enemy_name(window, self.game.enemy.redilot.name)
         if self.HUD.can_see_enemy_health:
@@ -29,7 +36,7 @@ class Player(Ship):
         if self.HUD.can_see_enemy_shield:
             self.HUD.draw_enemy_shieldbar(window, self.game.enemy.shield, self.game.enemy.max_shield)
 
-    def shoot(self):
+    def shoot(self, blaster):
         now = pg.time.get_ticks()
         if now - self.prev_laser_time > self.laser_cool_down:
             self.prev_laser_time = pg.time.get_ticks()
@@ -40,7 +47,7 @@ class Player(Ship):
             self.game.all_sprites.add(laser)
             self.game.player_lasers.add(laser)
 
-    def fire_missle(self):
+    def fire_missle(self, podbay):
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
             self.prev_missle_time = pg.time.get_ticks()
@@ -103,6 +110,13 @@ class HUD:
         pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 45, max_width, 12))
         pg.draw.rect(window, RANDOM_BLUE, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 45,
                                            (shield * max_width // max_shield * max_width) / max_width, 20))
+
+    @staticmethod
+    def draw_fuel_bar(window, usage_rate, current_fuel, max_fuel):
+        max_height = 300
+        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 75, DISPLAY_HEIGHT - 80, 25, 75))
+        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 75, DISPLAY_HEIGHT - 80,
+                                    25, (current_fuel * max_height // max_fuel * max_height) / max_height))
 
     @staticmethod
     def draw_enemy_name(window, name):
