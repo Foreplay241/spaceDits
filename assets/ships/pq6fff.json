@@ -1,0 +1,30 @@
+{
+   "Name": "Quiet Spotless-Eagle",
+   "Creation Date": 1631905300,
+   "Nose Number": 5,
+   "Body Number": 3,
+   "Wings Number": 0,
+   "Engine Number": 0,
+   "Weapons Dict": {
+      "pod1": {
+         "Position": [
+            0,
+            30
+         ],
+         "Name": "pod1",
+         "Max Number Missles": 65,
+         "Current Missles": 65,
+         "Missle Power": 28
+      },
+      "pod2": {
+         "Position": [
+            0,
+            33
+         ],
+         "Name": "pod2",
+         "Max Number Missles": 65,
+         "Current Missles": 65,
+         "Missle Power": 28
+      }
+   }
+}
