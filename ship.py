@@ -22,13 +22,13 @@ class Ship(pg.sprite.Sprite):
         self.outcome = "winner"
 
         # SHIP STATS
-        self.health = health
-        self.max_health = health
+        self.health = shidpit.max_health
+        self.max_health = shidpit.max_health
         self.shield = shield
         self.max_shield = shield
         self.shield_recharge_rate = 3
-        self.laser_power = .15
-        self.missle_power = .25
+
+        # ENGINE AND FUEL
         self.engine_power = 10
         self.fuel_usage = 2
         self.max_fuel = 100
@@ -39,10 +39,12 @@ class Ship(pg.sprite.Sprite):
         self.laser_img = pg.image.load(os.path.join("assets", "laser.png"))
         self.lasers = []
         self.laser_cool_down = 150
+        self.laser_power = .15
         self.missle = None
         self.missle_img = pg.image.load(os.path.join("assets", "missle.png"))
         self.missles = []
         self.missle_cool_down = 250
+        self.missle_power = .25
         self.prev_laser_time = pg.time.get_ticks()
         self.prev_missle_time = pg.time.get_ticks()
 
@@ -82,9 +84,9 @@ class Ship(pg.sprite.Sprite):
             self.shield = self.max_shield
 
         # USE FUEL
-        self.current_fuel -= self.fuel_usage * .2
+        self.current_fuel -= self.fuel_usage * .01
         if self.current_fuel <= 0:
-            self.death()
+            self.fuel_usage = 0
 
     def draw(self, window):
         pass

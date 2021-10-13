@@ -35,6 +35,8 @@ class Shidpit:
     img: pg.Surface((128, 128))
     weapons_dict: {}
     switch_dict: {}
+    max_health: int
+    max_shield: int
 
     def __init__(self, sub_id="pry1bu", from_reddit=False):
         self.from_reddit = from_reddit

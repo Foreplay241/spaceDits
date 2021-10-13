@@ -49,6 +49,8 @@ class Redilot:
     triangle_num: int
     circle_num: int
     lines_num: int
+    max_health: int
+    max_shield: int
     medal_img: pg.Surface((128, 128))
 
     def __init__(self, name="TestPilot", from_reddit=False, pilot_rank=1):
@@ -69,6 +71,14 @@ class Redilot:
             "Circle Number": self.circle_num,
             "Lines Number": self.lines_num
         }
+
+    def set_health(self, redditor=None):
+        self.max_health = random.randint(42, 69)
+        if redditor:
+            x = 0
+            for c in map(int, str(int(redditor.created_utc))):
+                self.max_health += c
+                x += 1
 
     def add_square_part(self, redditor=None):
         self.square_num = random.randint(0, 9)
@@ -107,12 +117,11 @@ class Redilot:
                 x += 1
 
     def generate_medal_image(self):
+        # LAYERS THE LAYERS ON THE MEDAL IMAGE
         medal_img = pg.Surface((128, 128))
         square_image = pg.image.load(os.path.join("assets/medallion_parts", "square" + str(self.square_num) + ".png"))
-        triangle_image = pg.image.load(os.path.join("assets/medallion_parts",
-                                                    "triangle"
-                                                    + str(self.triangle_num) +
-                                                    ".png"))
+        triangle_image = pg.image.load(os.path.join("assets/medallion_parts", "triangle"
+                                                    + str(self.triangle_num) + ".png"))
         circle_image = pg.image.load(os.path.join("assets/medallion_parts", "circle" + str(self.circle_num) + ".png"))
         lines_image = pg.image.load(os.path.join("assets/medallion_parts", "lines" + str(self.lines_num) + ".png"))
         parts_list = [square_image, triangle_image, circle_image, lines_image]
@@ -137,6 +146,7 @@ class Redilot:
         self.medal_img = self.generate_medal_image()
 
     def generate_from_random(self):
+        # GENERATE A REDILOT FROM RANDOM INPUT.
         self.cake_day = random.randint(1119553200, 1633120253)
         self.add_square_part()
         self.add_triangle_part()

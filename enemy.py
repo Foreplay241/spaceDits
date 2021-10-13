@@ -1,3 +1,5 @@
+import random
+
 from ship import *
 
 
@@ -19,7 +21,7 @@ class Enemy(Ship):
     def draw(self, window):
         super().draw(window)
 
-    def shoot(self):
+    def shoot(self, blaster):
         now = pg.time.get_ticks()
         if now - self.prev_laser_time > self.laser_cool_down:
             self.prev_laser_time = pg.time.get_ticks()
@@ -30,7 +32,7 @@ class Enemy(Ship):
             self.game.all_sprites.add(laser)
             self.game.enemy_lasers.add(laser)
 
-    def fire_missle(self):
+    def fire_missle(self, podbay):
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
             self.prev_missle_time = pg.time.get_ticks()
@@ -44,3 +46,12 @@ class Enemy(Ship):
     def death(self):
         super(Enemy, self).death()
 
+    def change_velocity(self, dx_vel=0, dy_vel=0):
+        if dx_vel == 0:
+            dx_vel = random.randint(-1, 1)
+        if dy_vel == 0:
+            dy_vel = random.randint(-1, 1)
+        self.x_vel += dx_vel
+        self.y_vel += dy_vel
+        print(dx_vel)
+        print(dy_vel)

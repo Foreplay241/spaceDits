@@ -21,7 +21,6 @@ class Player(Ship):
 
     def update(self):
         super(Player, self).update()
-        print(self.fuel_usage)
 
     def draw(self, window):
         super().draw(window)
@@ -35,6 +34,9 @@ class Player(Ship):
             self.HUD.draw_enemy_hullbar(window, self.game.enemy.health, self.game.enemy.max_health)
         if self.HUD.can_see_enemy_shield:
             self.HUD.draw_enemy_shieldbar(window, self.game.enemy.shield, self.game.enemy.max_shield)
+        if self.HUD.can_see_enemy_fuel:
+            self.HUD.draw_enemy_fuel_bar(window, self.game.enemy.fuel_usage,
+                                         self.game.enemy.current_fuel, self.game.enemy.max_fuel)
 
     def shoot(self, blaster):
         now = pg.time.get_ticks()
@@ -57,7 +59,7 @@ class Player(Ship):
             self.missles.append(missle)
             self.game.all_sprites.add(missle)
             self.game.player_missles.add(missle)
-            
+
     def death(self):
         super(Player, self).death()
         self.outcome = "loser"
@@ -70,6 +72,7 @@ class HUD:
         self.enemy_name_label = Text("EneMY nAme", DISPLAY_CENTER)
         self.can_see_enemy_health = True
         self.can_see_enemy_shield = True
+        self.can_see_enemy_fuel = True
         self.can_see_enemy_name = True
 
     @staticmethod
@@ -113,10 +116,11 @@ class HUD:
 
     @staticmethod
     def draw_fuel_bar(window, usage_rate, current_fuel, max_fuel):
-        max_height = 300
-        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 75, DISPLAY_HEIGHT - 80, 25, 75))
-        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 75, DISPLAY_HEIGHT - 80,
+        max_height = 75
+        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80, 25, max_height))
+        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80,
                                     25, (current_fuel * max_height // max_fuel * max_height) / max_height))
+        player_draw_text(window, str(usage_rate), WHITE, 32, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80))
 
     @staticmethod
     def draw_enemy_name(window, name):
@@ -127,7 +131,6 @@ class HUD:
         :return:
         """
         enemy_draw_text(window, name, RANDOM_RED, 42, (DISPLAY_WIDTH // 2 - 200, DISPLAY_TOP))
-        # enemy_name_label.draw(window)
 
     @staticmethod
     def draw_enemy_hullbar(window, health, max_health):
@@ -156,3 +159,19 @@ class HUD:
         pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, 22, max_width, 12))
         pg.draw.rect(window, RANDOM_BLUE, ((DISPLAY_WIDTH // 2) - max_width // 2, 22,
                                            (shield * max_width // max_shield * max_width) / max_width, 20))
+
+    @staticmethod
+    def draw_enemy_fuel_bar(window, usage_rate, current_fuel, max_fuel):
+        """
+        Draw the enemies fuel bar.
+        :param window:
+        :param usage_rate:
+        :param current_fuel:
+        :param max_fuel:
+        :return:
+        """
+        max_height = 75
+        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 90, 22, 25, max_height))
+        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 90, 22,
+                                    25, (current_fuel * max_height // max_fuel * max_height) / max_height))
+        enemy_draw_text(window, str(usage_rate), WHITE, 32, (DISPLAY_WIDTH - 65, 22))

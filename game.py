@@ -62,24 +62,28 @@ class Game(GameState):
                 pg.quit()
             if event.key == pg.K_a:
                 self.player.x_vel -= 1
+                self.enemy.change_velocity(dx_vel=- 1)
             if event.key == pg.K_d:
                 self.player.x_vel += 1
+                self.enemy.change_velocity(dx_vel=1)
             if event.key == pg.K_w:
                 self.player.y_vel -= 1
-                self.player.fuel_usage = self.player.y_vel
+                self.enemy.change_velocity(dy_vel=-1)
+                self.player.fuel_usage = -self.player.y_vel
             if event.key == pg.K_s:
                 self.player.y_vel += 1
-                self.player.fuel_usage = self.player.y_vel
+                self.enemy.change_velocity(dy_vel=1)
+                self.player.fuel_usage = -self.player.y_vel
             if event.key == pg.K_KP4:
                 self.enemy.x_vel -= 1
             if event.key == pg.K_KP6:
                 self.enemy.x_vel += 1
             if event.key == pg.K_KP8:
                 self.enemy.y_vel -= 1
-                self.enemy.fuel_usage = self.enemy.y_vel
+                self.enemy.fuel_usage = -self.enemy.y_vel
             if event.key == pg.K_KP5:
                 self.enemy.y_vel += 1
-                self.enemy.fuel_usage = self.enemy.y_vel
+                self.enemy.fuel_usage = -self.enemy.y_vel
             if event.key == pg.K_p:
                 self.persist = {
                     "Player Redilot": self.player.redilot,
