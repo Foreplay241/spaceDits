@@ -47,7 +47,7 @@ class Enemy(Ship):
             self.game.all_sprites.add(laser)
             self.game.enemy_lasers.add(laser)
 
-    def fire_missle(self, podbay):
+    def deploy(self, podbay):
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
             self.prev_missle_time = pg.time.get_ticks()

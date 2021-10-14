@@ -100,11 +100,11 @@ class Game(GameState):
         if keys[pg.K_q]:
             self.player.shoot(None)
         if keys[pg.K_e]:
-            self.player.fire_missle(None)
+            self.player.deploy(None)
         if keys[pg.K_KP7]:
             self.enemy.shoot(None)
         if keys[pg.K_KP9]:
-            self.enemy.fire_missle(None)
+            self.enemy.deploy(None)
 
     def update(self, dt):
         self.all_sprites.update()

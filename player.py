@@ -38,7 +38,8 @@ class Player(Ship):
             self.HUD.draw_enemy_fuel_bar(window, self.game.enemy.fuel_usage,
                                          self.game.enemy.current_fuel, self.game.enemy.max_fuel)
 
-    def shoot(self, blaster):
+    def shoot(self, blaster=None, chain_gun=None):
+        # SHOOT A LASBAT BLASTER OR A CHAIN GUN
         now = pg.time.get_ticks()
         if now - self.prev_laser_time > self.laser_cool_down:
             self.prev_laser_time = pg.time.get_ticks()
@@ -49,7 +50,8 @@ class Player(Ship):
             self.game.all_sprites.add(laser)
             self.game.player_lasers.add(laser)
 
-    def fire_missle(self, podbay):
+    def deploy(self, podbay=None, bombay=None):
+        # DEPLOY AN EXPLOSIVE FROM A MISSLE POD BAY OR BOMB BAY.
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
             self.prev_missle_time = pg.time.get_ticks()
