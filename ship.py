@@ -85,8 +85,10 @@ class Ship(pg.sprite.Sprite):
 
         # USE FUEL
         self.current_fuel -= self.fuel_usage * .01
-        if self.current_fuel <= 0:
+        if self.current_fuel < 0:
+            self.current_fuel = 0
             self.fuel_usage = 0
+            self.y_vel = -1
 
     def draw(self, window):
         pass

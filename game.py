@@ -62,17 +62,17 @@ class Game(GameState):
                 pg.quit()
             if event.key == pg.K_a:
                 self.player.x_vel -= 1
-                self.enemy.change_velocity(dx_vel=- 1)
+                # self.enemy.change_velocity(dx_vel=-1)
             if event.key == pg.K_d:
                 self.player.x_vel += 1
-                self.enemy.change_velocity(dx_vel=1)
+                # self.enemy.change_velocity(dx_vel=1)
             if event.key == pg.K_w:
                 self.player.y_vel -= 1
-                self.enemy.change_velocity(dy_vel=-1)
+                # self.enemy.change_velocity(dy_vel=-1)
                 self.player.fuel_usage = -self.player.y_vel
             if event.key == pg.K_s:
                 self.player.y_vel += 1
-                self.enemy.change_velocity(dy_vel=1)
+                # self.enemy.change_velocity(dy_vel=1)
                 self.player.fuel_usage = -self.player.y_vel
             if event.key == pg.K_KP4:
                 self.enemy.x_vel -= 1

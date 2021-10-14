@@ -17,6 +17,21 @@ class Enemy(Ship):
 
     def update(self):
         super(Enemy, self).update()
+        self.choose_action()
+        if self.rect.x == self.game.player.rect.x:
+            self.shoot(None)
+
+    def choose_action(self):
+        # ALIGN X COORDS
+        if self.rect.x >= self.game.player.rect.x:
+            self.change_velocity(dx_vel=-1)
+        if self.rect.x <= self.game.player.rect.x:
+            self.change_velocity(dx_vel=1)
+        # ALIGN Y COORDS
+        if self.rect.y <= self.game.player.rect.y:
+            self.change_velocity(dy_vel=1)
+        if self.rect.y >= self.game.player.rect.y + 90:
+            self.change_velocity(dy_vel=-1)
 
     def draw(self, window):
         super().draw(window)
