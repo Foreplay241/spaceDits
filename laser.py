@@ -30,8 +30,8 @@ class Laser(pg.sprite.Sprite):
         self.y -= self.velocity
 
     def detonate(self, _target):
-        if _target.shield > 0:
-            _target.shield -= 100
-        elif _target.shield <= 0:
-            _target.health -= 10
+        if _target.shield_points > 0:
+            _target.shield_points -= 100
+        elif _target.shield_points <= 0:
+            _target.hull_points -= 10
         self.kill()

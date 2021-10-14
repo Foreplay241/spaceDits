@@ -5,7 +5,10 @@ from text import Text
 class Player(Ship):
     def __init__(self, game, x, y, redilot, shidpit):
         super().__init__(game, x, y, redilot, shidpit)
-        self.HUD = HUD(self.game, self.redilot)
+        self.HUD = HUD(self.game, self)
+        self.HUD.scale_display_size((1, .5))
+        self.target_HUD = HUD(self.game, self)
+        self.target_HUD.scale_display_size((2, 1))
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (50, 45))
@@ -15,28 +18,25 @@ class Player(Ship):
         self.rect = self.image.get_rect()
         self.redilot = redilot
         self.shidpit = shidpit
-        self.fuel_usage = self.shidpit.fuel_usage
-        self.current_fuel = self.shidpit.current_fuel
-        self.max_shield = self.shidpit.max_fuel
+        self.prev_target = None
+        self.target = None
 
     def update(self):
         super(Player, self).update()
+        self.HUD.update()
+        self.HUD.x = self.rect.x
+        self.HUD.y = self.rect.y
 
     def draw(self, window):
         super().draw(window)
-        self.HUD.draw_player_name(window, self.redilot.name)
-        self.HUD.draw_hullbar(window, self.health, self.max_health)
-        self.HUD.draw_shieldbar(window, self.shield, self.max_shield)
-        self.HUD.draw_fuel_bar(window, self.fuel_usage, self.current_fuel, self.max_fuel)
-        if self.HUD.can_see_enemy_name:
-            self.HUD.draw_enemy_name(window, self.game.enemy.redilot.name)
-        if self.HUD.can_see_enemy_health:
-            self.HUD.draw_enemy_hullbar(window, self.game.enemy.health, self.game.enemy.max_health)
-        if self.HUD.can_see_enemy_shield:
-            self.HUD.draw_enemy_shieldbar(window, self.game.enemy.shield, self.game.enemy.max_shield)
-        if self.HUD.can_see_enemy_fuel:
-            self.HUD.draw_enemy_fuel_bar(window, self.game.enemy.fuel_usage,
-                                         self.game.enemy.current_fuel, self.game.enemy.max_fuel)
+        self.HUD.draw(window, (self.rect))
+        if self.target:
+            self.target_HUD.draw(window, self.target.rect)
+            print("drawing target HUD")
+
+    def switch_target(self, new_target):
+        self.prev_target = self.target
+        self.target = new_target
 
     def shoot(self, blaster=None, chain_gun=None):
         # SHOOT A LASBAT BLASTER OR A CHAIN GUN
@@ -67,113 +67,88 @@ class Player(Ship):
         self.outcome = "loser"
 
 
-class HUD:
-    def __init__(self, game, _redilot):
+class HUD(pg.sprite.Sprite):
+    def __init__(self, game, ship):
+        super().__init__()
         self.game = game
-        self.redilot = _redilot
-        self.enemy_name_label = Text("EneMY nAme", DISPLAY_CENTER)
-        self.can_see_enemy_health = True
-        self.can_see_enemy_shield = True
-        self.can_see_enemy_fuel = True
-        self.can_see_enemy_name = True
+        self.ship = ship
+        self.name_label = Text("", (0, 0), BLACK, 11)
+        self.x, self.y = (0, 0)
+        self.image = pg.Surface((128, 128))
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.can_see_hull_points = True
+        self.can_see_shield_points = True
+        self.can_see_fuel = True
+        self.can_see_name = True
 
-    @staticmethod
-    def draw_player_name(window, name):
+    def scale_display_size(self, scale):
+        self.image = pg.transform.scale(self.image, (int(128 * scale[0]), int(128 * scale[1])))
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        super(HUD, self).update()
+        # self.rect.x = self.x
+        # self.rect.y = self.y
+
+    def draw(self, window, pos):
+        if self.can_see_name:
+            self.draw_name(self.image)
+        if self.can_see_fuel:
+            self.draw_fuel_bar(self.image)
+        if self.can_see_hull_points:
+            self.draw_hullbar(self.image)
+        if self.can_see_shield_points:
+            self.draw_shieldbar(self.image)
+        window.blit(self.image, (pos[0] // 2, pos[1] // 2))
+
+    def draw_name(self, HUD_display):
         """
-        Draw the enemy name near the health and shield bar.
-        :param window:
-        :param name:
+        Draw the enemy name near the hull_points and shield_points bar.
+        :param HUD_display:
         :return:
         """
-        player_draw_text(window, name, RANDOM_BLUE, 42, (DISPLAY_WIDTH // 2 + 200, DISPLAY_BOTTOM - 25))
+        self.name_label = Text(self.ship.name, (self.rect.width // 2, 10), LIGHT_BLUE, 16)
+        self.name_label.draw(HUD_display)
 
-    @staticmethod
-    def draw_hullbar(window, health, max_health):
+    def draw_hullbar(self, HUD_display):
         """
-        Draw a bar that displays the remaining health out of the maximum health based on submission karma
-        :param window:
-        :param health: int
-        :param max_health: int
+        Draw a bar that displays the remaining hull_points out of the maximum hull_points based on submission karma
+        :param HUD_display:
         :return: None
         """
-        max_width = 400
-        pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 68, max_width, 12))
-        pg.draw.rect(window, RANDOM_GREEN, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 68,
-                                            (health * max_width // max_health * max_width) / max_width, 20))
-        pass
+        max_width = 100
+        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 20),
+                                           (max_width, 10)))
+        pg.draw.rect(HUD_display, RANDOM_GREEN, ((HUD_display.get_rect().width // 2 - max_width // 2, 20,
+                                                  (self.ship.hull_points * max_width //
+                                                   self.ship.max_hull_points * max_width)
+                                                  / max_width, 10)))
 
-    @staticmethod
-    def draw_shieldbar(window, shield, max_shield):
+    def draw_shieldbar(self, HUD_display):
         """
-        Draw a shield that displays the remaining shield out of max shields based on comment karma
-        :param window:
-        :param shield: int
-        :param max_shield: int
+        Draw a shield_points that displays the remaining shield_points out of max shields based on comment karma
+        :param HUD_display:
         :return: None
         """
-        max_width = 400
-        pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 45, max_width, 12))
-        pg.draw.rect(window, RANDOM_BLUE, ((DISPLAY_WIDTH // 2) - max_width // 2, DISPLAY_HEIGHT - 45,
-                                           (shield * max_width // max_shield * max_width) / max_width, 20))
+        max_width = 100
+        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 35),
+                                           (max_width, 10)))
+        pg.draw.rect(HUD_display, RANDOM_BLUE, ((HUD_display.get_rect().width // 2 - max_width // 2, 35,
+                                                 (self.ship.shield_points * max_width //
+                                                  self.ship.max_shield_points * max_width)
+                                                 / max_width, 10)))
 
-    @staticmethod
-    def draw_fuel_bar(window, usage_rate, current_fuel, max_fuel):
-        max_height = 75
-        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80, 25, max_height))
-        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80,
-                                    25, (current_fuel * max_height // max_fuel * max_height) / max_height))
-        player_draw_text(window, str(usage_rate), WHITE, 32, (DISPLAY_WIDTH - 90, DISPLAY_HEIGHT - 80))
-
-    @staticmethod
-    def draw_enemy_name(window, name):
+    def draw_fuel_bar(self, HUD_display):
         """
-        Draw the enemy name near the health and shield bar.
-        :param window:
-        :param name:
+
+        :param HUD_display:
         :return:
         """
-        enemy_draw_text(window, name, RANDOM_RED, 42, (DISPLAY_WIDTH // 2 - 200, DISPLAY_TOP))
-
-    @staticmethod
-    def draw_enemy_hullbar(window, health, max_health):
-        """
-        Draw a bar that displays the remaining health out of the maximum health based on submission karma
-        :param window:
-        :param health: int
-        :param max_health: int
-        :return: None
-        """
-        max_width = 400
-        pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, 45, max_width, 12))
-        pg.draw.rect(window, RANDOM_GREEN, ((DISPLAY_WIDTH // 2) - max_width // 2, 45,
-                                            (health * max_width // max_health * max_width) / max_width, 20))
-
-    @staticmethod
-    def draw_enemy_shieldbar(window, shield, max_shield):
-        """
-        Draw a shield that displays the remaining shield out of max shields based on comment karma
-        :param window:
-        :param shield: int
-        :param max_shield: int
-        :return: None
-        """
-        max_width = 400
-        pg.draw.rect(window, GREY50, ((DISPLAY_WIDTH // 2) - max_width // 2, 22, max_width, 12))
-        pg.draw.rect(window, RANDOM_BLUE, ((DISPLAY_WIDTH // 2) - max_width // 2, 22,
-                                           (shield * max_width // max_shield * max_width) / max_width, 20))
-
-    @staticmethod
-    def draw_enemy_fuel_bar(window, usage_rate, current_fuel, max_fuel):
-        """
-        Draw the enemies fuel bar.
-        :param window:
-        :param usage_rate:
-        :param current_fuel:
-        :param max_fuel:
-        :return:
-        """
-        max_height = 75
-        pg.draw.rect(window, GREY50, (DISPLAY_WIDTH - 90, 22, 25, max_height))
-        pg.draw.rect(window, LIME, (DISPLAY_WIDTH - 90, 22,
-                                    25, (current_fuel * max_height // max_fuel * max_height) / max_height))
-        enemy_draw_text(window, str(usage_rate), WHITE, 32, (DISPLAY_WIDTH - 65, 22))
+        max_width = 100
+        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 50),
+                                           (max_width, 10)))
+        pg.draw.rect(HUD_display, LIME, ((HUD_display.get_rect().width // 2 - max_width // 2, 50,
+                                          (self.ship.current_fuel * max_width //
+                                           self.ship.max_fuel * max_width)
+                                          / max_width, 10)))

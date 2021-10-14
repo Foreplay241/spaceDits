@@ -1,5 +1,3 @@
-import random
-
 from ship import *
 
 
@@ -18,8 +16,6 @@ class Enemy(Ship):
     def update(self):
         super(Enemy, self).update()
         self.choose_action()
-        if self.rect.x == self.game.player.rect.x:
-            self.shoot(None)
 
     def choose_action(self):
         # ALIGN X COORDS
@@ -36,18 +32,19 @@ class Enemy(Ship):
     def draw(self, window):
         super().draw(window)
 
-    def shoot(self, blaster):
-        now = pg.time.get_ticks()
-        if now - self.prev_laser_time > self.laser_cool_down:
-            self.prev_laser_time = pg.time.get_ticks()
-            laser = Laser(self.game, self.rect.x + (self.image.get_width() / 2),
-                          self.rect.y + ((self.image.get_height() * 2) / 3), self.laser_img, colormask=LIGHT_RED)
-            laser.is_AI = True
-            self.lasers.append(laser)
-            self.game.all_sprites.add(laser)
-            self.game.enemy_lasers.add(laser)
+    def shoot(self, blaster=None, chain_gun=None):
+        # now = pg.time.get_ticks()
+        # if now - self.prev_laser_time > self.laser_cool_down:
+        #     self.prev_laser_time = pg.time.get_ticks()
+        #     laser = Laser(self.game, self.rect.x + (self.image.get_width() / 2),
+        #                   self.rect.y + ((self.image.get_height() * 2) / 3), self.laser_img, colormask=LIGHT_RED)
+        #     laser.is_AI = True
+        #     self.lasers.append(laser)
+        #     self.game.all_sprites.add(laser)
+        #     self.game.enemy_lasers.add(laser)
+        pass
 
-    def deploy(self, podbay):
+    def deploy(self, podbay=None, bombay=None):
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
             self.prev_missle_time = pg.time.get_ticks()
@@ -68,5 +65,3 @@ class Enemy(Ship):
             dy_vel = random.randint(-1, 1)
         self.x_vel += dx_vel
         self.y_vel += dy_vel
-        print(dx_vel)
-        print(dy_vel)

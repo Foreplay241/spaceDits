@@ -55,6 +55,13 @@ class Game(GameState):
             if self.playing:
                 self.playing = False
             self.running = False
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.player.rect.collidepoint(self.mouse_pos):
+                self.player.target = None
+                print("Clicked player")
+            if self.enemy.rect.collidepoint(self.mouse_pos):
+                self.player.target = self.enemy
+                print("Clicked enemy")
         if event.type == pg.MOUSEMOTION:
             self.mouse_pos = pg.mouse.get_pos()
         if event.type == pg.KEYDOWN:
@@ -125,7 +132,7 @@ class Game(GameState):
         for h in self.players_missles_hit:
             h.detonate(self.enemy)
 
-        if self.player.health <= 0:
+        if self.player.hull_points <= 0:
             self.player.death()
             self.enemy.kill()
             self.persist = {
@@ -135,7 +142,7 @@ class Game(GameState):
             self.next_state_name = "DEAD_MENU"
             self.done = True
 
-        if self.enemy.health <= 0:
+        if self.enemy.hull_points <= 0:
             self.enemy.death()
             self.player.kill()
             self.persist = {

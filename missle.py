@@ -28,8 +28,8 @@ class Missle(pg.sprite.Sprite):
         self.y -= self.velocity
 
     def detonate(self, _target):
-        if _target.shield > 0:
-            _target.shield -= 10
-        elif _target.shield <= 0:
-            _target.health -= 100
+        if _target.shield_points > 0:
+            _target.shield_points -= 10
+        elif _target.shield_points <= 0:
+            _target.hull_points -= 100
         self.kill()

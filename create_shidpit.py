@@ -25,8 +25,6 @@ class Shidpit:
     sub_id: str
     creation_date: int
     ship_rank: int
-    max_health: int
-    max_shield: int
     upvote_ratio: float
     nose_num: int
     body_num: int
@@ -35,8 +33,8 @@ class Shidpit:
     img: pg.Surface((128, 128))
     weapons_dict: {}
     switch_dict: {}
-    max_health: int
-    max_shield: int
+    max_hull_points: int
+    max_shield_points: int
 
     def __init__(self, sub_id="pry1bu", from_reddit=False):
         self.from_reddit = from_reddit
@@ -108,8 +106,8 @@ class Shidpit:
 
     def add_body_ship_part(self, submission=None):
         self.body_num = random.randint(0, 9)
-        self.max_health = random.randint(50, 150)
-        self.max_shield = random.randint(50, 150)
+        self.max_hull_points = random.randint(50, 150)
+        self.max_shield_points = random.randint(50, 150)
         if submission:
             x = 0
             for c in map(int, str(int(submission.created_utc))):
@@ -117,8 +115,8 @@ class Shidpit:
                     self.body_num = c
                     self.alpha_name = alpha_name_list[c]
                 x += 1
-            self.max_health = submission.score
-            self.max_shield = submission.score * submission.upvote_ratio
+            self.max_hull_points = submission.score
+            self.max_shield_points = submission.score * submission.upvote_ratio
         body_image = pg.image.load(os.path.join("assets/ship_parts", "body" + str(self.body_num) + ".png"))
         self.img.blit(body_image, (0, 0))
 

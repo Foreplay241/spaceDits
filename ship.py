@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from settings import *
@@ -6,9 +7,10 @@ from missle import Missle
 
 
 class Ship(pg.sprite.Sprite):
-    def __init__(self, game, x, y, redilot, shidpit, health=100, shield=100):
+    def __init__(self, game, x, y, redilot, shidpit):
         super().__init__()
         self.game = game
+        self.name = redilot.name + "_" + shidpit.sub_id
         self.x = x
         self.y = y
         self.redilot = redilot
@@ -22,29 +24,49 @@ class Ship(pg.sprite.Sprite):
         self.outcome = "winner"
 
         # SHIP STATS
-        self.health = shidpit.max_health
-        self.max_health = shidpit.max_health
-        self.shield = shield
-        self.max_shield = shield
+        self.max_hull_points = self.redilot.max_hull_points + self.shidpit.max_hull_points
+        self.hull_points = self.max_hull_points
+        self.max_shield_points = self.redilot.max_shield_points + self.shidpit.max_shield_points
+        self.shield_points = self.max_shield_points
         self.shield_recharge_rate = 3
 
         # ENGINE AND FUEL
         self.engine_power = 10
-        self.fuel_usage = 2
+        self.fuel_usage_rate = 2
         self.max_fuel = 100
         self.current_fuel = 100
 
         # WEAPON STUFF
+        self.shooter_choices = ["Lasbat Blaster", "Chain Gun"]
+        self.deploy_choices = ["Pod Bay", "Bomb Bay"]
+
         self.laser = None
         self.laser_img = pg.image.load(os.path.join("assets", "laser.png"))
         self.lasers = []
         self.laser_cool_down = 150
-        self.laser_power = .15
+        self.laser_power_hull = .05
+        self.laser_power_shield = .40
+
+        self.bullet = None
+        self.bullet_img = pg.image.load(os.path.join("assets", "bullet.png"))
+        self.bullets = []
+        self.bullet_cool_down = 200
+        self.bullet_power_hull = .35
+        self.bullet_power_shield = .02
+
+        self.bomb = None
+        self.bomb_img = pg.image.load(os.path.join("assets", "bomb.png"))
+        self.bombs = []
+        self.bomb_cool_down = 300
+        self.bomb_power_hull = .90
+        self.bomb_power_shield = .07
+
         self.missle = None
         self.missle_img = pg.image.load(os.path.join("assets", "missle.png"))
         self.missles = []
         self.missle_cool_down = 250
-        self.missle_power = .25
+        self.missle_power_hull = .65
+        self.missle_power_shield = .15
         self.prev_laser_time = pg.time.get_ticks()
         self.prev_missle_time = pg.time.get_ticks()
 
@@ -78,23 +100,24 @@ class Ship(pg.sprite.Sprite):
             self.rect.x = DISPLAY_LEFT
 
         # RECHARGE SHIELD AND CHECK FOR DEATH
-        if self.shield < self.max_shield:
-            self.shield += self.shield_recharge_rate
-        if self.shield > self.max_shield:
-            self.shield = self.max_shield
+        if self.shield_points < self.max_shield_points:
+            self.shield_points += self.shield_recharge_rate
+        if self.shield_points > self.max_shield_points:
+            self.shield_points = self.max_shield_points
 
         # USE FUEL
-        self.current_fuel -= self.fuel_usage * .01
+        self.current_fuel -= self.fuel_usage_rate * .01
         if self.current_fuel < 0:
             self.current_fuel = 0
-            self.fuel_usage = 0
+            self.fuel_usage_rate = 0
             self.y_vel = -1
 
     def draw(self, window):
         pass
 
     def shoot(self, blaster=None, chain_gun=None):
-        pass
+        if blaster:
+            pass
 
     def deploy(self, podbay=None, bombay=None):
         pass

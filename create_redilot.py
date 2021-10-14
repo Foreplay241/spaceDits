@@ -29,7 +29,7 @@ expertise_dict = {
     "Cancer": ["Shield", "Tidal wave blast."],
     "Leo": ["Health", "Sonic boom stun."],
     "Virgo": ["Health", "Life after Death."],
-    "Libra": ["Shield", "Set health equal to shield."],
+    "Libra": ["Shield", "Set hull_points equal to shield."],
     "Scorpio": ["Shield", "Medium Arrow angled."],
     "Sagittarius": ["Health", "Giant Arrow."],
     "Capricorn": ["Health", "Drop Bombs."],
@@ -49,8 +49,8 @@ class Redilot:
     triangle_num: int
     circle_num: int
     lines_num: int
-    max_health: int
-    max_shield: int
+    max_hull_points: int
+    max_shield_points: int
     medal_img: pg.Surface((128, 128))
 
     def __init__(self, name="TestPilot", from_reddit=False, pilot_rank=1):
@@ -72,12 +72,22 @@ class Redilot:
             "Lines Number": self.lines_num
         }
 
-    def set_health(self, redditor=None):
-        self.max_health = random.randint(42, 69)
+    def set_hull_points(self, redditor=None):
+        self.max_hull_points = random.randint(42, 69)
         if redditor:
             x = 0
+            self.max_hull_points = 0
             for c in map(int, str(int(redditor.created_utc))):
-                self.max_health += c
+                self.max_hull_points += c
+                x += 1
+
+    def set_shield_points(self, redditor=None):
+        self.max_shield_points = random.randint(42, 69)
+        if redditor:
+            x = 0
+            self.max_shield_points = 0
+            for c in map(int, str(int(redditor.created_utc))):
+                self.max_hull_points += c
                 x += 1
 
     def add_square_part(self, redditor=None):
@@ -139,15 +149,19 @@ class Redilot:
         )
         redditor = reddit.redditor(self.name)
         self.cake_day = redditor.created_utc
-        self.add_square_part(redditor=redditor)
-        self.add_triangle_part(redditor=redditor)
-        self.add_circle_part(redditor=redditor)
-        self.add_lines_part(redditor=redditor)
+        self.set_hull_points(redditor)
+        self.set_shield_points(redditor)
+        self.add_square_part(redditor)
+        self.add_triangle_part(redditor)
+        self.add_circle_part(redditor)
+        self.add_lines_part(redditor)
         self.medal_img = self.generate_medal_image()
 
     def generate_from_random(self):
         # GENERATE A REDILOT FROM RANDOM INPUT.
         self.cake_day = random.randint(1119553200, 1633120253)
+        self.set_hull_points()
+        self.set_shield_points()
         self.add_square_part()
         self.add_triangle_part()
         self.add_circle_part()
