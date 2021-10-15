@@ -6,9 +6,9 @@ class Player(Ship):
     def __init__(self, game, x, y, redilot, shidpit):
         super().__init__(game, x, y, redilot, shidpit)
         self.HUD = HUD(self.game, self)
-        self.HUD.scale_display_size((1, .5))
+        self.HUD.scale_display_size((1, 1))
         self.target_HUD = HUD(self.game, self)
-        self.target_HUD.scale_display_size((2, 1))
+        self.target_HUD.scale_display_size((1, 1))
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (50, 45))
@@ -29,7 +29,7 @@ class Player(Ship):
 
     def draw(self, window):
         super().draw(window)
-        self.HUD.draw(window, (self.rect))
+        self.HUD.draw(window, self.rect)
         if self.target:
             self.target_HUD.draw(window, self.target.rect)
             print("drawing target HUD")
@@ -38,7 +38,7 @@ class Player(Ship):
         self.prev_target = self.target
         self.target = new_target
 
-    def shoot(self, blaster=None, chain_gun=None):
+    def shoot(self, blaster):
         # SHOOT A LASBAT BLASTER OR A CHAIN GUN
         now = pg.time.get_ticks()
         if now - self.prev_laser_time > self.laser_cool_down:
@@ -46,11 +46,12 @@ class Player(Ship):
             laser = Laser(self.game, self.rect.x + (self.image.get_width() / 2),
                           self.rect.y + ((self.image.get_height()) / 3), self.laser_img, colormask=LIGHT_BLUE)
             laser.is_player = True
+            laser.velocity -= self.y_vel
             self.lasers.append(laser)
             self.game.all_sprites.add(laser)
             self.game.player_lasers.add(laser)
 
-    def deploy(self, podbay=None, bombay=None):
+    def deploy(self, podbay):
         # DEPLOY AN EXPLOSIVE FROM A MISSLE POD BAY OR BOMB BAY.
         now = pg.time.get_ticks()
         if now - self.prev_missle_time > self.missle_cool_down:
@@ -58,9 +59,13 @@ class Player(Ship):
             missle = Missle(self.game, self.rect.x + (self.image.get_width() / 2),
                             self.rect.y + (self.image.get_height() / 3), self.missle_img, colormask=NEON_BLUE)
             missle.is_player = True
+            missle.velocity -= self.y_vel
             self.missles.append(missle)
             self.game.all_sprites.add(missle)
             self.game.player_missles.add(missle)
+
+    def release(self, bombay):
+        pass
 
     def death(self):
         super(Player, self).death()
@@ -74,22 +79,23 @@ class HUD(pg.sprite.Sprite):
         self.ship = ship
         self.name_label = Text("", (0, 0), BLACK, 11)
         self.x, self.y = (0, 0)
-        self.image = pg.Surface((128, 128))
-        self.image.set_colorkey(BLACK)
+        self.image = pg.Surface((64, 48))
+        self.image.fill(GREY25)
+        # self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.can_see_hull_points = True
         self.can_see_shield_points = True
         self.can_see_fuel = True
         self.can_see_name = True
+        self.scale = (1, 1)
 
     def scale_display_size(self, scale):
-        self.image = pg.transform.scale(self.image, (int(128 * scale[0]), int(128 * scale[1])))
+        self.scale = scale
+        self.image = pg.transform.scale(self.image, (int(64 * scale[0]), int(48 * scale[1])))
         self.rect = self.image.get_rect()
 
     def update(self):
         super(HUD, self).update()
-        # self.rect.x = self.x
-        # self.rect.y = self.y
 
     def draw(self, window, pos):
         if self.can_see_name:
@@ -100,7 +106,8 @@ class HUD(pg.sprite.Sprite):
             self.draw_hullbar(self.image)
         if self.can_see_shield_points:
             self.draw_shieldbar(self.image)
-        window.blit(self.image, (pos[0] // 2, pos[1] // 2))
+        window.blit(self.image, (pos[0] - (self.rect.width // 2 - self.ship.rect.width // 2),
+                                 pos[1] + self.ship.rect.height))
 
     def draw_name(self, HUD_display):
         """
@@ -108,7 +115,8 @@ class HUD(pg.sprite.Sprite):
         :param HUD_display:
         :return:
         """
-        self.name_label = Text(self.ship.name, (self.rect.width // 2, 10), LIGHT_BLUE, 16)
+        self.name_label = Text(self.ship.name, ((self.rect.width // 2),
+                                                5 * self.scale[1]), GREY99, int(13 * self.scale[0]))
         self.name_label.draw(HUD_display)
 
     def draw_hullbar(self, HUD_display):
@@ -117,13 +125,13 @@ class HUD(pg.sprite.Sprite):
         :param HUD_display:
         :return: None
         """
-        max_width = 100
-        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 20),
-                                           (max_width, 10)))
-        pg.draw.rect(HUD_display, RANDOM_GREEN, ((HUD_display.get_rect().width // 2 - max_width // 2, 20,
-                                                  (self.ship.hull_points * max_width //
+        max_width = 60 * self.scale[0]
+        pg.draw.rect(HUD_display, GREY50, (HUD_display.get_width() // 2 - max_width // 2, 15 * self.scale[1],
+                                           max_width, 5 * self.scale[1]))
+        pg.draw.rect(HUD_display, RANDOM_GREEN, (HUD_display.get_width() // 2 - max_width // 2, 15 * self.scale[1],
+                                                 ((self.ship.hull_points * max_width //
                                                    self.ship.max_hull_points * max_width)
-                                                  / max_width, 10)))
+                                                  / max_width), 5 * self.scale[1]))
 
     def draw_shieldbar(self, HUD_display):
         """
@@ -131,13 +139,13 @@ class HUD(pg.sprite.Sprite):
         :param HUD_display:
         :return: None
         """
-        max_width = 100
-        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 35),
-                                           (max_width, 10)))
-        pg.draw.rect(HUD_display, RANDOM_BLUE, ((HUD_display.get_rect().width // 2 - max_width // 2, 35,
-                                                 (self.ship.shield_points * max_width //
+        max_width = 60 * self.scale[0]
+        pg.draw.rect(HUD_display, GREY50, (HUD_display.get_width() // 2 - max_width // 2, 25 * self.scale[1],
+                                           max_width, 5 * self.scale[1]))
+        pg.draw.rect(HUD_display, RANDOM_BLUE, (HUD_display.get_width() // 2 - max_width // 2, 25 * self.scale[1],
+                                                ((self.ship.shield_points * max_width //
                                                   self.ship.max_shield_points * max_width)
-                                                 / max_width, 10)))
+                                                 / max_width), 5 * self.scale[1]))
 
     def draw_fuel_bar(self, HUD_display):
         """
@@ -145,10 +153,10 @@ class HUD(pg.sprite.Sprite):
         :param HUD_display:
         :return:
         """
-        max_width = 100
-        pg.draw.rect(HUD_display, GREY50, ((HUD_display.get_rect().width // 2 - max_width // 2, 50),
-                                           (max_width, 10)))
-        pg.draw.rect(HUD_display, LIME, ((HUD_display.get_rect().width // 2 - max_width // 2, 50,
-                                          (self.ship.current_fuel * max_width //
-                                           self.ship.max_fuel * max_width)
-                                          / max_width, 10)))
+        max_width = 60 * self.scale[0]
+        pg.draw.rect(HUD_display, GREY50, (HUD_display.get_width() // 2 - max_width // 2, 35 * self.scale[1],
+                                           max_width, 5 * self.scale[1]))
+        pg.draw.rect(HUD_display, LIME, (HUD_display.get_width() // 2 - max_width // 2, 35 * self.scale[1],
+                                         (self.ship.current_fuel * max_width //
+                                          self.ship.max_fuel * max_width)
+                                         / max_width, 5 * self.scale[1]))

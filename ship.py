@@ -115,11 +115,13 @@ class Ship(pg.sprite.Sprite):
     def draw(self, window):
         pass
 
-    def shoot(self, blaster=None, chain_gun=None):
-        if blaster:
-            pass
+    def shoot(self, blaster):
+        pass
 
-    def deploy(self, podbay=None, bombay=None):
+    def deploy(self, podbay):
+        pass
+
+    def release(self, bombay):
         pass
 
     def death(self):

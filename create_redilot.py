@@ -23,18 +23,18 @@ expertise_list = [
     "Pisces"
 ]
 expertise_dict = {
-    "Aries": ["Health", "Ram Dash."],
-    "Taurus": ["Health", "Stronger Hull."],
-    "Gemini": ["Shield", "Twin for a min."],
-    "Cancer": ["Shield", "Tidal wave blast."],
-    "Leo": ["Health", "Sonic boom stun."],
-    "Virgo": ["Health", "Life after Death."],
-    "Libra": ["Shield", "Set hull_points equal to shield."],
-    "Scorpio": ["Shield", "Medium Arrow angled."],
-    "Sagittarius": ["Health", "Giant Arrow."],
-    "Capricorn": ["Health", "Drop Bombs."],
-    "Aquarius": ["Shield", "Extra Shields."],
-    "Pisces": ["Shield", "Jet stream."]
+    "Aries": ["Health", "Ram Dash.", "Fire"],
+    "Taurus": ["Health", "Stronger Hull.", "Earth"],
+    "Gemini": ["Shield", "Twin for a min.", "Air"],
+    "Cancer": ["Shield", "Tidal wave blast.", "Water"],
+    "Leo": ["Health", "Sonic boom stun.", "Fire"],
+    "Virgo": ["Health", "Life after Death.", "Earth"],
+    "Libra": ["Shield", "Set hull_points equal to shield.", "Air"],
+    "Scorpio": ["Shield", "Medium Arrow angled.", "Water"],
+    "Sagittarius": ["Health", "Giant Arrow.", "Fire"],
+    "Capricorn": ["Health", "Drop Bombs.", "Earth"],
+    "Aquarius": ["Shield", "Extra Shields.", "Air"],
+    "Pisces": ["Shield", "Jet stream.", "Water"]
 }
 
 
