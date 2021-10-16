@@ -13,6 +13,7 @@ class TextButton(Button):
         self.text = text
         self.textcolor = textcolor
         self.optioncolor = optioncolor
+        self.optiontype = optiontype
         self.txt_img = None
         self.opt_img = None
         self.txt_rect = None
@@ -24,12 +25,7 @@ class TextButton(Button):
         self.max_row = max_row
         self.canEdit = canEdit
         self.max_width = maxWidth
-        if optiontype:
-            self.optiontype = optiontype
-        else:
-            self.optiontype = "None--"
-            self.optioncolor = LIGHT_YELLOW
-
+        self.set_button_option(optioncolor, optiontype)
         self.set_font()
         self.render()
 
@@ -41,6 +37,14 @@ class TextButton(Button):
     def set_font(self):
         self.font = pg.font.Font(self.fontname, self.font_size)
 
+    def set_button_option(self, optioncolor, optiontype):
+        self.optioncolor = optioncolor
+        self.optiontype = optiontype
+        if self.optiontype == "True":
+            self.optioncolor = LIGHT_SLATE_BLUE
+        elif self.optiontype == "False":
+            self.optioncolor = DARK_SLATE_BLUE
+
     def render(self):
         """Render the text onto the image."""
         self.txt_img = self.font.render(self.text, True, self.textcolor)
@@ -48,15 +52,16 @@ class TextButton(Button):
         self.txt_rect = self.txt_img.get_rect()
         self.opt_rect = self.opt_img.get_rect()
         self.image = pg.transform.scale(self.image, (self.max_width, 22))
+        self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.image.blit(self.txt_img,
                         ((self.image.get_width() // 2) - (self.txt_rect.width // 2),
                          self.txt_rect.height * 2 // 4))
         self.image.blit(self.opt_img, (8, self.opt_rect.height // 2))
-        if self.active:
-            pg.draw.rect(self.image, FREE_SPEECH_GREEN, self.rect, 2)
-        if not self.active:
-            pg.draw.rect(self.image, DARK_SEA_GREEN, self.rect, 2)
+        # if self.active:
+        #     pg.draw.rect(self.image, FREE_SPEECH_GREEN, self.rect, 2)
+        # if not self.active:
+        #     pg.draw.rect(self.image, DARK_SEA_GREEN, self.rect, 2)
 
     def update_button_text(self, text):
         self.text = str(text)

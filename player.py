@@ -9,6 +9,8 @@ class Player(Ship):
         self.HUD.scale_display_size((1, 1))
         self.target_HUD = HUD(self.game, self)
         self.target_HUD.scale_display_size((1, 1))
+        self.target_HUD.can_see_name = False
+        self.target_HUD.can_see_shield_points = False
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (50, 45))
@@ -81,7 +83,7 @@ class HUD(pg.sprite.Sprite):
         self.x, self.y = (0, 0)
         self.image = pg.Surface((64, 48))
         self.image.fill(GREY25)
-        # self.image.set_colorkey(BLACK)
+        self.image.set_colorkey(GREY25)
         self.rect = self.image.get_rect()
         self.can_see_hull_points = True
         self.can_see_shield_points = True

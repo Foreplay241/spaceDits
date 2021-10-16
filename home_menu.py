@@ -202,14 +202,14 @@ class HomeMenu(Menu):
                 self.next_state_name = "DOG_FIGHT"
                 self.done = True
         if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                pg.quit()
             for b in self.all_text_buttons:
                 if b.active:
                     if event.key == pg.K_BACKSPACE:
                         if len(b.text) > 0:
                             b.text = b.text[:-1]
                             b.update_button_text(b.text)
-                    if event.key == pg.K_RETURN:
-                        pass
                     else:
                         b.text += event.unicode
                         b.update_button_text(b.text)

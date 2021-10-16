@@ -17,15 +17,15 @@ class PauseMenu(Menu):
                                                 fontsize=16, col=1, max_col=2, row=16, max_row=22)
 
         self.text_edit_button = TextButton(DISPLAY_CENTER, "blank", text="Change my Text", textcolor=LIGHT_PINK,
-                                           optiontype=None, optioncolor=RANDOM_GREEN,
+                                           optiontype="False", optioncolor=RANDOM_GREEN,
                                            fontsize=16, col=1, max_col=2, row=13, max_row=22)
 
         self.text_edit_button_2 = TextButton(DISPLAY_CENTER, "blank", text="Change my Text 2", textcolor=LIGHT_PINK,
-                                             optiontype=None, optioncolor=RANDOM_GREEN,
+                                             optiontype="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=14, max_row=22, canEdit=True)
 
         self.text_edit_button_3 = TextButton(DISPLAY_CENTER, "blank", text="Change my Text 3", textcolor=LIGHT_PINK,
-                                             optiontype=None, optioncolor=RANDOM_GREEN,
+                                             optiontype="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=15, max_row=22, canEdit=True)
         self.paused_player = None
         self.paused_enemy = None
@@ -44,18 +44,14 @@ class PauseMenu(Menu):
         if event.type == pg.MOUSEMOTION:
             self.mouse_pos = pg.mouse.get_pos()
         if event.type == pg.MOUSEBUTTONDOWN:
-            if self.text_edit_button.rect.collidepoint(self.mouse_pos):
-                for b in self.all_buttons:
+            for b in self.all_buttons:
+                if b.optiontype != "Game":
                     b.active = False
-                self.text_edit_button.active = True
-            if self.text_edit_button_2.rect.collidepoint(self.mouse_pos):
-                for b in self.all_buttons:
-                    b.active = False
-                self.text_edit_button_2.active = True
-            if self.text_edit_button_3.rect.collidepoint(self.mouse_pos):
-                for b in self.all_buttons:
-                    b.active = False
-                self.text_edit_button_3.active = True
+                    if b.rect.collidepoint(self.mouse_pos):
+                        b.active = True
+                    b.set_button_option(DARK_BLUE, str(b.active))
+                    b.render()
+                print(b.text + str(b.active))
             if self.return_to_game_button.rect.collidepoint(self.mouse_pos):
                 self.persist = {
                     "Player": self.paused_player,
@@ -76,6 +72,14 @@ class PauseMenu(Menu):
                             b.update_button_text(b.text)
             if event.key == pg.K_ESCAPE:
                 pg.quit()
+            if event.key == pg.K_p:
+                self.persist = {
+                    "Player": self.paused_player,
+                    "Enemy": self.paused_enemy
+                }
+                self.next_state_name = "DOG_FIGHT"
+                self.done = True
+
 
     def update(self, dt):
         super(PauseMenu, self).update(dt)
