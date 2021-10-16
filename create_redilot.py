@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import time
 import pygame as pg
 import random
 import praw
@@ -8,33 +9,33 @@ redditor_list = ["Foreplay241", "Big-mac_sauce", "Camel-of_Chicken", "Camel_this
                  "Camel_and_Chicken", "Camel_of_Chicken", "3MuchLikeLA", "ACC15ORD", "antianit",
                  "bot_neen", "BlurrZ8", "coby----", "atobitt", "Gena1548"]
 
-expertise_list = [
-    "Aries",
-    "Taurus",
-    "Gemini",
-    "Cancer",
-    "Leo",
-    "Virgo",
-    "Libra",
-    "Scorpio",
-    "Sagittarius",
-    "Capricorn",
-    "Aquarius",
-    "Pisces"
+MONTH_LIST = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
 ]
-expertise_dict = {
-    "Aries": ["Health", "Ram Dash.", "Fire"],
-    "Taurus": ["Health", "Stronger Hull.", "Earth"],
-    "Gemini": ["Shield", "Twin for a min.", "Air"],
-    "Cancer": ["Shield", "Tidal wave blast.", "Water"],
-    "Leo": ["Health", "Sonic boom stun.", "Fire"],
-    "Virgo": ["Health", "Life after Death.", "Earth"],
-    "Libra": ["Shield", "Set hull_points equal to shield.", "Air"],
-    "Scorpio": ["Shield", "Medium Arrow angled.", "Water"],
-    "Sagittarius": ["Health", "Giant Arrow.", "Fire"],
-    "Capricorn": ["Health", "Drop Bombs.", "Earth"],
-    "Aquarius": ["Shield", "Extra Shields.", "Air"],
-    "Pisces": ["Shield", "Jet stream.", "Water"]
+ZODIAC_DICT = {
+    "Aries": ["Health", "Ram Dash.", "Fire", "Bloodstone", (3, 21), (4, 19)],
+    "Taurus": ["Health", "Stronger Hull.", "Earth", "Sapphire", (4, 20), (5, 20)],
+    "Gemini": ["Shield", "Twin for a min.", "Air", "Agate", (5, 21), (6, 20)],
+    "Cancer": ["Shield", "Tidal wave blast.", "Water", "Emerald", (6, 21), (7, 22)],
+    "Leo": ["Health", "Sonic boom stun.", "Fire", "Onyx", (7, 23), (8, 22)],
+    "Virgo": ["Health", "Life after Death.", "Earth", "Carnelian", (8, 23), (9, 22)],
+    "Libra": ["Shield", "Set hull_points equal to shield.", "Air", "Chrysolite", (9, 23), (10, 22)],
+    "Scorpio": ["Shield", "Medium Arrow angled.", "Water", "Beryl", (10, 23), (11, 21)],
+    "Sagittarius": ["Health", "Giant Arrow.", "Fire", "Topaz", (11, 22), (12, 21)],
+    "Capricorn": ["Health", "Drop Bombs.", "Earth", "Ruby", (12, 22), (1, 19)],
+    "Aquarius": ["Shield", "Extra Shields.", "Air", "Garnet", (1, 20), (2, 18)],
+    "Pisces": ["Shield", "Jet stream.", "Water", "Amethyst", (2, 19), (3, 20)]
 }
 
 
@@ -71,6 +72,7 @@ class Redilot:
             "Circle Number": self.circle_num,
             "Lines Number": self.lines_num
         }
+        self.set_zodiac_sign()
 
     def set_hull_points(self, redditor=None):
         self.max_hull_points = random.randint(42, 69)
@@ -89,6 +91,11 @@ class Redilot:
             for c in map(int, str(int(redditor.created_utc))):
                 self.max_hull_points += c
                 x += 1
+
+    def set_zodiac_sign(self):
+        # 4 = START DATE, 5 = END DATE
+        print(MONTH_LIST[time.gmtime(self.cake_day).tm_mon - 1] + " " + str(time.gmtime(self.cake_day).tm_mday))
+        print(str(time.gmtime(self.cake_day).tm_mon) + "/" + str(time.gmtime(self.cake_day).tm_mday))
 
     def add_square_part(self, redditor=None):
         self.square_num = random.randint(0, 9)

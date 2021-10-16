@@ -104,29 +104,45 @@ class HomeMenu(Menu):
                 self.shidpit_dict[self.enemy_ship.sub_id] = self.enemy_ship.statistics
                 self.save_shidpits()
 
-            # CLICKED INSIDE REDILOT PREVIEW.
+            # CLICKED INSIDE PLAYER REDILOT PREVIEW.
             if self.player_redilot_preview.rect.collidepoint(self.mouse_pos):
-                self.player_redilot_button.update_button_text(random.choice(redditor_list))
-                self.player_redilot = Redilot(name=self.player_redilot_button.text)
-                self.player_redilot_preview.update_image(self.player_redilot.medal_img)
+                if self.player_redilot_button.text == "Player Redilot":
+                    self.player_redilot_button.update_button_text(random.choice(redditor_list))
+                    self.player_redilot = Redilot(name=self.player_redilot_button.text)
+                    self.player_redilot_preview.update_image(self.player_redilot.medal_img)
+                else:
+                    self.player_redilot = Redilot(name=self.player_redilot_button.text, from_reddit=True)
+                    self.player_redilot_preview.update_image(self.player_redilot.medal_img)
 
             # CLICKED INSIDE ENEMY REDILOT PREVIEW.
             if self.enemy_redilot_preview.rect.collidepoint(self.mouse_pos):
-                self.enemy_redilot_button.update_button_text(random.choice(redditor_list))
-                self.enemy_redilot = Redilot(name=self.enemy_redilot_button.text)
-                self.enemy_redilot_preview.update_image(self.enemy_redilot.generate_medal_image())
+                if self.enemy_redilot_button.text == "Enemy Redilot":
+                    self.enemy_redilot_button.update_button_text(random.choice(redditor_list))
+                    self.enemy_redilot = Redilot(name=self.enemy_redilot_button.text)
+                    self.enemy_redilot_preview.update_image(self.enemy_redilot.generate_medal_image())
+                else:
+                    self.enemy_redilot = Redilot(name=self.enemy_redilot_button.text, from_reddit=True)
+                    self.enemy_redilot_preview.update_image(self.enemy_redilot.generate_medal_image())
 
             # CLICKED INSIDE PLAYER SHIDPIT PREVIEW.
             if self.player_shidpit_preview.rect.collidepoint(self.mouse_pos):
-                self.player_shidpit_button.update_button_text(random.choice(submission_list))
-                self.player_ship = Shidpit(sub_id=self.player_shidpit_button.text)
-                self.player_shidpit_preview.update_image(self.player_ship.img)
+                if self.player_shidpit_button.text == "Player ship":
+                    self.player_shidpit_button.update_button_text(random.choice(submission_list))
+                    self.player_ship = Shidpit(sub_id=self.player_shidpit_button.text)
+                    self.player_shidpit_preview.update_image(self.player_ship.img)
+                else:
+                    self.player_ship = Shidpit(sub_id=self.player_shidpit_button.text, from_reddit=True)
+                    self.player_shidpit_preview.update_image(self.player_ship.img)
 
             # CLICKED INSIDE ENEMY SHIDPIT PREVIEW.
             if self.enemy_shidpit_preview.rect.collidepoint(self.mouse_pos):
-                self.enemy_shidpit_button.update_button_text(random.choice(submission_list))
-                self.enemy_ship = Shidpit(sub_id=self.enemy_shidpit_button.text)
-                self.enemy_shidpit_preview.update_image(self.enemy_ship.img)
+                if self.enemy_shidpit_button.text == "Enemy ship":
+                    self.enemy_shidpit_button.update_button_text(random.choice(submission_list))
+                    self.enemy_ship = Shidpit(sub_id=self.enemy_shidpit_button.text)
+                    self.enemy_shidpit_preview.update_image(self.enemy_ship.img)
+                else:
+                    self.enemy_ship = Shidpit(sub_id=self.enemy_shidpit_button.text, from_reddit=True)
+                    self.enemy_shidpit_preview.update_image(self.enemy_ship.img)
 
             # CLICKED INSIDE PLAYER REDILOT BUTTONS.
             if self.player_redilot_button.rect.collidepoint(self.mouse_pos):
