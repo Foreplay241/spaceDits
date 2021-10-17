@@ -106,7 +106,7 @@ class HomeMenu(Menu):
 
             # CLICKED INSIDE PLAYER REDILOT PREVIEW.
             if self.player_redilot_preview.rect.collidepoint(self.mouse_pos):
-                if self.player_redilot_button.text == "Player Redilot":
+                if self.player_redilot_button.text == "Player Redilot" or self.player_redilot_button.text == "":
                     self.player_redilot_button.update_button_text(random.choice(redditor_list))
                     self.player_redilot = Redilot(name=self.player_redilot_button.text)
                     self.player_redilot_preview.update_image(self.player_redilot.medal_img)
@@ -116,7 +116,7 @@ class HomeMenu(Menu):
 
             # CLICKED INSIDE ENEMY REDILOT PREVIEW.
             if self.enemy_redilot_preview.rect.collidepoint(self.mouse_pos):
-                if self.enemy_redilot_button.text == "Enemy Redilot":
+                if self.enemy_redilot_button.text == "Enemy Redilot" or self.enemy_redilot_button.text == "":
                     self.enemy_redilot_button.update_button_text(random.choice(redditor_list))
                     self.enemy_redilot = Redilot(name=self.enemy_redilot_button.text)
                     self.enemy_redilot_preview.update_image(self.enemy_redilot.generate_medal_image())
@@ -126,7 +126,7 @@ class HomeMenu(Menu):
 
             # CLICKED INSIDE PLAYER SHIDPIT PREVIEW.
             if self.player_shidpit_preview.rect.collidepoint(self.mouse_pos):
-                if self.player_shidpit_button.text == "Player ship":
+                if self.player_shidpit_button.text == "Player ship" or self.player_shidpit_button.text == "":
                     self.player_shidpit_button.update_button_text(random.choice(submission_list))
                     self.player_ship = Shidpit(sub_id=self.player_shidpit_button.text)
                     self.player_shidpit_preview.update_image(self.player_ship.img)
@@ -136,7 +136,7 @@ class HomeMenu(Menu):
 
             # CLICKED INSIDE ENEMY SHIDPIT PREVIEW.
             if self.enemy_shidpit_preview.rect.collidepoint(self.mouse_pos):
-                if self.enemy_shidpit_button.text == "Enemy ship":
+                if self.enemy_shidpit_button.text == "Enemy ship" or self.enemy_shidpit_button.text == "":
                     self.enemy_shidpit_button.update_button_text(random.choice(submission_list))
                     self.enemy_ship = Shidpit(sub_id=self.enemy_shidpit_button.text)
                     self.enemy_shidpit_preview.update_image(self.enemy_ship.img)

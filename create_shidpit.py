@@ -90,16 +90,11 @@ class Shidpit:
         if submission:
             x = 0
             for c in map(int, str(int(submission.created_utc))):
-                if x == 5:
-                    if 5 >= c > 0:
-                        num_blasters = c
-                    else:
-                        num_blasters = c - 5
                 if x == 6:
                     self.nose_num = c
                 x += 1
-        for i in range(num_blasters):
-            blaster = self.add_lasbat_blaster((0, 0), name="blaster"+str(i+1))
+        for i in range(3):
+            blaster = self.add_lasbat_blaster(((i+3)*8, 12), name="blaster"+str(i+1))
             self.weapons_dict[blaster["Name"]] = blaster
         nose_image = pg.image.load(os.path.join("assets/ship_parts", "nose" + str(self.nose_num) + ".png"))
         self.img.blit(nose_image, (0, 0))
@@ -117,6 +112,9 @@ class Shidpit:
                 x += 1
             self.max_hull_points = submission.score
             self.max_shield_points = submission.score * submission.upvote_ratio
+            bay = self.add_bomb_bay((32, 64), name="bay"+str(1))
+            self.weapons_dict[bay["Name"]] = bay
+
         body_image = pg.image.load(os.path.join("assets/ship_parts", "body" + str(self.body_num) + ".png"))
         self.img.blit(body_image, (0, 0))
 
@@ -130,7 +128,7 @@ class Shidpit:
                     self.beta_name = beta_name_list[c]
                 x += 1
         for i in range(2):
-            pod = self.add_missle_pod((0, (i+10)*3), name="pod"+str(i+1))
+            pod = self.add_missle_pod((14+(i*36), 48), name="pod"+str(i+1))
             self.weapons_dict[pod["Name"]] = pod
         wings_image = pg.image.load(os.path.join("assets/ship_parts", "wings" + str(self.wings_num) + ".png"))
         self.img.blit(wings_image, (0, 0))
@@ -147,13 +145,15 @@ class Shidpit:
         engine_image = pg.image.load(os.path.join("assets/ship_parts", "engine" + str(self.engine_num) + ".png"))
         self.img.blit(engine_image, (0, 0))
 
-    def add_lasbat_blaster(self, pos, name="blaster", max_charge=random.randint(45, 90), power=random.randint(15, 22)):
+    def add_lasbat_blaster(self, pos, name="blaster", max_charge=random.randint(45, 90), power=random.randint(15, 22),
+                           fire_rate=random.randint(150, 320)):
         lasbat_stats_dict = {
             "Position": pos,
             "Name": name,
             "Max Charge": max_charge,
             "Current Charge": max_charge,
-            "Power": power
+            "Power": power,
+            "Fire Rate": fire_rate
         }
         self.weapons_dict[lasbat_stats_dict["Name"]] = lasbat_stats_dict
         return lasbat_stats_dict
@@ -169,6 +169,17 @@ class Shidpit:
         }
         self.weapons_dict[missle_stats_dict["Name"]] = missle_stats_dict
         return missle_stats_dict
+
+    def add_bomb_bay(self, pos, name="bay", max_num_bombs=random.randint(3, 8), bomb_power=random.randint(78, 89)):
+        bomb_stats_dict = {
+            "Position": pos,
+            "Name": name,
+            "Max Number Bombs": max_num_bombs,
+            "Current Bombs": max_num_bombs,
+            "Bomb Power": bomb_power
+        }
+        self.weapons_dict[bomb_stats_dict["Name"]] = bomb_stats_dict
+        return bomb_stats_dict
 
     def generate_reddit_shidpit(self):
         reddit = praw.Reddit(

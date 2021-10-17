@@ -6,25 +6,68 @@
    "Wings Number": 0,
    "Engine Number": 0,
    "Weapons Dict": {
+      "blaster1": {
+         "Position": [
+            24,
+            12
+         ],
+         "Name": "blaster1",
+         "Max Charge": 88,
+         "Current Charge": 88,
+         "Power": 16,
+         "Fire Rate": 224
+      },
+      "blaster2": {
+         "Position": [
+            32,
+            12
+         ],
+         "Name": "blaster2",
+         "Max Charge": 88,
+         "Current Charge": 88,
+         "Power": 16,
+         "Fire Rate": 224
+      },
+      "blaster3": {
+         "Position": [
+            40,
+            12
+         ],
+         "Name": "blaster3",
+         "Max Charge": 88,
+         "Current Charge": 88,
+         "Power": 16,
+         "Fire Rate": 224
+      },
+      "bay1": {
+         "Position": [
+            32,
+            64
+         ],
+         "Name": "bay1",
+         "Max Number Bombs": 6,
+         "Current Bombs": 6,
+         "Bomb Power": 87
+      },
       "pod1": {
          "Position": [
-            0,
-            30
+            14,
+            48
          ],
          "Name": "pod1",
-         "Max Number Missles": 65,
-         "Current Missles": 65,
-         "Missle Power": 28
+         "Max Number Missles": 57,
+         "Current Missles": 57,
+         "Missle Power": 29
       },
       "pod2": {
          "Position": [
-            0,
-            33
+            50,
+            48
          ],
          "Name": "pod2",
-         "Max Number Missles": 65,
-         "Current Missles": 65,
-         "Missle Power": 28
+         "Max Number Missles": 57,
+         "Current Missles": 57,
+         "Missle Power": 29
       }
    }
 }

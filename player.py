@@ -13,13 +13,14 @@ class Player(Ship):
         self.target_HUD.can_see_shield_points = False
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
-        self.image = pg.transform.scale(self.image, (50, 45))
+        self.image = pg.transform.scale(self.image, (64, 64))
         self.colorImage = pg.Surface(self.image.get_size()).convert_alpha()
         self.colorImage.fill(RANDOM_BLUE)
         self.image.blit(self.colorImage, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
         self.rect = self.image.get_rect()
         self.redilot = redilot
         self.shidpit = shidpit
+        self.weapons_dict = self.shidpit.weapons_dict
         self.prev_target = None
         self.target = None
 
@@ -40,18 +41,11 @@ class Player(Ship):
         self.prev_target = self.target
         self.target = new_target
 
-    def shoot(self, blaster):
-        # SHOOT A LASBAT BLASTER OR A CHAIN GUN
-        now = pg.time.get_ticks()
-        if now - self.prev_laser_time > self.laser_cool_down:
-            self.prev_laser_time = pg.time.get_ticks()
-            laser = Laser(self.game, self.rect.x + (self.image.get_width() / 2),
-                          self.rect.y + ((self.image.get_height()) / 3), self.laser_img, colormask=LIGHT_BLUE)
-            laser.is_player = True
-            laser.velocity -= self.y_vel
-            self.lasers.append(laser)
-            self.game.all_sprites.add(laser)
-            self.game.player_lasers.add(laser)
+    def shoot(self, blaster=None):
+        # SHOOT A LASBAT BLASTER
+        for key in self.weapons_dict:
+            if key.startswith("blaster"):
+                super(Player, self).shoot(self.weapons_dict[key])
 
     def deploy(self, podbay):
         # DEPLOY AN EXPLOSIVE FROM A MISSLE POD BAY OR BOMB BAY.

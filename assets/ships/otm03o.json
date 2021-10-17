@@ -1,9 +1,9 @@
 {
-   "Name": "Delta Quartz-Hawk",
-   "Creation Date": 1632345972,
+   "Name": "Delta Dirty-Hawk",
+   "Creation Date": 1627515932,
    "Nose Number": 5,
    "Body Number": 9,
-   "Wings Number": 7,
+   "Wings Number": 3,
    "Engine Number": 2,
    "Weapons Dict": {
       "blaster1": {
@@ -12,10 +12,9 @@
             12
          ],
          "Name": "blaster1",
-         "Max Charge": 88,
-         "Current Charge": 88,
-         "Power": 16,
-         "Fire Rate": 224
+         "Max Charge": 71,
+         "Current Charge": 71,
+         "Power": 18
       },
       "blaster2": {
          "Position": [
@@ -23,10 +22,9 @@
             12
          ],
          "Name": "blaster2",
-         "Max Charge": 88,
-         "Current Charge": 88,
-         "Power": 16,
-         "Fire Rate": 224
+         "Max Charge": 71,
+         "Current Charge": 71,
+         "Power": 18
       },
       "blaster3": {
          "Position": [
@@ -34,10 +32,9 @@
             12
          ],
          "Name": "blaster3",
-         "Max Charge": 88,
-         "Current Charge": 88,
-         "Power": 16,
-         "Fire Rate": 224
+         "Max Charge": 71,
+         "Current Charge": 71,
+         "Power": 18
       },
       "bay1": {
          "Position": [
@@ -45,8 +42,8 @@
             64
          ],
          "Name": "bay1",
-         "Max Number Bombs": 6,
-         "Current Bombs": 6,
+         "Max Number Bombs": 4,
+         "Current Bombs": 4,
          "Bomb Power": 87
       },
       "pod1": {
@@ -55,9 +52,9 @@
             48
          ],
          "Name": "pod1",
-         "Max Number Missles": 57,
-         "Current Missles": 57,
-         "Missle Power": 29
+         "Max Number Missles": 75,
+         "Current Missles": 75,
+         "Missle Power": 38
       },
       "pod2": {
          "Position": [
@@ -65,9 +62,9 @@
             48
          ],
          "Name": "pod2",
-         "Max Number Missles": 57,
-         "Current Missles": 57,
-         "Missle Power": 29
+         "Max Number Missles": 75,
+         "Current Missles": 75,
+         "Missle Power": 38
       }
    }
 }

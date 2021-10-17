@@ -12,9 +12,9 @@
             0
          ],
          "Name": "blaster1",
-         "Max Charge": 73,
-         "Current Charge": 73,
-         "Power": 16
+         "Max Charge": 72,
+         "Current Charge": 72,
+         "Power": 19
       },
       "blaster2": {
          "Position": [
@@ -22,9 +22,9 @@
             0
          ],
          "Name": "blaster2",
-         "Max Charge": 73,
-         "Current Charge": 73,
-         "Power": 16
+         "Max Charge": 72,
+         "Current Charge": 72,
+         "Power": 19
       },
       "blaster3": {
          "Position": [
@@ -32,9 +32,39 @@
             0
          ],
          "Name": "blaster3",
-         "Max Charge": 73,
-         "Current Charge": 73,
-         "Power": 16
+         "Max Charge": 72,
+         "Current Charge": 72,
+         "Power": 19
+      },
+      "bay1": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "bay1",
+         "Max Number Bombs": 8,
+         "Current Bombs": 8,
+         "Bomb Power": 85
+      },
+      "bay2": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "bay2",
+         "Max Number Bombs": 8,
+         "Current Bombs": 8,
+         "Bomb Power": 85
+      },
+      "bay3": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "bay3",
+         "Max Number Bombs": 8,
+         "Current Bombs": 8,
+         "Bomb Power": 85
       },
       "pod1": {
          "Position": [
@@ -42,9 +72,9 @@
             30
          ],
          "Name": "pod1",
-         "Max Number Missles": 85,
-         "Current Missles": 85,
-         "Missle Power": 29
+         "Max Number Missles": 51,
+         "Current Missles": 51,
+         "Missle Power": 28
       },
       "pod2": {
          "Position": [
@@ -52,9 +82,9 @@
             33
          ],
          "Name": "pod2",
-         "Max Number Missles": 85,
-         "Current Missles": 85,
-         "Missle Power": 29
+         "Max Number Missles": 51,
+         "Current Missles": 51,
+         "Missle Power": 28
       }
    }
 }

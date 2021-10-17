@@ -7,7 +7,7 @@ class Enemy(Ship):
         super().__init__(game, x, y, redilot, shidpit)
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
-        self.image = pg.transform.scale(self.image, (50, 45))
+        self.image = pg.transform.scale(self.image, (64, 64))
         self.colorImage = pg.Surface(self.image.get_size()).convert_alpha()
         self.colorImage.fill(RANDOM_RED)
         self.image.blit(self.colorImage, (0, 0), special_flags=pg.BLEND_RGBA_MULT)

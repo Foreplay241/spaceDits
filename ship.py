@@ -37,8 +37,7 @@ class Ship(pg.sprite.Sprite):
         self.current_fuel = 100
 
         # WEAPON STUFF
-        self.shooter_choices = ["Lasbat Blaster", "Chain Gun"]
-        self.deploy_choices = ["Pod Bay", "Bomb Bay"]
+        self.weapons_dict = {}
 
         self.laser = None
         self.laser_img = pg.image.load(os.path.join("assets", "laser.png"))
@@ -116,7 +115,16 @@ class Ship(pg.sprite.Sprite):
         pass
 
     def shoot(self, blaster):
-        pass
+        now = pg.time.get_ticks()
+        if now - self.prev_laser_time > blaster["Fire Rate"]:
+            self.prev_laser_time = pg.time.get_ticks()
+            laser = Laser(self.game, self.rect.x + blaster["Position"][0],
+                          self.rect.y + blaster["Position"][1], self.laser_img, colormask=LIGHT_BLUE)
+            laser.is_player = True
+            laser.velocity -= self.y_vel
+            self.lasers.append(laser)
+            self.game.all_sprites.add(laser)
+            self.game.player_lasers.add(laser)
 
     def deploy(self, podbay):
         pass

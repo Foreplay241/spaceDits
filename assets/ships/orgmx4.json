@@ -12,9 +12,9 @@
             0
          ],
          "Name": "blaster1",
-         "Max Charge": 53,
-         "Current Charge": 53,
-         "Power": 19
+         "Max Charge": 45,
+         "Current Charge": 45,
+         "Power": 17
       },
       "blaster2": {
          "Position": [
@@ -22,9 +22,9 @@
             0
          ],
          "Name": "blaster2",
-         "Max Charge": 53,
-         "Current Charge": 53,
-         "Power": 19
+         "Max Charge": 45,
+         "Current Charge": 45,
+         "Power": 17
       },
       "blaster3": {
          "Position": [
@@ -32,9 +32,19 @@
             0
          ],
          "Name": "blaster3",
-         "Max Charge": 53,
-         "Current Charge": 53,
-         "Power": 19
+         "Max Charge": 45,
+         "Current Charge": 45,
+         "Power": 17
+      },
+      "bay1": {
+         "Position": [
+            0,
+            0
+         ],
+         "Name": "bay1",
+         "Max Number Bombs": 8,
+         "Current Bombs": 8,
+         "Bomb Power": 87
       },
       "pod1": {
          "Position": [
@@ -42,9 +52,9 @@
             30
          ],
          "Name": "pod1",
-         "Max Number Missles": 50,
-         "Current Missles": 50,
-         "Missle Power": 29
+         "Max Number Missles": 89,
+         "Current Missles": 89,
+         "Missle Power": 37
       },
       "pod2": {
          "Position": [
@@ -52,9 +62,9 @@
             33
          ],
          "Name": "pod2",
-         "Max Number Missles": 50,
-         "Current Missles": 50,
-         "Missle Power": 29
+         "Max Number Missles": 89,
+         "Current Missles": 89,
+         "Missle Power": 37
       }
    }
 }
