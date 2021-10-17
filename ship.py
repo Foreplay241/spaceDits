@@ -115,16 +115,15 @@ class Ship(pg.sprite.Sprite):
         pass
 
     def shoot(self, blaster):
+        print(blaster.name)
         now = pg.time.get_ticks()
-        if now - self.prev_laser_time > blaster["Fire Rate"]:
+        if now - self.prev_laser_time > blaster.fire_rate and blaster.canShoot:
             self.prev_laser_time = pg.time.get_ticks()
-            laser = Laser(self.game, self.rect.x + blaster["Position"][0],
-                          self.rect.y + blaster["Position"][1], self.laser_img, colormask=LIGHT_BLUE)
-            laser.is_player = True
+            laser = Laser(self.game, self.rect.x + blaster.x,
+                          self.rect.y + blaster.y, self.laser_img, colormask=LIGHT_BLUE)
             laser.velocity -= self.y_vel
             self.lasers.append(laser)
             self.game.all_sprites.add(laser)
-            self.game.player_lasers.add(laser)
 
     def deploy(self, podbay):
         pass

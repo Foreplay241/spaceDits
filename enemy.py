@@ -12,10 +12,12 @@ class Enemy(Ship):
         self.colorImage.fill(RANDOM_RED)
         self.image.blit(self.colorImage, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
         self.rect = self.image.get_rect()
+        self.follow_player = False
 
     def update(self):
         super(Enemy, self).update()
-        self.choose_action()
+        if self.follow_player:
+            self.choose_action()
 
     def choose_action(self):
         # ALIGN X COORDS

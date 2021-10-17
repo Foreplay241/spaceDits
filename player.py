@@ -35,17 +35,14 @@ class Player(Ship):
         self.HUD.draw(window, self.rect)
         if self.target:
             self.target_HUD.draw(window, self.target.rect)
-            print("drawing target HUD")
 
     def switch_target(self, new_target):
         self.prev_target = self.target
         self.target = new_target
 
     def shoot(self, blaster=None):
-        # SHOOT A LASBAT BLASTER
-        for key in self.weapons_dict:
-            if key.startswith("blaster"):
-                super(Player, self).shoot(self.weapons_dict[key])
+        super(Player, self).shoot(self.weapons_dict["blaster3"])
+        super(Player, self).shoot(self.weapons_dict["blaster1"])
 
     def deploy(self, podbay):
         # DEPLOY AN EXPLOSIVE FROM A MISSLE POD BAY OR BOMB BAY.

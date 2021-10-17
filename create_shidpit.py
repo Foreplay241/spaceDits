@@ -84,9 +84,8 @@ class Shidpit:
         #     if len(key) == 2:
         #         print(key + ": " + str(self.switch_dict[key]))
 
-    def add_nose_ship_part(self, min_blasters=2, max_blasters=6, submission=None):
+    def add_nose_ship_part(self, submission=None):
         self.nose_num = random.randint(0, 9)
-        num_blasters = random.randint(min_blasters, max_blasters)
         if submission:
             x = 0
             for c in map(int, str(int(submission.created_utc))):
@@ -95,7 +94,7 @@ class Shidpit:
                 x += 1
         for i in range(3):
             blaster = self.add_lasbat_blaster(((i+3)*8, 12), name="blaster"+str(i+1))
-            self.weapons_dict[blaster["Name"]] = blaster
+            self.weapons_dict[blaster.name] = blaster
         nose_image = pg.image.load(os.path.join("assets/ship_parts", "nose" + str(self.nose_num) + ".png"))
         self.img.blit(nose_image, (0, 0))
 
@@ -151,12 +150,13 @@ class Shidpit:
             "Position": pos,
             "Name": name,
             "Max Charge": max_charge,
-            "Current Charge": max_charge,
             "Power": power,
             "Fire Rate": fire_rate
         }
-        self.weapons_dict[lasbat_stats_dict["Name"]] = lasbat_stats_dict
-        return lasbat_stats_dict
+        lasbat_blaster = Blaster(pos, pg.Surface((10, 10)), max_charge, power, fire_rate)
+        lasbat_blaster.name = name
+        self.weapons_dict[lasbat_stats_dict["Name"]] = lasbat_blaster
+        return lasbat_blaster
 
     def add_missle_pod(self, pos, name="pod",
                        max_num_missles=random.randint(45, 90), missle_power=random.randint(26, 38)):
@@ -198,10 +198,6 @@ class Shidpit:
         self.add_body_ship_part(submission=submission)
         self.add_engine_ship_part(submission=submission)
         self.add_wings_ship_part(submission=submission)
-        # self.img = self.generate_ship_image(self.nose_num,
-        #                                self.body_num,
-        #                                self.wings_num,
-        #                                self.engine_num)
         self.switch_dict = {
             "C": submission.clicked,
             "E": submission.edited,
@@ -216,9 +212,9 @@ class Shidpit:
         self.print_ship_stats()
         self.ship_rank = 1
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
-        self.fuel_usage = 2
-        self.max_fuel = 100
-        self.current_fuel = 100
+        # self.fuel_usage = 2
+        # self.max_fuel = 100
+        # self.current_fuel = 100
 
     def generate_random_shidpit(self):
         self.creation_date = random.randint(1119553200, 1633120253)
@@ -228,10 +224,6 @@ class Shidpit:
         self.add_body_ship_part()
         self.add_engine_ship_part()
         self.add_wings_ship_part()
-        # self.img = generate_ship_image(self.nose_num,
-        #                                self.body_num,
-        #                                self.wings_num,
-        #                                self.engine_num)
         self.switch_dict = {
             "C": bool(random.getrandbits(1)),
             "E": bool(random.getrandbits(1)),
@@ -245,9 +237,9 @@ class Shidpit:
         }
         self.print_ship_stats()
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
-        self.fuel_usage = 2
-        self.max_fuel = 100
-        self.current_fuel = 100
+        # self.fuel_usage = 2
+        # self.max_fuel = 100
+        # self.current_fuel = 100
 
 
 def roundpartial(value, resolution):

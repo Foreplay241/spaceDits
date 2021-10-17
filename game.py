@@ -100,11 +100,15 @@ class Game(GameState):
                 self.done = True
 
         keys = pg.key.get_pressed()
-        if keys[pg.K_q]:
-            self.player.shoot()
-        if keys[pg.K_e]:
+        if keys[pg.K_y]:
+            self.player.shoot(self.player.weapons_dict["blaster1"])
+        if keys[pg.K_u]:
+            self.player.shoot(self.player.weapons_dict["blaster2"])
+        if keys[pg.K_i]:
+            self.player.shoot(self.player.weapons_dict["blaster3"])
+        if keys[pg.K_j]:
             self.player.deploy(None)
-        if keys[pg.K_x]:
+        if keys[pg.K_n]:
             self.player.release(None)
         if keys[pg.K_KP7]:
             self.enemy.shoot(None)
