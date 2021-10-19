@@ -39,14 +39,12 @@ class Game(GameState):
         if "Player" in persistent:
             self.player = persistent["Player"]
         else:
-            self.player = Player(self, DISPLAY_WIDTH // 2, (DISPLAY_HEIGHT * 2) / 3,
-                                 persistent["Player Redilot"], persistent["Player Ship"])
+            self.player = Player(self, persistent["Player Redilot"], persistent["Player Ship"])
             self.player.is_player = True
         if "Enemy" in persistent:
             self.enemy = persistent["Enemy"]
         else:
-            self.enemy = Enemy(self, DISPLAY_WIDTH // 2, DISPLAY_HEIGHT / 3,
-                               persistent["Enemy Redilot"], persistent["Enemy Ship"])
+            self.enemy = Enemy(self, persistent["Enemy Redilot"], persistent["Enemy Ship"])
         self.all_sprites.add(self.player)
         self.all_sprites.add(self.enemy)
 
@@ -68,25 +66,25 @@ class Game(GameState):
             if event.key == pg.K_ESCAPE:
                 pg.quit()
             if event.key == pg.K_a:
-                self.player.x_vel -= 1
+                self.player.x_velocity -= 1
             if event.key == pg.K_d:
-                self.player.x_vel += 1
+                self.player.x_velocity += 1
             if event.key == pg.K_w:
-                self.player.y_vel -= 1
-                self.player.fuel_usage = -self.player.y_vel
+                self.player.y_velocity -= 1
+                self.player.fuel_usage = -self.player.y_velocity
             if event.key == pg.K_s:
-                self.player.y_vel += 1
-                self.player.fuel_usage = -self.player.y_vel
+                self.player.y_velocity += 1
+                self.player.fuel_usage = -self.player.y_velocity
             if event.key == pg.K_KP4:
-                self.enemy.x_vel -= 1
+                self.enemy.x_velocity -= 1
             if event.key == pg.K_KP6:
-                self.enemy.x_vel += 1
+                self.enemy.x_velocity += 1
             if event.key == pg.K_KP8:
-                self.enemy.y_vel -= 1
-                self.enemy.fuel_usage = -self.enemy.y_vel
+                self.enemy.y_velocity -= 1
+                self.enemy.fuel_usage = -self.enemy.y_velocity
             if event.key == pg.K_KP5:
-                self.enemy.y_vel += 1
-                self.enemy.fuel_usage = -self.enemy.y_vel
+                self.enemy.y_velocity += 1
+                self.enemy.fuel_usage = -self.enemy.y_velocity
             if event.key == pg.K_p:
                 self.persist = {
                     "Player Redilot": self.player.redilot,
@@ -100,16 +98,18 @@ class Game(GameState):
                 self.done = True
 
         keys = pg.key.get_pressed()
-        if keys[pg.K_y]:
-            self.player.shoot(self.player.weapons_dict["blaster1"])
         if keys[pg.K_u]:
-            self.player.shoot(self.player.weapons_dict["blaster2"])
+            self.player.shoot(self.player.weapons_dict["blaster1"])
         if keys[pg.K_i]:
+            self.player.shoot(self.player.weapons_dict["blaster2"])
+        if keys[pg.K_o]:
             self.player.shoot(self.player.weapons_dict["blaster3"])
         if keys[pg.K_j]:
-            self.player.deploy(None)
-        if keys[pg.K_n]:
-            self.player.release(None)
+            self.player.deploy(self.player.weapons_dict["pod1"])
+        if keys[pg.K_k]:
+            self.player.deploy(self.player.weapons_dict["pod2"])
+        if keys[pg.K_m]:
+            self.player.release(self.player.weapons_dict["bay"])
         if keys[pg.K_KP7]:
             self.enemy.shoot(None)
         if keys[pg.K_KP9]:
@@ -117,6 +117,8 @@ class Game(GameState):
 
     def update(self, dt):
         self.all_sprites.update()
+        for laser in self.player.lasers:
+            laser.update()
 
         self.enemys_lasers_hit = pg.sprite.spritecollide(self.player, self.enemy_lasers, False)
         for h in self.enemys_lasers_hit:
@@ -158,4 +160,6 @@ class Game(GameState):
         screen.fill(LIGHT_GREY)
         screen.blit(BG, (0, 0))
         self.all_sprites.draw(self.screen)
+        for laser in self.player.lasers:
+            laser.draw(self.screen)
         self.player.draw(self.screen)

@@ -3,8 +3,8 @@ from ship import *
 
 class Enemy(Ship):
 
-    def __init__(self, game, x, y, redilot, shidpit):
-        super().__init__(game, x, y, redilot, shidpit)
+    def __init__(self, game, redilot, shidpit):
+        super().__init__(game, redilot, shidpit)
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (64, 64))

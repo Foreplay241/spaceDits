@@ -3,14 +3,14 @@ from text import Text
 
 
 class Player(Ship):
-    def __init__(self, game, x, y, redilot, shidpit):
-        super().__init__(game, x, y, redilot, shidpit)
+    def __init__(self, game, redilot, shidpit):
+        super().__init__(game, redilot, shidpit)
         self.HUD = HUD(self.game, self)
         self.HUD.scale_display_size((1, 1))
         self.target_HUD = HUD(self.game, self)
         self.target_HUD.scale_display_size((1, 1))
-        self.target_HUD.can_see_name = False
-        self.target_HUD.can_see_shield_points = False
+        # self.target_HUD.can_see_name = False
+        # self.target_HUD.can_see_shield_points = False
         self.image = shidpit.img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (64, 64))
@@ -41,21 +41,10 @@ class Player(Ship):
         self.target = new_target
 
     def shoot(self, blaster=None):
-        super(Player, self).shoot(self.weapons_dict["blaster3"])
-        super(Player, self).shoot(self.weapons_dict["blaster1"])
+        super(Player, self).shoot(blaster)
 
     def deploy(self, podbay):
-        # DEPLOY AN EXPLOSIVE FROM A MISSLE POD BAY OR BOMB BAY.
-        now = pg.time.get_ticks()
-        if now - self.prev_missle_time > self.missle_cool_down:
-            self.prev_missle_time = pg.time.get_ticks()
-            missle = Missle(self.game, self.rect.x + (self.image.get_width() / 2),
-                            self.rect.y + (self.image.get_height() / 3), self.missle_img, colormask=NEON_BLUE)
-            missle.is_player = True
-            missle.velocity -= self.y_vel
-            self.missles.append(missle)
-            self.game.all_sprites.add(missle)
-            self.game.player_missles.add(missle)
+        super(Player, self).deploy(podbay)
 
     def release(self, bombay):
         pass

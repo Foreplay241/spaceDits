@@ -7,21 +7,20 @@ from missle import Missle
 
 
 class Ship(pg.sprite.Sprite):
-    def __init__(self, game, x, y, redilot, shidpit):
+    def __init__(self, game, redilot, shidpit):
         super().__init__()
         self.game = game
         self.name = redilot.name + "_" + shidpit.sub_id
-        self.x = x
-        self.y = y
+        self.pos = shidpit.ship_properties["position"]
         self.redilot = redilot
         self.shidpit = shidpit
-        self.min_x_vel = -2
-        self.x_vel = 0
-        self.max_x_vel = 2
-        self.min_y_vel = -10
-        self.y_vel = -5
-        self.max_y_vel = -1
-        self.outcome = "winner"
+        self.min_x_velocity = -2
+        self.x_velocity = 0
+        self.max_x_velocity = 2
+        self.min_y_velocity = -10
+        self.y_velocity = -5
+        self.max_y_velocity = -1
+        self.outcome = "undecided"
 
         # SHIP STATS
         self.max_hull_points = self.redilot.max_hull_points + self.shidpit.max_hull_points
@@ -76,17 +75,19 @@ class Ship(pg.sprite.Sprite):
 
     def update(self):
         # KEEP VELOCITIES IN RANGE
-        if self.x_vel > self.max_x_vel:
-            self.x_vel = self.max_x_vel
-        if self.x_vel < self.min_x_vel:
-            self.x_vel = self.min_x_vel
-        if self.y_vel > self.max_y_vel:
-            self.y_vel = self.max_y_vel
-        if self.y_vel < self.min_y_vel:
-            self.y_vel = self.min_y_vel
+        if self.x_velocity > self.max_x_velocity:
+            self.x_velocity = self.max_x_velocity
+        if self.x_velocity < self.min_x_velocity:
+            self.x_velocity = self.min_x_velocity
+        if self.y_velocity > self.max_y_velocity:
+            self.y_velocity = self.max_y_velocity
+        if self.y_velocity < self.min_y_velocity:
+            self.y_velocity = self.min_y_velocity
 
-        self.rect.x += self.x_vel
-        self.rect.y += self.y_vel
+        self.rect.x += self.x_velocity
+        self.rect.y += self.y_velocity
+        self.shidpit.ship_properties["position"] = (self.rect.x, self.rect.y)
+        self.shidpit.ship_properties["y velocity"] = self.y_velocity
 
         # KEEP SHIP IN WINDOW
         if self.rect.y <= DISPLAY_TOP:
@@ -109,29 +110,20 @@ class Ship(pg.sprite.Sprite):
         if self.current_fuel < 0:
             self.current_fuel = 0
             self.fuel_usage_rate = 0
-            self.y_vel = -1
+            self.y_velocity = -1
 
     def draw(self, window):
         pass
 
     def shoot(self, blaster):
-        print(blaster.name)
-        now = pg.time.get_ticks()
-        if now - self.prev_laser_time > blaster.fire_rate and blaster.canShoot:
-            self.prev_laser_time = pg.time.get_ticks()
-            laser = Laser(self.game, self.rect.x + blaster.x,
-                          self.rect.y + blaster.y, self.laser_img, colormask=LIGHT_BLUE)
-            laser.velocity -= self.y_vel
-            self.lasers.append(laser)
-            self.game.all_sprites.add(laser)
+        blaster.fire(self.game)
 
     def deploy(self, podbay):
-        pass
+        podbay.fire(self.game)
 
     def release(self, bombay):
-        pass
+        bombay.drop
 
     def death(self):
         self.outcome = "loser"
         self.kill()
-

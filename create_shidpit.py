@@ -2,13 +2,14 @@
 from dataclasses import dataclass
 from settings import *
 from blaster import Blaster
+from missle_pod import MisslePod
+from bomb_bay import BombBay
 import pygame as pg
 import praw
 
 submission_list = ["pt7pca", "ptgmem", "ptk8gf", "psf4kh",
                    "pruf23", "prsn97", "prizqk", "pqpq93", "pqqlqh",
                    "pq6fff", "ppz69h", "pok3ti", "povobm", "pnsoe2"]
-
 
 alpha_name_list = ["Fast", "Quick", "Smooth", "Quiet", "Blitz", "Speedy", "Lonely", "Crusty", "Screaming", "Delta"]
 beta_name_list = ["Spotless", "Clean", "Bumpy", "Dirty", "Filthy", "Blue", "Brown", "Quartz", "Jade", "Angel"]
@@ -33,6 +34,8 @@ class Shidpit:
     img: pg.Surface((128, 128))
     weapons_dict: {}
     switch_dict: {}
+    ship_properties = {}
+    ship_coords = (0, 0)
     max_hull_points: int
     max_shield_points: int
 
@@ -44,6 +47,12 @@ class Shidpit:
         self.gamma_name = "gamma" + sub_id
         self.sub_id = sub_id
         self.weapons_dict = {}
+        self.ship_properties = {
+            "position": (0, 0),
+            "y velocity": -3,
+
+        }
+        self.ship_coords = (random.randint(0, DISPLAY_WIDTH), random.randint(0, DISPLAY_HEIGHT))
         self.img = pg.Surface((128, 128))
         if self.from_reddit:
             self.generate_reddit_shidpit()
@@ -93,7 +102,7 @@ class Shidpit:
                     self.nose_num = c
                 x += 1
         for i in range(3):
-            blaster = self.add_lasbat_blaster(((i+3)*8, 12), name="blaster"+str(i+1))
+            blaster = self.add_lasbat_blaster(((i + 3) * 8, 12), name="blaster" + str(i + 1))
             self.weapons_dict[blaster.name] = blaster
         nose_image = pg.image.load(os.path.join("assets/ship_parts", "nose" + str(self.nose_num) + ".png"))
         self.img.blit(nose_image, (0, 0))
@@ -111,7 +120,7 @@ class Shidpit:
                 x += 1
             self.max_hull_points = submission.score
             self.max_shield_points = submission.score * submission.upvote_ratio
-            bay = self.add_bomb_bay((32, 64), name="bay"+str(1))
+            bay = self.add_bomb_bay((32, 64), name="bay" + str(1))
             self.weapons_dict[bay["Name"]] = bay
 
         body_image = pg.image.load(os.path.join("assets/ship_parts", "body" + str(self.body_num) + ".png"))
@@ -127,8 +136,8 @@ class Shidpit:
                     self.beta_name = beta_name_list[c]
                 x += 1
         for i in range(2):
-            pod = self.add_missle_pod((14+(i*36), 48), name="pod"+str(i+1))
-            self.weapons_dict[pod["Name"]] = pod
+            pod = self.add_missle_pod((14 + (i * 36), 48), name="pod" + str(i + 1))
+            self.weapons_dict[pod.name] = pod
         wings_image = pg.image.load(os.path.join("assets/ship_parts", "wings" + str(self.wings_num) + ".png"))
         self.img.blit(wings_image, (0, 0))
 
@@ -153,22 +162,25 @@ class Shidpit:
             "Power": power,
             "Fire Rate": fire_rate
         }
-        lasbat_blaster = Blaster(pos, pg.Surface((10, 10)), max_charge, power, fire_rate)
+        lasbat_blaster = Blaster(self, pos, pg.Surface((10, 10)), max_charge, power, fire_rate)
         lasbat_blaster.name = name
         self.weapons_dict[lasbat_stats_dict["Name"]] = lasbat_blaster
         return lasbat_blaster
 
     def add_missle_pod(self, pos, name="pod",
-                       max_num_missles=random.randint(45, 90), missle_power=random.randint(26, 38)):
+                       max_num_missles=random.randint(45, 90), power=random.randint(26, 38),
+                       fire_rate=random.randint(150, 320)):
         missle_stats_dict = {
             "Position": pos,
             "Name": name,
-            "Max Number Missles": max_num_missles,
-            "Current Missles": max_num_missles,
-            "Missle Power": missle_power
+            "Max Missles": max_num_missles,
+            "Power": power,
+            "Fire Rate": fire_rate
         }
-        self.weapons_dict[missle_stats_dict["Name"]] = missle_stats_dict
-        return missle_stats_dict
+        missle_pod = MisslePod(self, pos, pg.Surface((10, 10)), max_num_missles, power, fire_rate)
+        missle_pod.name = name
+        self.weapons_dict[missle_stats_dict["Name"]] = missle_pod
+        return missle_pod
 
     def add_bomb_bay(self, pos, name="bay", max_num_bombs=random.randint(3, 8), bomb_power=random.randint(78, 89)):
         bomb_stats_dict = {

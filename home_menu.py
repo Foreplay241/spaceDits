@@ -241,7 +241,7 @@ class HomeMenu(Menu):
             pg.image.save(self.enemy_redilot.medal_img, 'assets/pilots/' + self.enemy_redilot.name + '.png')
             print("======== Saved Redilots ========")
         except:
-            print("Sorry, couldn't load redilots.")
+            print("Sorry, couldn't save redilots.")
 
     def save_shidpits(self):
         try:
@@ -253,7 +253,7 @@ class HomeMenu(Menu):
             pg.image.save(self.enemy_ship.img, 'assets/ships/' + self.enemy_ship.name + '.png')
             print("======== Saved Shidpits ========")
         except:
-            print("Sorry, couldn't load shidpits.")
+            print("Sorry, couldn't save shidpits.")
 
     def load_redilots(self):
         try:

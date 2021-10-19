@@ -2,11 +2,10 @@ from settings import *
 
 
 class Laser(pg.sprite.Sprite):
-    def __init__(self, game, x, y, img, colormask=LIME):
+    def __init__(self, game, pos, img, colormask=LIME):
         super(Laser, self).__init__()
         self.game = game
-        self.x = x
-        self.y = y
+        self.x, self.y = pos
         self.image = img
         self.image = pg.transform.scale(self.image, (self.image.get_width() // 2, self.image.get_height() // 2))
         self.colorImage = pg.Surface(self.image.get_size()).convert_alpha()
@@ -15,7 +14,7 @@ class Laser(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect = self.image.get_rect()
         self.mask = pg.mask.from_surface(self.image)
-        self.velocity = 7
+        self.velocity = 0
         self.is_player = False
         self.is_AI = False
         self.power_level = 0
@@ -27,7 +26,7 @@ class Laser(pg.sprite.Sprite):
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
-        self.y -= self.velocity
+        self.y += self.velocity
 
     def detonate(self, _target):
         if _target.shield_points > 0:
