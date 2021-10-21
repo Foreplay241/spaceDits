@@ -22,6 +22,11 @@ class Blaster(pg.sprite.Sprite):
         self.lasers = []
         self.prev_shot_time = 0
         self.laser_velocity = -7
+        self.blaster_stats = {
+            "damage": power,
+            "fire rate": fire_rate,
+            "max charge": maxCharge
+        }
 
     def fire(self, game):
         now = pg.time.get_ticks()

@@ -12,19 +12,19 @@ class PauseMenu(Menu):
         self.dead_menu_label = Text("Dead menu for spaceDits",
                                     (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 3 // 22), DARK_SLATE_BLUE)
         self.all_buttons = []
-        self.return_to_game_button = TextButton(DISPLAY_CENTER, "blank", text="Return to Game", textcolor=LIGHT_PINK,
+        self.return_to_game_button = TextButton(0, DISPLAY_CENTER, "blank", text="Return to Game", textcolor=LIGHT_PINK,
                                                 optiontype="Game", optioncolor=RANDOM_GREEN,
                                                 fontsize=16, col=1, max_col=2, row=16, max_row=22)
 
-        self.text_edit_button = TextButton(DISPLAY_CENTER, "blank", text="Change my Text", textcolor=LIGHT_PINK,
+        self.text_edit_button = TextButton(1, DISPLAY_CENTER, "blank", text="Change my Text", textcolor=LIGHT_PINK,
                                            optiontype="False", optioncolor=RANDOM_GREEN,
                                            fontsize=16, col=1, max_col=2, row=13, max_row=22)
 
-        self.text_edit_button_2 = TextButton(DISPLAY_CENTER, "blank", text="Change my Text 2", textcolor=LIGHT_PINK,
+        self.text_edit_button_2 = TextButton(2, DISPLAY_CENTER, "blank", text="Change my Text 2", textcolor=LIGHT_PINK,
                                              optiontype="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=14, max_row=22, canEdit=True)
 
-        self.text_edit_button_3 = TextButton(DISPLAY_CENTER, "blank", text="Change my Text 3", textcolor=LIGHT_PINK,
+        self.text_edit_button_3 = TextButton(3, DISPLAY_CENTER, "blank", text="Change my Text 3", textcolor=LIGHT_PINK,
                                              optiontype="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=15, max_row=22, canEdit=True)
         self.paused_player = None

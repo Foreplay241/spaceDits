@@ -31,7 +31,8 @@ class Shidpit:
     body_num: int
     wings_num: int
     engine_num: int
-    img: pg.Surface((128, 128))
+    ship_img: pg.Surface((128, 128))
+    info_img: pg.Surface((128, 128))
     weapons_dict: {}
     switch_dict: {}
     ship_properties = {}
@@ -41,19 +42,23 @@ class Shidpit:
 
     def __init__(self, sub_id="pry1bu", from_reddit=False):
         self.from_reddit = from_reddit
-        self.name = "name" + sub_id
-        self.alpha_name = "alpha" + sub_id
-        self.beta_name = "beta" + sub_id
-        self.gamma_name = "gamma" + sub_id
+        self.name = sub_id
+        self.submission = None
+        self.alpha_name = "alpha" + sub_id[:2]
+        self.beta_name = "beta" + sub_id[:4]
+        self.gamma_name = "gamma" + sub_id[:6]
         self.sub_id = sub_id
         self.weapons_dict = {}
+        self.ship_coords = (random.randint(0, DISPLAY_WIDTH), random.randint(0, DISPLAY_HEIGHT))
         self.ship_properties = {
-            "position": (0, 0),
+            "position": self.ship_coords,
             "y velocity": -3,
 
         }
-        self.ship_coords = (random.randint(0, DISPLAY_WIDTH), random.randint(0, DISPLAY_HEIGHT))
-        self.img = pg.Surface((128, 128))
+        self.ship_img = pg.Surface((128, 128))
+        self.info_img = pg.Surface((128, 128))
+        self.ship_img.fill(DARK_BLUE)
+        self.info_img.fill(LIGHT_BLUE)
         if self.from_reddit:
             self.generate_reddit_shidpit()
         else:
@@ -85,8 +90,8 @@ class Shidpit:
                     x += 1
         return total_score // x
 
-    def print_ship_stats(self):
-        print((self.name + ' == ' + self.sub_id))
+    # def print_ship_stats(self):
+    #     print((self.name + ' == ' + self.sub_id))
         # for key in self.switch_dict:
         #     if len(key) == 1:
         #         print(key + ":  " + str(self.switch_dict[key]))
@@ -95,17 +100,25 @@ class Shidpit:
 
     def add_nose_ship_part(self, submission=None):
         self.nose_num = random.randint(0, 9)
+        firePower = random.randint(15, 222)
+        fireRate = self.upvote_ratio * 100
+        maxCharge = random.randint(50, 1245)
         if submission:
             x = 0
+            firePower = submission.num_comments
+            fireRate = submission.upvote_ratio*100
+            maxCharge = submission.score
             for c in map(int, str(int(submission.created_utc))):
                 if x == 6:
                     self.nose_num = c
                 x += 1
         for i in range(3):
-            blaster = self.add_lasbat_blaster(((i + 3) * 8, 12), name="blaster" + str(i + 1))
+            blaster = self.add_lasbat_blaster(((i + 3) * 8, 12), name="blaster" + str(i + 1),
+                                              max_charge=maxCharge, fire_rate=fireRate,
+                                              fire_power=firePower)
             self.weapons_dict[blaster.name] = blaster
         nose_image = pg.image.load(os.path.join("assets/ship_parts", "nose" + str(self.nose_num) + ".png"))
-        self.img.blit(nose_image, (0, 0))
+        self.ship_img.blit(nose_image, (0, 0))
 
     def add_body_ship_part(self, submission=None):
         self.body_num = random.randint(0, 9)
@@ -118,13 +131,12 @@ class Shidpit:
                     self.body_num = c
                     self.alpha_name = alpha_name_list[c]
                 x += 1
-            self.max_hull_points = submission.score
+            self.max_hull_points = submission.score + (submission.score * submission.upvote_ratio)
             self.max_shield_points = submission.score * submission.upvote_ratio
             bay = self.add_bomb_bay((32, 64), name="bay" + str(1))
             self.weapons_dict[bay["Name"]] = bay
-
         body_image = pg.image.load(os.path.join("assets/ship_parts", "body" + str(self.body_num) + ".png"))
-        self.img.blit(body_image, (0, 0))
+        self.ship_img.blit(body_image, (0, 0))
 
     def add_wings_ship_part(self, submission=None):
         self.wings_num = random.randint(0, 9)
@@ -139,7 +151,7 @@ class Shidpit:
             pod = self.add_missle_pod((14 + (i * 36), 48), name="pod" + str(i + 1))
             self.weapons_dict[pod.name] = pod
         wings_image = pg.image.load(os.path.join("assets/ship_parts", "wings" + str(self.wings_num) + ".png"))
-        self.img.blit(wings_image, (0, 0))
+        self.ship_img.blit(wings_image, (0, 0))
 
     def add_engine_ship_part(self, submission=None):
         self.engine_num = random.randint(0, 9)
@@ -151,18 +163,19 @@ class Shidpit:
                     self.gamma_name = gamma_name_list[c]
                 x += 1
         engine_image = pg.image.load(os.path.join("assets/ship_parts", "engine" + str(self.engine_num) + ".png"))
-        self.img.blit(engine_image, (0, 0))
+        self.ship_img.blit(engine_image, (0, 0))
 
-    def add_lasbat_blaster(self, pos, name="blaster", max_charge=random.randint(45, 90), power=random.randint(15, 22),
+    def add_lasbat_blaster(self, pos, name="blaster", max_charge=random.randint(45, 90),
+                           fire_power=random.randint(15, 22),
                            fire_rate=random.randint(150, 320)):
         lasbat_stats_dict = {
             "Position": pos,
             "Name": name,
             "Max Charge": max_charge,
-            "Power": power,
+            "Power": fire_power,
             "Fire Rate": fire_rate
         }
-        lasbat_blaster = Blaster(self, pos, pg.Surface((10, 10)), max_charge, power, fire_rate)
+        lasbat_blaster = Blaster(self, pos, pg.Surface((10, 10)), max_charge, fire_power, fire_rate)
         lasbat_blaster.name = name
         self.weapons_dict[lasbat_stats_dict["Name"]] = lasbat_blaster
         return lasbat_blaster
@@ -201,27 +214,26 @@ class Shidpit:
             username="Camel_this_Chicken",
             password="1Fuckfuck!!"
         )
-        submission = reddit.submission(self.sub_id)
-        print(submission)
-        print(submission.shortlink)
-        self.upvote_ratio = roundpartial(submission.upvote_ratio, 0.02)
-        self.creation_date = int(submission.created_utc)
-        self.add_nose_ship_part(submission=submission)
-        self.add_body_ship_part(submission=submission)
-        self.add_engine_ship_part(submission=submission)
-        self.add_wings_ship_part(submission=submission)
+        self.submission = reddit.submission(self.sub_id)
+        print(self.submission.shortlink)
+        self.upvote_ratio = roundpartial(self.submission.upvote_ratio, 0.02)
+        self.creation_date = int(self.submission.created_utc)
+        self.add_nose_ship_part(submission=self.submission)
+        self.add_body_ship_part(submission=self.submission)
+        self.add_engine_ship_part(submission=self.submission)
+        self.add_wings_ship_part(submission=self.submission)
         self.switch_dict = {
-            "C": submission.clicked,
-            "E": submission.edited,
-            "I1": submission.is_original_content,
-            "I2": submission.is_self,
-            "L": submission.locked,
-            "O": submission.over_18,
-            "S1": submission.saved,
-            "S2": submission.spoiler,
-            "S3": submission.stickied
+            "C": self.submission.clicked,
+            "E": self.submission.edited,
+            "I1": self.submission.is_original_content,
+            "I2": self.submission.is_self,
+            "L": self.submission.locked,
+            "O": self.submission.over_18,
+            "S1": self.submission.saved,
+            "S2": self.submission.spoiler,
+            "S3": self.submission.stickied
         }
-        self.print_ship_stats()
+        # self.print_ship_stats()
         self.ship_rank = 1
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
         # self.fuel_usage = 2
@@ -247,7 +259,7 @@ class Shidpit:
             "S2": bool(random.getrandbits(1)),
             "S3": bool(random.getrandbits(1))
         }
-        self.print_ship_stats()
+        # self.print_ship_stats()
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
         # self.fuel_usage = 2
         # self.max_fuel = 100

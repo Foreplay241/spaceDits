@@ -17,7 +17,6 @@ class Menu(GameState):
             pg.quit()
         if event.type == pg.MOUSEMOTION:
             self.mouse_pos = pg.mouse.get_pos()
-            # print(self.mouse_pos)
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 pg.quit()

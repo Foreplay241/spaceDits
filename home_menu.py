@@ -16,38 +16,38 @@ class HomeMenu(Menu):
         self.shidpit_dict = {}
         self.home_menu_label = Text("Home Menu for spaceDits", (DISPLAY_WIDTH // 2, 64))
         # SETUP TEXT BUTTONS ON HOME MENU.
-        self.save_redilot_button = TextButton((0, 0), "blank", text="Redilots",
+        self.save_redilot_button = TextButton(0, (0, 0), "blank", text="Redilots",
                                               textcolor=VERY_LIGHT_GREY, optiontype="Save", optioncolor=MEDIUM_WOOD,
                                               col=1, max_col=3, row=4, max_row=22)
-        self.save_shidpit_button = TextButton((0, 0), "blank", text="Shidpits",
+        self.save_shidpit_button = TextButton(1, (0, 0), "blank", text="Shidpits",
                                               textcolor=VERY_LIGHT_GREY, optiontype="Save", optioncolor=MEDIUM_WOOD,
                                               col=2, max_col=3, row=4, max_row=22)
-        self.start_reddit_game_button = TextButton((0, 0), "blank", text="Start Game",
+        self.start_reddit_game_button = TextButton(2, (0, 0), "blank", text="Start Game",
                                                    textcolor=SEASHELL, optiontype="Reddit", optioncolor=MEDIUM_PURPLE,
                                                    col=2, max_col=3, row=17, max_row=22)
-        self.player_redilot_button = TextButton((0, 0), "blank", text="Player Redilot", canEdit=True,
+        self.player_redilot_button = TextButton(3, (0, 0), "blank", text="Player Redilot", canEdit=True,
                                                 textcolor=PAPAYA_WHIP, optiontype="Redilot",
                                                 optioncolor=RANDOM_BLUE, col=1, max_col=3, row=11, max_row=22)
-        self.enemy_redilot_button = TextButton((0, 0), "blank", text="Enemy Redilot", canEdit=True,
+        self.enemy_redilot_button = TextButton(4, (0, 0), "blank", text="Enemy Redilot", canEdit=True,
                                                textcolor=FLORAL_WHITE, optiontype="Redilot",
                                                optioncolor=RANDOM_RED, col=2, max_col=3, row=11, max_row=22)
-        self.player_shidpit_button = TextButton((0, 0), "blank", text="Player ship", canEdit=True,
+        self.player_shidpit_button = TextButton(5, (0, 0), "blank", text="Player ship", canEdit=True,
                                                 textcolor=PAPAYA_WHIP, optiontype="Shidpit",
                                                 optioncolor=RANDOM_BLUE, col=1, max_col=3, row=12, max_row=22)
-        self.enemy_shidpit_button = TextButton((0, 0), "blank", text="Enemy ship", canEdit=True,
+        self.enemy_shidpit_button = TextButton(6, (0, 0), "blank", text="Enemy ship", canEdit=True,
                                                textcolor=FLORAL_WHITE, optiontype="Shidpit",
                                                optioncolor=RANDOM_RED, col=2, max_col=3, row=12, max_row=22)
-        self.start_random_game_button = TextButton((0, 0), "blank", text="Start Game",
+        self.start_random_game_button = TextButton(7, (0, 0), "blank", text="Start Game",
                                                    textcolor=SEASHELL, optiontype="Random", optioncolor=RANDOM_GREEN,
                                                    col=1, max_col=3, row=17, max_row=22)
-        self.start_reddit_game_button = TextButton((0, 0), "blank", text="Start Game",
+        self.start_reddit_game_button = TextButton(8, (0, 0), "blank", text="Start Game",
                                                    textcolor=SEASHELL, optiontype="Reddit", optioncolor=MEDIUM_PURPLE,
                                                    col=2, max_col=3, row=17, max_row=22)
         # SETUP BUTTONS ON HOME MENU
-        self.player_redilot_preview = Button((0, 0), "click_here", col=1, max_col=3, row=8, max_row=22)
-        self.enemy_redilot_preview = Button((0, 0), "click_here", col=2, max_col=3, row=8, max_row=22)
-        self.player_shidpit_preview = Button((0, 0), "click_here", col=1, max_col=3, row=13, max_row=22)
-        self.enemy_shidpit_preview = Button((0, 0), "click_here", col=2, max_col=3, row=13, max_row=22)
+        self.player_redilot_preview = Button(0, (0, 0), "click_here", col=1, max_col=3, row=8, max_row=22)
+        self.enemy_redilot_preview = Button(1, (0, 0), "click_here", col=2, max_col=3, row=8, max_row=22)
+        self.player_shidpit_preview = Button(2, (0, 0), "click_here", col=1, max_col=3, row=13, max_row=22)
+        self.enemy_shidpit_preview = Button(3, (0, 0), "click_here", col=2, max_col=3, row=13, max_row=22)
 
         # PUT BUTTONS IN A LIST FOR EASY EXECUTION
         self.all_buttons = []

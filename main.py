@@ -1,5 +1,6 @@
 from settings import *
 from home_menu import HomeMenu
+from home_menu2 import HomeMenu2
 from dead_menu import DeadMenu
 from pause_menu import PauseMenu
 from game import Game
@@ -19,15 +20,16 @@ class App(object):
         self.screen = screen
         self.states = states
         self.prev_state = None
-        self.current_state = self.states["HOME_MENU"]
+        self.current_state = self.states["HOME_MENU2"]
         self.next_state = self.states["DEAD_MENU"]
         self.player_redditor = None
         self.enemy_redditor = None
         self.clock = pg.time.Clock()
         self.game = Game()
-        self.home_menu = HomeMenu()
-        self.pause_menu = PauseMenu()
-        self.dead_menu = DeadMenu()
+        # self.home_menu = HomeMenu()
+        # self.home_menu2 = HomeMenu2()
+        # self.pause_menu = PauseMenu()
+        # self.dead_menu = DeadMenu()
         self.current_state.startup({})
         self.running = True
 
@@ -86,6 +88,7 @@ if __name__ == '__main__':
     SCREEN = pg.display.set_mode(DISPLAY_SIZE)
     GAME_STATES = {
         "HOME_MENU": HomeMenu(),
+        "HOME_MENU2": HomeMenu2(),
         "DEAD_MENU": DeadMenu(),
         "PAUSE_MENU": PauseMenu(),
         "DOG_FIGHT": Game(),

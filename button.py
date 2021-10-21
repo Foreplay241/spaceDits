@@ -4,8 +4,9 @@ from settings import *
 
 class Button(pg.sprite.Sprite):
 
-    def __init__(self, pos, img, col=1, max_col=3, row=1, max_row=3):
+    def __init__(self, id_num, pos, img, col=1, max_col=3, row=1, max_row=3):
         super(Button, self).__init__()
+        self.id = id_num
         self.x, self.y = pos
         self.image = pg.image.load(f'assets/buttons/{img}.png').convert()
         self.rect = self.image.get_rect()

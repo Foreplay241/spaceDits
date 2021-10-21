@@ -4,9 +4,10 @@ from settings import *
 
 class TextButton(Button):
 
-    def __init__(self, pos, img, text="TEXT", textcolor=BLACK, optiontype=None, optioncolor=RANDOM_GREEN,
+    def __init__(self, id_num, pos, img, text="TEXT", textcolor=BLACK, optiontype=None, optioncolor=RANDOM_GREEN,
                  fontsize=16, col=1, max_col=3, row=1, max_row=3, canEdit=False, maxWidth=200):
-        super().__init__(pos, img)
+        super().__init__(id_num, pos, img)
+        self.id = id_num
         self.x, self.y = pos
         self.font_size = fontsize
         self.fontname = pg.font.match_font('ariel')
