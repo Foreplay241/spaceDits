@@ -6,7 +6,7 @@ import random
 
 
 class Blaster(pg.sprite.Sprite):
-    def __init__(self, shidpit, pos, img, maxCharge, power, fire_rate):
+    def __init__(self, shidpit, pos, img, maxCharge=0, power=0, fire_rate=0):
         super(Blaster, self).__init__()
         self.shidpit = shidpit
         self.x, self.y = pos

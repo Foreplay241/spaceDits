@@ -5,7 +5,7 @@ from missle import Missle
 
 
 class MisslePod(pg.sprite.Sprite):
-    def __init__(self, shidpit, pos, img, maxMissles, power, fire_rate):
+    def __init__(self, shidpit, pos, img, maxMissles=0, power=0, fire_rate=0):
         super(MisslePod, self).__init__()
         self.shidpit = shidpit
         self.x, self.y = pos

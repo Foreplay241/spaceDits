@@ -9,8 +9,8 @@ import os
 from text import Text
 
 redditor_name_list = ["Foreplay241", "Big-mac_sauce", "Camel-of_Chicken", "Camel_this_Chicken",
-                 "Camel_and_Chicken", "Camel_of_Chicken", "3MuchLikeLA", "ACC15ORD", "antianit",
-                 "bot_neen", "BlurrZ8", "coby----", "atobitt", "Gena1548"]
+                      "Camel_and_Chicken", "Camel_of_Chicken", "3MuchLikeLA", "ACC15ORD", "antianit",
+                      "bot_neen", "BlurrZ8", "coby----", "atobitt", "Gena1548"]
 
 MONTH_LIST = [
     "January",
@@ -27,6 +27,8 @@ MONTH_LIST = [
     "December"
 ]
 
+ZODIAC_LIST = ["Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
+               "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"]
 ZODIAC_DICT = {
     "Aquarius": ["Shield", "Extra Shields.", "Air", "Garnet", (1, 20), (2, 18)],
     "Pisces": ["Shield", "Jet stream.", "Water", "Amethyst", (2, 19), (3, 20)],
@@ -50,12 +52,10 @@ class Redilot:
     cake_day: int
     constellation: str
     pilot_rank: int
-    square_num: int
-    triangle_num: int
-    circle_num: int
-    lines_num: int
-    max_hull_points: int
-    max_shield_points: int
+    square_dict: {}
+    triangle_dict: {}
+    circle_dict: {}
+    lines_dict: {}
     medal_img: pg.Surface((128, 128))
     info_img: pg.Surface((128, 128))
 
@@ -68,35 +68,23 @@ class Redilot:
         self.medal_img = pg.Surface((128, 128))
         self.info_img = pg.Surface((128, 128))
         self.set_constellation()
+        self.square_dict = {}
+        self.triangle_dict = {}
+        self.circle_dict = {}
+        self.lines_dict = {}
+
         if self.from_reddit:
             self.generate_from_reddit()
         else:
             self.generate_from_random()
         self.statistics = {
-            "power": 0,
-            "fire rate": 0,
-            "maxCharge": 0,
-            "hull points": 0,
-            "shield points": 0,
+            "Name": self.name,
+            "Cake Day": self.cake_day,
+            "Square Dictionary": self.square_dict,
+            "Triangle Dictionary": self.triangle_dict,
+            "Circle Dictionary": self.circle_dict,
+            "Lines Dictionary": self.lines_dict,
         }
-
-    def set_hull_points(self, redditor=None):
-        self.max_hull_points = random.randint(42, 69)
-        if redditor:
-            x = 0
-            self.max_hull_points = 0
-            for c in map(int, str(int(redditor.created_utc))):
-                self.max_hull_points += c
-                x += 1
-
-    def set_shield_points(self, redditor=None):
-        self.max_shield_points = random.randint(42, 69)
-        if redditor:
-            x = 0
-            self.max_shield_points = 0
-            for c in map(int, str(int(redditor.created_utc))):
-                self.max_hull_points += c
-                x += 1
 
     def set_constellation(self, redditor=None):
         print("Name: " + str(self.name))
@@ -117,49 +105,98 @@ class Redilot:
         self.constellation = chosen_constellation
 
     def add_square_part(self, redditor=None):
-        self.square_num = random.randint(0, 9)
-        firePower = self.get_average_top_comment_score(num_of_posts=10)
-        fireRate = 0
-        maxCharge = self.get_sum_top_comment_score(num_of_comments=3)
+        img_num = random.randint(0, 9)
+        max_hull_points = random.randint(600, 1009)
+        max_shield_points = random.randint(721, 1396)
+        max_bombs = random.randint(0, 9)
         if redditor:
             x = 0
-            for c in map(int, str(int(redditor.created_utc))):
+            for c in map(int, str(self.cake_day)):
+                if x == 1:
+                    max_bombs += c
+                if x == 3:
+                    max_shield_points += redditor.comment_karma * c
+                if x == 6:
+                    max_hull_points += redditor.link_karma * c
                 if x == 9:
-                    self.square_num = c
+                    img_num = c
                 x += 1
+        self.square_dict["image number"] = img_num
+        self.square_dict["health"] = max_hull_points
+        self.square_dict["shield"] = max_shield_points
+        self.square_dict["max bombs"] = max_bombs
 
     def add_triangle_part(self, redditor=None):
-        self.triangle_num = random.randint(0, 9)
+        img_num = random.randint(0, 9)
+        firePower = random.randint(39, 129)
+        fireRate = random.randint(230, 741)
+        maxCharge = random.randint(60, 99)
         if redditor:
             x = 0
-            for c in map(int, str(int(redditor.created_utc))):
+            for c in map(int, str(self.cake_day)):
+                if x == 1:
+                    fireRate += c
+                if x == 2:
+                    maxCharge += self.get_sum_top_comment_score(num_of_comments=3) * c
+                if x == 4:
+                    firePower += self.get_average_top_comment_score(num_of_comments=10) + c
                 if x == 8:
-                    self.triangle_num = c
+                    img_num = c
                 x += 1
+        self.triangle_dict["image number"] = img_num
+        self.triangle_dict["fire power"] = firePower
+        self.triangle_dict["fire rate"] = fireRate
+        self.triangle_dict["max charge"] = maxCharge
 
     def add_circle_part(self, redditor=None):
-        self.circle_num = random.randint(0, 9)
+        img_num = random.randint(0, 9)
+        min_y_velocity = random.randint(-4, -1)
+        max_y_velocity = random.randint(-9, -6)
+        zodiac_sign = ZODIAC_DICT[self.constellation]
         if redditor:
             x = 0
-            for c in map(int, str(int(redditor.created_utc))):
+            for c in map(int, str(self.cake_day)):
+                if x == 0:
+                    min_y_velocity = -c
+                if x == 1 and not (c == 1 or c == 0):
+                    max_y_velocity = -c
+                if x == 4:
+                    zodiac_sign = ZODIAC_DICT[self.constellation]
                 if x == 7:
-                    self.circle_num = c
+                    img_num = c
                 x += 1
+        self.circle_dict["image number"] = img_num
+        self.circle_dict["min y velocity"] = min_y_velocity
+        self.circle_dict["max y velocity"] = max_y_velocity
+        self.circle_dict["zodiac sign"] = zodiac_sign
 
     def add_lines_part(self, redditor=None):
-        self.lines_num = random.randint(0, 9)
+        img_num = random.randint(0, 9)
+        min_x_velocity = random.randint(-4, -1)
+        max_x_velocity = random.randint(-9, -6)
+        max_missles = random.randint(6, 9)
         if redditor:
             x = 0
-            for c in map(int, str(int(redditor.created_utc))):
+            for c in map(int, str(self.cake_day)):
+                if x == 0:
+                    min_x_velocity = -c
+                if x == 3 and not (c == min_x_velocity or c == 0):
+                    max_x_velocity = -c
+                if x == 5:
+                    max_missles = c * (4 + c)
                 if x == 6:
-                    self.lines_num = c
+                    img_num = c
                 x += 1
+        self.lines_dict["image number"] = img_num
+        self.lines_dict["min x velocity"] = min_x_velocity
+        self.lines_dict["max x velocity"] = max_x_velocity
+        self.lines_dict["max missles"] = max_missles
 
     def generate_info_image(self, redditor=None):
         info_img = pg.Surface((128, 128))
         name_label = Text(str(self.name), (0, 0), GREY50, 20)
-        score_label = Text(str(self.circle_num), (0, 22), GREY50, 20)
-        constellation_label = Text(str(self.triangle_num), (0, 22), GREY50, 20)
+        score_label = Text(str(self.circle_dict["image number"]), (0, 22), GREY50, 20)
+        constellation_label = Text(str(self.triangle_dict["image number"]), (0, 22), GREY50, 20)
         if redditor:
             name_label = Text(redditor.name, (0, 0), GREY50, 22)
             score_label = Text(str(redditor.comment_karma), (0, 22), GREY50, 22)
@@ -175,11 +212,14 @@ class Redilot:
     def generate_medal_image(self, redditor=None):
         # LAYERS THE LAYERS ON THE MEDAL IMAGE
         medal_img = pg.Surface((128, 128))
-        square_image = pg.image.load(os.path.join("assets/medallion_parts", "square" + str(self.square_num) + ".png"))
-        triangle_image = pg.image.load(os.path.join("assets/medallion_parts", "triangle"
-                                                    + str(self.triangle_num) + ".png"))
-        circle_image = pg.image.load(os.path.join("assets/medallion_parts", "circle" + str(self.circle_num) + ".png"))
-        lines_image = pg.image.load(os.path.join("assets/medallion_parts", "lines" + str(self.lines_num) + ".png"))
+        square_image = pg.image.load(os.path.join("assets/medallion_parts", "square" +
+                                                  str(self.square_dict["image number"]) + ".png"))
+        triangle_image = pg.image.load(os.path.join("assets/medallion_parts", "triangle" +
+                                                    str(self.triangle_dict["image number"]) + ".png"))
+        circle_image = pg.image.load(os.path.join("assets/medallion_parts", "circle" +
+                                                  str(self.circle_dict["image number"]) + ".png"))
+        lines_image = pg.image.load(os.path.join("assets/medallion_parts", "lines" +
+                                                 str(self.lines_dict["image number"]) + ".png"))
         parts_list = [square_image, triangle_image, circle_image, lines_image]
         for part in parts_list:
             medal_img.blit(part, (0, 0))
@@ -194,9 +234,8 @@ class Redilot:
             password="1Fuckfuck!!"
         )
         self.redditor = reddit.redditor(self.name)
-        self.cake_day = self.redditor.created_utc
-        self.set_hull_points(self.redditor)
-        self.set_shield_points(self.redditor)
+        self.cake_day = int(self.redditor.created_utc)
+        self.set_constellation(self.redditor)
         self.add_square_part(self.redditor)
         self.add_triangle_part(self.redditor)
         self.add_circle_part(self.redditor)
@@ -206,8 +245,6 @@ class Redilot:
 
     def generate_from_random(self):
         # GENERATE A REDILOT FROM RANDOM INPUT.
-        self.set_hull_points()
-        self.set_shield_points()
         self.add_square_part()
         self.add_triangle_part()
         self.add_circle_part()

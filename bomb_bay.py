@@ -3,7 +3,7 @@ from settings import *
 
 
 class BombBay(pg.sprite.Sprite):
-    def __init__(self, shidpit, pos, img, maxBombs, power, drop_rate):
+    def __init__(self, shidpit, pos, img, maxBombs=0, blast_radius=0, power=0, drop_rate=0):
         super(BombBay, self).__init__()
         self.shidpit = shidpit
         self.x, self.y = pos
