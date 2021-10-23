@@ -32,6 +32,8 @@ class Button(pg.sprite.Sprite):
 
     def draw(self, window):
         window.blit(self.image, self.rect)
+        if self.active:
+            pg.draw.rect(window, YELLOW, self.rect, 4)
 
     def draw_selection_outline(self):
         pg.draw.rect(self.image, GOLDENROD, self.rect)

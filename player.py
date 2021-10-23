@@ -11,7 +11,7 @@ class Player(Ship):
         self.target_HUD.scale_display_size((1, 1))
         # self.target_HUD.can_see_name = False
         # self.target_HUD.can_see_shield_points = False
-        self.image = shidpit.img
+        self.image = shidpit.ship_img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (64, 64))
         self.colorImage = pg.Surface(self.image.get_size()).convert_alpha()

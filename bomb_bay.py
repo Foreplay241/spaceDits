@@ -3,19 +3,21 @@ from settings import *
 
 
 class BombBay(pg.sprite.Sprite):
-    def __init__(self, shidpit, pos, img, maxBombs=0, blast_radius=0, power=0, drop_rate=0):
+    def __init__(self, shidpit, pos, img, maxBombs=0, power=0.0, drop_rate=0):
         super(BombBay, self).__init__()
         self.shidpit = shidpit
         self.x, self.y = pos
         self.image = img
         self.bomb_image = pg.image.load(os.path.join('assets', 'bomb.png'))
-        self.name = "Bay"
         self.is_player = False
+
         self.max_bombs = maxBombs
         self.current_charge = maxBombs
-        self.power = power
-        self.canShoot = True
+        self.power_hull = power
+        self.power_shield = power
         self.fire_rate = drop_rate
+
+        self.canShoot = True
         self.bombs = []
         self.prev_shot_time = 0
         self.bomb_velocity = -7

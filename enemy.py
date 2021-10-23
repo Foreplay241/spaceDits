@@ -5,7 +5,7 @@ class Enemy(Ship):
 
     def __init__(self, game, redilot, shidpit):
         super().__init__(game, redilot, shidpit)
-        self.image = shidpit.img
+        self.image = shidpit.ship_img
         self.image.set_colorkey(BLACK)
         self.image = pg.transform.scale(self.image, (64, 64))
         self.colorImage = pg.Surface(self.image.get_size()).convert_alpha()

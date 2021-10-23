@@ -92,13 +92,7 @@ if __name__ == '__main__':
         "DEAD_MENU": DeadMenu(),
         "PAUSE_MENU": PauseMenu(),
         "DOG_FIGHT": Game(),
+        "ALIEN_SWARM": Game2(),
         }
     app = App(SCREEN, GAME_STATES)
     app.run()
-    # hm = HomeMenu()
-    # dm = DeadMenu()
-    # hm.new()
-    # while g.running:
-    #     while g.playing:
-    #         g.new()
-    # dm.new()

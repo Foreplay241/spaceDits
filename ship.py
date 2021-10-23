@@ -3,14 +3,14 @@ from datetime import datetime
 
 from settings import *
 from laser import Laser
-from missle import Missle
+from missile import Missile
 
 
 class Ship(pg.sprite.Sprite):
     def __init__(self, game, redilot, shidpit):
         super().__init__()
         self.game = game
-        self.name = redilot.name + "_" + shidpit.sub_id
+        self.name = redilot.name + "_" + shidpit.submission_id
         self.pos = shidpit.ship_properties["position"]
         self.redilot = redilot
         self.shidpit = shidpit
@@ -36,21 +36,23 @@ class Ship(pg.sprite.Sprite):
         self.current_fuel = 100
 
         # WEAPON STUFF
-        self.weapons_dict = {}
+        self.weapons_dict = self.shidpit.weapons_dict
 
         self.laser = None
         self.laser_img = pg.image.load(os.path.join("assets", "laser.png"))
         self.lasers = []
-        self.laser_cool_down = 150
-        self.laser_power_hull = .05
-        self.laser_power_shield = .40
+        self.laser_fire_rate = 0
+        self.laser_power_hull = 1 - self.shidpit.upvote_ratio
+        self.laser_power_shield = self.shidpit.upvote_ratio
 
-        self.bullet = None
-        self.bullet_img = pg.image.load(os.path.join("assets", "bullet.png"))
-        self.bullets = []
-        self.bullet_cool_down = 200
-        self.bullet_power_hull = .35
-        self.bullet_power_shield = .02
+        self.missile = None
+        self.missile_img = pg.image.load(os.path.join("assets", "missile.png"))
+        self.missiles = []
+        self.missile_cool_down = 250
+        self.missile_power_hull = .65
+        self.missile_power_shield = .15
+        self.prev_laser_time = pg.time.get_ticks()
+        self.prev_missile_time = pg.time.get_ticks()
 
         self.bomb = None
         self.bomb_img = pg.image.load(os.path.join("assets", "bomb.png"))
@@ -58,15 +60,6 @@ class Ship(pg.sprite.Sprite):
         self.bomb_cool_down = 300
         self.bomb_power_hull = .90
         self.bomb_power_shield = .07
-
-        self.missle = None
-        self.missle_img = pg.image.load(os.path.join("assets", "missle.png"))
-        self.missles = []
-        self.missle_cool_down = 250
-        self.missle_power_hull = .65
-        self.missle_power_shield = .15
-        self.prev_laser_time = pg.time.get_ticks()
-        self.prev_missle_time = pg.time.get_ticks()
 
         self.can_shoot = True
         self.is_player = False

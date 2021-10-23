@@ -1,9 +1,9 @@
 from settings import *
 
 
-class Missle(pg.sprite.Sprite):
+class Missile(pg.sprite.Sprite):
     def __init__(self, game, pos, img, colormask=LIGHT_YELLOW):
-        super(Missle, self).__init__()
+        super(Missile, self).__init__()
         self.game = game
         self.x, self.y = pos
         self.image = img

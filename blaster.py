@@ -6,27 +6,26 @@ import random
 
 
 class Blaster(pg.sprite.Sprite):
-    def __init__(self, shidpit, pos, img, maxCharge=0, power=0, fire_rate=0):
+    def __init__(self, shidpit, pos, img, maxCharge=0, power=0.0, fire_rate=0):
         super(Blaster, self).__init__()
         self.shidpit = shidpit
         self.x, self.y = pos
         self.image = img
         self.laser_image = pg.image.load(os.path.join('assets', 'laser.png'))
-        self.name = "Blast"
         self.is_player = False
+
         self.max_charge = maxCharge
         self.current_charge = maxCharge
-        self.power = power
-        self.canShoot = True
+        self.charge_rate = maxCharge//3
+        self.power_hull = 1 - power
+        self.power_shield = power
         self.fire_rate = fire_rate
+
+        self.canShoot = True
+
         self.lasers = []
         self.prev_shot_time = 0
         self.laser_velocity = -7
-        self.blaster_stats = {
-            "damage": power,
-            "fire rate": fire_rate,
-            "max charge": maxCharge
-        }
 
     def fire(self, game):
         now = pg.time.get_ticks()
