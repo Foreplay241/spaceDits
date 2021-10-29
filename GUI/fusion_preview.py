@@ -18,9 +18,19 @@ class FusionPreview(Button):
         self.submission_id = id_num
 
     def set_img(self, newImg):
+        """
+        Sets the image for the preview.
+        :param newImg:
+        :return:
+        """
         self.img = newImg
 
     def set_info(self, newImg):
+        """
+        Sets the info image for the preview.
+        :param newImg:
+        :return:
+        """
         self.info = newImg
 
     def update_image(self, newImg):
