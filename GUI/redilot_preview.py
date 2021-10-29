@@ -1,6 +1,5 @@
-from button import Button
+from GUI.button import Button
 from settings import *
-from text import Text
 
 
 class RedilotPreview(Button):

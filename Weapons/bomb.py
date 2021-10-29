@@ -2,7 +2,7 @@ from settings import *
 
 
 class Bomb(pg.sprite.Sprite):
-    def __init__(self, game, pos, img, colormask=YELLOW):
+    def __init__(self, game, pos, img, colormask=DARK_GREEN):
         super(Bomb, self).__init__()
         self.game = game
         self.x, self.y = pos
@@ -13,7 +13,6 @@ class Bomb(pg.sprite.Sprite):
         self.image.blit(self.colorImage, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
         self.rect = self.image.get_rect()
         self.mask = pg.mask.from_surface(self.image)
-        self.velocity = -7
         self.is_player = False
         self.is_AI = False
         self.power_level = 0
@@ -24,7 +23,6 @@ class Bomb(pg.sprite.Sprite):
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
-        self.y += self.velocity
 
     def detonate(self, _target):
         if _target.shield_points > 0:

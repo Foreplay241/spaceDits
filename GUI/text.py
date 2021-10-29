@@ -11,10 +11,8 @@ class Text:
     bold = False
     underline = False
 
-    def __int__(self):
-        super().__init__()
-
     def __init__(self, text, pos, color=BLACK, size=36):
+        super().__init__()
         self.text = text
         self.pos = pos
         self.font_color = color

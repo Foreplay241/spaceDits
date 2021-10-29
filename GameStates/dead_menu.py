@@ -1,8 +1,7 @@
 from settings import *
-from menu import Menu
-from text import Text
-from button import Button
-from text_button import TextButton
+from GameStates.menu import Menu
+from GUI.text import Text
+from GUI.text_button import TextButton
 
 
 class DeadMenu(Menu):
@@ -14,11 +13,11 @@ class DeadMenu(Menu):
         self.enemy_label = Text("Enemy", (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 9 // 22), DARK_PURPLE)
         self.home_menu_button = TextButton(0, (0, DISPLAY_HEIGHT * 13 // 22), "blank",
                                            text="Home Menu", textcolor=LIGHT_GOLDENROD_YELLOW,
-                                           optioncolor=MEDIUM_PURPLE, optiontype="Menu",
+                                           optioncolor=MEDIUM_PURPLE, optiontext="Menu",
                                            col=1, max_col=2, row=22, max_row=24)
         self.retry_button = TextButton(1, (0, DISPLAY_HEIGHT * 14 // 22),
                                        "blank", text="Retry", textcolor=LIGHT_GOLDENROD_YELLOW,
-                                       optioncolor=GAINSBORO, optiontype="Game",
+                                       optioncolor=GAINSBORO, optiontext="Game",
                                        col=1, max_col=2, row=23, max_row=24)
 
     def startup(self, persistent):

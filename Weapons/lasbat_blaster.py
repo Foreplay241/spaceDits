@@ -1,5 +1,5 @@
 import pygame as pg
-from laser import Laser
+from Weapons.laser import Laser
 import os
 from settings import *
 import random
@@ -11,7 +11,9 @@ class Blaster(pg.sprite.Sprite):
         self.shidpit = shidpit
         self.x, self.y = pos
         self.image = img
-        self.laser_image = pg.image.load(os.path.join('assets', 'laser.png'))
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        assetsPath = os.path.join(sourceFileDir, "assets")
+        self.laser_image = pg.image.load(os.path.join(assetsPath, 'laser.png'))
         self.is_player = False
 
         self.max_charge = maxCharge

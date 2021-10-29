@@ -1,7 +1,7 @@
 import os
 from settings import *
 import pygame as pg
-from missile import Missile
+from Weapons.missile import Missile
 
 
 class MissilePod(pg.sprite.Sprite):
@@ -10,7 +10,9 @@ class MissilePod(pg.sprite.Sprite):
         self.shidpit = shidpit
         self.x, self.y = pos
         self.image = img
-        self.missile_image = pg.image.load(os.path.join('assets', 'missile.png'))
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        assetsPath = os.path.join(sourceFileDir, "assets")
+        self.missile_image = pg.image.load(os.path.join(assetsPath, 'missile.png'))
 
         self.is_player = False
 

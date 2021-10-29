@@ -1,5 +1,5 @@
 from settings import *
-from gamestate import GameState
+from GameStates.gamestate import GameState
 
 
 class Menu(GameState):

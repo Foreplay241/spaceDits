@@ -2,8 +2,6 @@ import os
 from datetime import datetime
 
 from settings import *
-from laser import Laser
-from missile import Missile
 
 
 class Ship(pg.sprite.Sprite):
@@ -37,25 +35,27 @@ class Ship(pg.sprite.Sprite):
 
         # WEAPON STUFF
         self.weapons_dict = self.shidpit.weapons_dict
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        weaponAssetsPath = os.path.join(sourceFileDir, "Weapons/assets")
 
         self.laser = None
-        self.laser_img = pg.image.load(os.path.join("assets", "laser.png"))
+        self.laser_img = pg.image.load(os.path.join(weaponAssetsPath, "laser.png"))
         self.lasers = []
         self.laser_fire_rate = 0
         self.laser_power_hull = 1 - self.shidpit.upvote_ratio
         self.laser_power_shield = self.shidpit.upvote_ratio
+        self.prev_laser_time = pg.time.get_ticks()
 
         self.missile = None
-        self.missile_img = pg.image.load(os.path.join("assets", "missile.png"))
+        self.missile_img = pg.image.load(os.path.join(weaponAssetsPath, "missile.png"))
         self.missiles = []
         self.missile_cool_down = 250
         self.missile_power_hull = .65
         self.missile_power_shield = .15
-        self.prev_laser_time = pg.time.get_ticks()
         self.prev_missile_time = pg.time.get_ticks()
 
         self.bomb = None
-        self.bomb_img = pg.image.load(os.path.join("assets", "bomb.png"))
+        self.bomb_img = pg.image.load(os.path.join(weaponAssetsPath, "bomb.png"))
         self.bombs = []
         self.bomb_cool_down = 300
         self.bomb_power_hull = .90
@@ -115,7 +115,7 @@ class Ship(pg.sprite.Sprite):
         podbay.fire(self.game)
 
     def release(self, bombay):
-        bombay.drop
+        bombay.drop(self.game)
 
     def death(self):
         self.outcome = "loser"

@@ -6,7 +6,7 @@ import random
 import praw
 import os
 
-from text import Text
+from GUI.text import Text
 
 redditor_name_list = ["Foreplay241", "Big-mac_sauce", "Camel-of_Chicken", "Camel_this_Chicken",
                       "Camel_and_Chicken", "Camel_of_Chicken", "3MuchLikeLA", "ACC15ORD", "antianit",
@@ -49,6 +49,7 @@ ZODIAC_DICT = {
 class Redilot:
     """A redilot is a redditor pilot for a shidpit from reddit."""
     name: str
+    redditor: None
     cake_day: int
     constellation: str
     pilot_rank: int
@@ -65,28 +66,20 @@ class Redilot:
         self.name = name
 
         self.square_num = random.randint(0, 9)
-        self.firePower = random.randint(15, 222)
-        self.fireRate = random.random() * 200
-        self.deployRate = random.randint(22, 133) * 23
-        self.dropRate = (random.random() + 5) * 241
-        self.maxCharge = random.randint(250, 415)
+        self.zodiac_sign = "Gemini"
+        self.pilot_rank = 1
 
         self.triangle_num = random.randint(0, 9)
-        self.chargeRate = random.randint(50, 132)
-        self.max_hull_points = random.randint(413, 1694)
-        self.max_shield_points = random.randint(643, 1294)
-        self.max_bombs = random.randint(0, 9)
+        self.max_hull_points = random.randint(1, 10)
+        self.max_shield_points = random.randint(1, 10)
 
         self.circle_num = random.randint(0, 9)
         self.min_x_velocity = random.randint(-9, -6)
-        self.max_x_velocity = random.randint(6, 9)
-        self.max_missiles = random.randint(0, 9)
+        self.max_x_velocity = -self.min_x_velocity
 
         self.lines_num = random.randint(0, 9)
         self.min_y_velocity = random.randint(-4, -2)
         self.max_y_velocity = random.randint(-10, -7)
-        self.zodiac_strength = random.randint(0, 9)
-        self.zodiac_sign = "Gemini"
 
         self.from_reddit = from_reddit
         self.pilot_rank = pilot_rank
@@ -97,34 +90,23 @@ class Redilot:
             self.generate_from_reddit()
 
         self.square_dict = {
-            "Square Number": self.square_num,
-            "Fire Power": self.firePower,
-            "Fire Rate": self.fireRate,
-            "Deploy Rate": self.deployRate,
-            "Drop Rate": self.dropRate,
-            "Max Charge": self.maxCharge
+            "Star Sign": self.constellation,
+            "Pilot Rank": self.pilot_rank
         }
 
         self.triangle_dict = {
-            "Triangle Number": self.triangle_num,
-            "Charge Rate": self.chargeRate,
-            "Max Hull Points": self.max_hull_points,
-            "Max shield Points": self.max_shield_points,
-            "Max Bombs": self.max_bombs,
+            "Hull Points": self.max_hull_points,
+            "Shield Points": self.max_shield_points,
         }
 
         self.circle_dict = {
-            "Circle Number": self.circle_num,
             "Min X Velocity": self.min_x_velocity,
             "Max X Velocity": self.max_x_velocity,
-            "Max Missiles": self.max_missiles,
         }
 
         self.lines_dict = {
-            "Lines Number": self.lines_num,
             "Min Y Velocity": self.min_y_velocity,
             "Max Y Velocity": self.max_y_velocity,
-            "Zodiac Strength": self.zodiac_strength,
         }
 
         self.statistics = {
@@ -159,11 +141,11 @@ class Redilot:
             x = 0
             for c in map(int, str(self.cake_day)):
                 if x == 1:
-                    self.max_bombs += c
+                    pass
                 if x == 3:
-                    self.max_shield_points += redditor.comment_karma * c
+                    self.max_shield_points = redditor.comment_karma * (c+1)
                 if x == 6:
-                    self.max_hull_points += redditor.link_karma * c
+                    self.max_hull_points = redditor.link_karma * (c+1)
                 if x == 9:
                     self.square_num = c
                 x += 1
@@ -173,11 +155,11 @@ class Redilot:
             x = 0
             for c in map(int, str(self.cake_day)):
                 if x == 1:
-                    self.fireRate += c
+                    pass
                 if x == 2:
-                    self.maxCharge += self.get_sum_top_comment_score(num_of_comments=3) * c
+                    pass
                 if x == 4:
-                    self.firePower += self.get_average_top_comment_score(num_of_comments=10) + c
+                    self.zodiac_sign = ZODIAC_DICT[self.constellation]
                 if x == 8:
                     self.triangle_num = c
                 x += 1
@@ -191,7 +173,7 @@ class Redilot:
                 if x == 1 and not (c == 1 or c == 0):
                     self.max_y_velocity = -c
                 if x == 4:
-                    self.zodiac_sign = ZODIAC_DICT[self.constellation]
+                    pass
                 if x == 7:
                     self.circle_num = c
                 x += 1
@@ -200,12 +182,11 @@ class Redilot:
         if redditor:
             x = 0
             for c in map(int, str(self.cake_day)):
-                if x == 0:
+                if x == 3 and c != 0:
                     self.min_x_velocity = -c
-                if x == 3 and not (c == self.min_x_velocity or c == 0):
-                    self.max_x_velocity = -c
+                    self.max_x_velocity = c
                 if x == 5:
-                    self.max_missiles = c * (4 + c)
+                    pass
                 if x == 6:
                     self.lines_num = c
                 x += 1
@@ -231,14 +212,13 @@ class Redilot:
         # LAYERS THE LAYERS ON THE MEDAL IMAGE
         medal_img = pg.Surface((128, 128))
         medal_img.set_colorkey(BLACK)
-        square_image = pg.image.load(os.path.join("assets/medallion_parts", "square" +
-                                                  str(self.square_num) + ".png"))
-        triangle_image = pg.image.load(os.path.join("assets/medallion_parts", "triangle" +
-                                                    str(self.triangle_num) + ".png"))
-        circle_image = pg.image.load(os.path.join("assets/medallion_parts", "circle" +
-                                                  str(self.circle_num) + ".png"))
-        lines_image = pg.image.load(os.path.join("assets/medallion_parts", "lines" +
-                                                 str(self.lines_num) + ".png"))
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        redditFusionAssetsPath = os.path.join(sourceFileDir, "assets")
+        medallionPath = os.path.join(redditFusionAssetsPath, "medallion_parts")
+        square_image = pg.image.load(os.path.join(medallionPath, f"square{self.square_num}.png"))
+        triangle_image = pg.image.load(os.path.join(medallionPath, f"triangle{self.triangle_num}.png"))
+        circle_image = pg.image.load(os.path.join(medallionPath, f"circle{self.circle_num}.png"))
+        lines_image = pg.image.load(os.path.join(medallionPath, f"lines{self.lines_num}.png"))
         parts_list = [square_image, triangle_image, circle_image, lines_image]
         for part in parts_list:
             medal_img.blit(part, (0, 0))

@@ -274,6 +274,12 @@ ship_color_list = [RANDOM_COLOR, RANDOM_COLOR2, RANDOM_COLOR3,
 # BACKGROUND
 BG = pg.transform.scale(pg.image.load(os.path.join("assets", "background-black.png")), (DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
+# FILE PATH SETUP
+WEAPONS_ASSETS_PATH = os.path.join("Weapons/assets/")
+MEDALLION_ASSETS_PATH = os.path.join("RedditFusions/assets/medallion_parts")
+SQUARE_MEDAL_PATH = os.path.join(MEDALLION_ASSETS_PATH, "square")
+
+
 fontname = pg.font.match_font('ariel')
 
 

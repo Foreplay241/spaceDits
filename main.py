@@ -1,10 +1,12 @@
 from settings import *
-from home_menu import HomeMenu
-from home_menu2 import HomeMenu2
-from dead_menu import DeadMenu
-from pause_menu import PauseMenu
-from game import Game
-import praw
+from GameStates.home_menu import HomeMenu
+from GameStates.home_menu2 import HomeMenu2
+from GameStates.dead_menu import DeadMenu
+from GameStates.pause_menu import PauseMenu
+from GameStates.game_dog_fight import DogFight
+from GameStates.game_alien_swarm import AlienSwarm
+from GameStates.game_mine_astroiding import MineAstroiding
+from GameStates.game import Game
 
 """
 T1258O00393 confirmation number for Fidelity transfer 09/15/2021
@@ -20,7 +22,7 @@ class App(object):
         self.screen = screen
         self.states = states
         self.prev_state = None
-        self.current_state = self.states["HOME_MENU2"]
+        self.current_state = self.states["HOME_MENU"]
         self.next_state = self.states["DEAD_MENU"]
         self.player_redditor = None
         self.enemy_redditor = None
@@ -91,8 +93,9 @@ if __name__ == '__main__':
         "HOME_MENU2": HomeMenu2(),
         "DEAD_MENU": DeadMenu(),
         "PAUSE_MENU": PauseMenu(),
-        "DOG_FIGHT": Game(),
-        "ALIEN_SWARM": Game2(),
+        "DOG_FIGHT": DogFight(),
+        "ALIEN_SWARM": AlienSwarm(),
+        "MINE_ASTROIDING": MineAstroiding(),
         }
     app = App(SCREEN, GAME_STATES)
     app.run()

@@ -34,7 +34,7 @@ class Enemy(Ship):
     def draw(self, window):
         super().draw(window)
 
-    def shoot(self, blaster=None, chain_gun=None):
+    def shoot(self, blaster):
         # now = pg.time.get_ticks()
         # if now - self.prev_laser_time > self.laser_cool_down:
         #     self.prev_laser_time = pg.time.get_ticks()
@@ -48,14 +48,14 @@ class Enemy(Ship):
 
     def deploy(self, podbay=None, bombay=None):
         now = pg.time.get_ticks()
-        if now - self.prev_missle_time > self.missle_cool_down:
-            self.prev_missle_time = pg.time.get_ticks()
-            missle = Missle(self.game, self.rect.x + (self.image.get_width() / 2),
-                            self.rect.y + ((self.image.get_height() * 2) / 3), self.missle_img, colormask=ORANGE_RED)
-            missle.is_AI = True
-            self.missles.append(missle)
-            self.game.all_sprites.add(missle)
-            self.game.enemy_missles.add(missle)
+        if now - self.prev_missile_time > self.missile_cool_down:
+            self.prev_missile_time = pg.time.get_ticks()
+            missile = Missile(self.game, self.rect.x + (self.image.get_width() / 2),
+                              self.rect.y + ((self.image.get_height() * 2) / 3), self.missile_img, colormask=ORANGE_RED)
+            missile.is_AI = True
+            self.missiles.append(missile)
+            self.game.all_sprites.add(missile)
+            self.game.enemy_missles.add(missile)
 
     def death(self):
         super(Enemy, self).death()

@@ -1,5 +1,5 @@
 from ship import *
-from text import Text
+from GUI.text import Text
 
 
 class Player(Ship):
@@ -40,7 +40,7 @@ class Player(Ship):
         self.prev_target = self.target
         self.target = new_target
 
-    def shoot(self, blaster=None):
+    def shoot(self, blaster):
         super(Player, self).shoot(blaster)
 
     def deploy(self, podbay):

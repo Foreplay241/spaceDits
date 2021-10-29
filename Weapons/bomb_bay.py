@@ -1,4 +1,4 @@
-from bomb import Bomb
+from Weapons.bomb import Bomb
 from settings import *
 
 
@@ -8,7 +8,9 @@ class BombBay(pg.sprite.Sprite):
         self.shidpit = shidpit
         self.x, self.y = pos
         self.image = img
-        self.bomb_image = pg.image.load(os.path.join('assets', 'bomb.png'))
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        assetsPath = os.path.join(sourceFileDir, "assets")
+        self.bomb_image = pg.image.load(os.path.join(assetsPath, 'bomb.png'))
         self.is_player = False
 
         self.max_bombs = maxBombs

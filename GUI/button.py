@@ -1,3 +1,5 @@
+import os
+
 import pygame as pg
 from settings import *
 
@@ -8,7 +10,9 @@ class Button(pg.sprite.Sprite):
         super(Button, self).__init__()
         self.id = id_num
         self.x, self.y = pos
-        self.image = pg.image.load(f'assets/buttons/{img}.png').convert()
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        GUIAssetsPath = os.path.join(sourceFileDir, "assets")
+        self.image = pg.image.load(os.path.join(GUIAssetsPath, img + ".png")).convert()
         self.rect = self.image.get_rect()
         self.column = col
         self.row = row

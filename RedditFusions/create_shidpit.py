@@ -1,20 +1,20 @@
 # import random
 from dataclasses import dataclass
 from settings import *
-from blaster import Blaster
-from missile_pod import MissilePod
-from bomb_bay import BombBay
+from Weapons.lasbat_blaster import Blaster
+from Weapons.missile_pod import MissilePod
+from Weapons.bomb_bay import BombBay
 import pygame as pg
 import praw
 
-from text import Text
+from GUI.text import Text
 
 submission_list = ["pt7pca", "ptgmem", "ptk8gf", "psf4kh",
                    "pruf23", "prsn97", "prizqk", "pqpq93", "pqqlqh",
                    "pq6fff", "ppz69h", "pok3ti", "povobm", "pnsoe2"]
 
 alpha_name_list = ["Fast", "Quick", "Smooth", "Quiet", "Blitz", "Speedy", "Lonely", "Crusty", "Screaming", "Delta"]
-beta_name_list = ["Spotless", "Clean", "Bumpy", "Dirty", "Filthy", "Blue", "Brown", "Quartz", "Jade", "Angel"]
+beta_name_list = ["Spotless", "Clean", "Bumpy", "Dirty", "Smooth", "Blue", "Brown", "Quartz", "Jade", "Angel"]
 gamma_name_list = ["Eagle", "Crow", "Hawk", "Falcon", "Hummingbird", "Owl", "Tiger", "Panther", "Jaguar", "Demon"]
 
 
@@ -45,6 +45,7 @@ class Shidpit:
         self.from_reddit = from_reddit
         self.submission = None
         self.submission_id = sub_id
+        self.creation_date = 1433553253
 
         self.nose_part_num = random.randint(0, 9)
         self.firePower = random.randint(15, 222)
@@ -254,7 +255,7 @@ class Shidpit:
                                            power=self.firePower, fire_rate=self.fireRate)
         self.bomb_bay = BombBay(self, (32, 60), pg.Surface((10, 10)), maxBombs=self.max_bombs, drop_rate=self.fireRate)
         self.info_img = self.generate_info_img(self.submission)
-        self.ship_img = self.generate_ship_img(self.submission)
+        self.ship_img = self.generate_ship_img()
 
     def generate_info_img(self, submission=None):
         info_img = pg.Surface((128, 128))
@@ -269,18 +270,17 @@ class Shidpit:
             y += 1
         return info_img
 
-    def generate_ship_img(self, submission=None):
+    def generate_ship_img(self):
         # LAYERS THE LAYERS ON THE MEDAL IMAGE
         ship_img = pg.Surface((128, 128))
         ship_img.set_colorkey(BLACK)
-        nose_image = pg.image.load(os.path.join("assets/ship_parts", "nose" +
-                                                str(self.nose_part_num) + ".png"))
-        body_image = pg.image.load(os.path.join("assets/ship_parts", "body" +
-                                                str(self.body_part_num) + ".png"))
-        wings_image = pg.image.load(os.path.join("assets/ship_parts", "wings" +
-                                                 str(self.wings_part_num) + ".png"))
-        engine_image = pg.image.load(os.path.join("assets/ship_parts", "engine" +
-                                                  str(self.engine_part_num) + ".png"))
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        redditFusionAssetsPath = os.path.join(sourceFileDir, "assets")
+        shipPartPath = os.path.join(redditFusionAssetsPath, "ship_parts")
+        nose_image = pg.image.load(os.path.join(shipPartPath, f"nose{self.nose_part_num}.png"))
+        body_image = pg.image.load(os.path.join(shipPartPath, f"body{self.body_part_num}.png"))
+        wings_image = pg.image.load(os.path.join(shipPartPath, f"wings{self.wings_part_num}.png"))
+        engine_image = pg.image.load(os.path.join(shipPartPath, f"engine{self.engine_part_num}.png"))
         parts_list = [nose_image, body_image, wings_image, engine_image]
         for part in parts_list:
             ship_img.blit(part, (0, 0))
