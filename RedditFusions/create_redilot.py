@@ -120,7 +120,6 @@ class Redilot:
 
     def set_constellation(self, redditor=None):
         print("Name: " + str(self.name))
-        print("This is also a way to edit.")
         print("Cake Day: " + str(MONTH_LIST[time.gmtime(self.cake_day).tm_mon - 1])
               + " " + str(time.gmtime(self.cake_day).tm_mday)
               + " " + str(time.gmtime(self.cake_day).tm_year))
