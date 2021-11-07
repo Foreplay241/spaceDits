@@ -5,6 +5,8 @@ from settings import *
 
 
 class Ship(pg.sprite.Sprite):
+    name: str
+
     def __init__(self, game, redilot, shidpit):
         super().__init__()
         self.game = game
@@ -12,12 +14,12 @@ class Ship(pg.sprite.Sprite):
         self.pos = shidpit.ship_properties["position"]
         self.redilot = redilot
         self.shidpit = shidpit
-        self.min_x_velocity = -2
         self.x_velocity = 0
-        self.max_x_velocity = 2
-        self.min_y_velocity = -10
+        self.min_x_velocity = self.redilot.min_x_velocity
+        self.max_x_velocity = self.redilot.max_x_velocity
         self.y_velocity = -5
-        self.max_y_velocity = -1
+        self.min_y_velocity = self.redilot.min_y_velocity
+        self.max_y_velocity = self.redilot.max_y_velocity
         self.outcome = "undecided"
 
         # SHIP STATS
@@ -49,6 +51,7 @@ class Ship(pg.sprite.Sprite):
         self.missile = None
         self.missile_img = pg.image.load(os.path.join(weaponAssetsPath, "missile.png"))
         self.missiles = []
+        self.missiles_remaining = 22
         self.missile_cool_down = 250
         self.missile_power_hull = .65
         self.missile_power_shield = .15
@@ -57,6 +60,7 @@ class Ship(pg.sprite.Sprite):
         self.bomb = None
         self.bomb_img = pg.image.load(os.path.join(weaponAssetsPath, "bomb.png"))
         self.bombs = []
+        self.bombs_remaining = 2
         self.bomb_cool_down = 300
         self.bomb_power_hull = .90
         self.bomb_power_shield = .07
@@ -79,8 +83,7 @@ class Ship(pg.sprite.Sprite):
 
         self.rect.x += self.x_velocity
         self.rect.y += self.y_velocity
-        self.shidpit.ship_properties["position"] = (self.rect.x, self.rect.y)
-        self.shidpit.ship_properties["y velocity"] = self.y_velocity
+        self.shidpit.statistics["position"] = (self.rect.x, self.rect.y)
 
         # KEEP SHIP IN WINDOW
         if self.rect.y <= DISPLAY_TOP:

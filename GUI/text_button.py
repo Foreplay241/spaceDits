@@ -4,18 +4,40 @@ from settings import *
 
 class TextButton(Button):
 
-    def __init__(self, id_num, pos, img,
-                 text="TEXT", textcolor=BLACK,
+    def __init__(self, id_num, pos, BGimg, FGimg,
+                 text="TEXT", textcolor=BLACK, bgColor=SPACE_GREY,
                  optiontext=None, optioncolor=RANDOM_GREEN,
                  valuetext=None, valuecolor=FREE_SPEECH_GREEN,
                  fontsize=16, col=1, max_col=3, row=1, max_row=3, canEdit=False, maxWidth=200):
-        super().__init__(id_num, pos, img)
+        """
+
+        :param id_num: unique id number per button
+        :param pos: keeps track of position of button
+        :param img: image of the button
+        :param text: text on top of image of the button
+        :param textcolor: color of that text
+        :param optiontext: if button has an option text
+        :param optioncolor: the color of that text
+        :param valuetext: if the button has an option text, it probably has a value
+        :param valuecolor: the color of that text
+        :param fontsize: the size of the font of text
+        :param col: column position
+        :param max_col: max columns on the screen
+        :param row: row position
+        :param max_row: mac rows on the screen
+        :param canEdit: if the text is editable
+        :param maxWidth: width of the button
+        """
+        super().__init__(id_num, pos, BGimg, FGimg)
         self.id = id_num
         self.x, self.y = pos
         self.font_size = fontsize
         self.fontname = pg.font.match_font('ariel')
         self.text = text
         self.textcolor = textcolor
+        self.bgColor = bgColor
+        self.BGimage.fill(bgColor)
+        self.FGimage.fill(HOT_PINK)
         self.optioncolor = optioncolor
         self.optiontext = optiontext
         self.valuetext = valuetext
@@ -61,8 +83,9 @@ class TextButton(Button):
         self.txt_rect = self.txt_img.get_rect()
         self.opt_rect = self.opt_img.get_rect()
         self.val_rect = self.val_img.get_rect()
-        self.image = pg.transform.scale(self.image, (self.max_width, 22))
-        self.image.fill(BLACK)
+        self.image = pg.transform.scale(self.image, (self.max_width, 32))
+        self.BGimage = pg.transform.scale(self.BGimage, (self.max_width, 32))
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.image.blit(self.txt_img,
                         ((self.image.get_width() // 2) - (self.txt_rect.width // 2),
@@ -72,5 +95,5 @@ class TextButton(Button):
 
     def update_button_text(self, text):
         self.text = str(text)
-        self.image.fill(BLACK)
+        self.image.fill(self.bgColor)
         self.render()

@@ -22,26 +22,28 @@ class HomeMenu(Menu):
         self.all_buttons = []
         self.all_text_buttons = []
         self.choice_buttons = []
-
-        self.home_menu_label = Text("Home Menu for spaceDits", (DISPLAY_WIDTH // 2, 64))
         self.max_row = 22
 
-        self.player_redilot_name_button = TextButton(0, (0, 0), "blank", text="Foreplay241",
+        self.player_redilot_name_button = TextButton(0, (0, 0), "blank", "frame", text=random.choice(redditor_list),
                                                      textcolor=WHITE_SMOKE,
                                                      optiontext="Redditor", optioncolor=RANDOM_BLUE, fontsize=22,
                                                      col=1, max_col=2, row=2, max_row=self.max_row, canEdit=True,
                                                      maxWidth=420)
-        self.gather_player_redditor = TextButton(0, (0, 0), "blank", text="Gather Redditor Info", textcolor=WHITE_SMOKE,
+        self.gather_player_redditor = TextButton(0, (0, 0), "blank", "frame", text="Gather Redditor Info",
+                                                 textcolor=WHITE_SMOKE,
                                                  optiontext=None, fontsize=18,
                                                  col=1, max_col=2, row=3, max_row=self.max_row,
                                                  maxWidth=210)
-        self.player_redilot_preview = FusionPreview(0, (0, 0), "click_here",
+        self.player_redilot_preview = FusionPreview(0, (0, 0), "fusionBG", "fusionFG",
                                                     col=1, max_col=2, row=6, max_row=self.max_row)
-        self.choose_miner_ship_button = TextButton(0, (0, 0), "blank", text="Miner Ship", textcolor=ANTIQUE_WHITE,
+        self.choose_miner_ship_button = TextButton(0, (0, 0), "blank", "frame", text="Miner Ship",
+                                                   textcolor=ANTIQUE_WHITE,
                                                    col=1, max_col=4, row=20, max_row=self.max_row, maxWidth=110)
-        self.choose_fighter_ship_button = TextButton(0, (0, 0), "blank", text="Fighter Ship", textcolor=ANTIQUE_WHITE,
+        self.choose_fighter_ship_button = TextButton(0, (0, 0), "blank", "frame", text="Fighter Ship",
+                                                     textcolor=ANTIQUE_WHITE,
                                                      col=2, max_col=4, row=20, max_row=self.max_row, maxWidth=110)
-        self.choose_racing_ship_button = TextButton(0, (0, 0), "blank", text="Racing Ship", textcolor=ANTIQUE_WHITE,
+        self.choose_racing_ship_button = TextButton(0, (0, 0), "blank", "frame", text="Racer Ship",
+                                                    textcolor=ANTIQUE_WHITE,
                                                     col=3, max_col=4, row=20, max_row=self.max_row, maxWidth=110)
         self.all_buttons.append(self.choose_miner_ship_button)
         self.all_buttons.append(self.choose_fighter_ship_button)
@@ -90,7 +92,9 @@ class HomeMenu(Menu):
                     if self.player_redilot_name_button.text != "":
                         self.selected_redditor_name = self.player_redilot_name_button.text
                         self.player_redilot = Redilot(name=self.selected_redditor_name, from_reddit=True)
-                        self.player_redilot_preview.update_image(self.player_redilot.medal_img)
+                        self.player_redilot_preview.update_image(self.player_redilot.medal_img,
+                                                                 pg.Surface((0, 0)))
+                        self.player_redilot_preview.fusion = self.player_redilot
                         self.display_player_redilot_stats()
 
         if event.type == pg.KEYDOWN:
@@ -112,7 +116,8 @@ class HomeMenu(Menu):
             ab.update()
 
     def draw(self, screen):
-        screen.fill(MIDNIGHT_BLUE)
+        super(HomeMenu, self).draw(screen)
+        screen.blit(self.background_image, (self.BGx, 0))
         for ab in self.all_buttons:
             ab.draw(screen)
         pg.display.flip()
@@ -127,17 +132,17 @@ class HomeMenu(Menu):
         c = 1
         r = 11
         if self.player_redilot:
-            for key in self.player_redilot.statistics:
+            for key in self.player_redilot.save_data_dict:
                 if key.endswith("Dictionary"):
-                    dictbtn = TextButton(0, (0, 0), "blank", text=key.split(" ")[0], textcolor=GHOST_WHITE,
+                    dictbtn = TextButton(0, (0, 0), "blank", "frame", text=key.split(" ")[0], textcolor=GHOST_WHITE,
                                          col=c, max_col=5, row=11, max_row=self.max_row,
                                          maxWidth=120)
                     self.all_buttons.append(dictbtn)
                     self.all_text_buttons.append(dictbtn)
                     r2 = 1
-                    for key2 in self.player_redilot.statistics[key]:
-                        txtbtn = TextButton(0, (0, 0), "blank", text="",
-                                            valuetext=str(self.player_redilot.statistics[key][key2]),
+                    for key2 in self.player_redilot.save_data_dict[key]:
+                        txtbtn = TextButton(0, (0, 0), "blank", "frame", text="",
+                                            valuetext=str(self.player_redilot.save_data_dict[key][key2]),
                                             valuecolor=NAVAJO_WHITE,
                                             optiontext=key2, optioncolor=NAVAJO_WHITE,
                                             col=c, max_col=5, row=r + r2, max_row=self.max_row,

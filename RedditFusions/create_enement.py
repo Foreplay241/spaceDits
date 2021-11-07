@@ -1,13 +1,15 @@
 from dataclasses import dataclass
+
+from RedditFusions.create_fusion import Fusion
 from settings import *
 import pygame as pg
 import praw
 
 
 @dataclass
-class Enement:
+class Enement(Fusion):
     """
-    A subtroid is an asteroid created from a reddit submission
+    An enement is an enemy fused with a comment. It is an AI powered drone.
     """
     submission_id: str
     creation_date: int

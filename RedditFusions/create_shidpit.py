@@ -1,5 +1,7 @@
 # import random
 from dataclasses import dataclass
+
+from RedditFusions.create_fusion import Fusion
 from settings import *
 from Weapons.lasbat_blaster import Blaster
 from Weapons.missile_pod import MissilePod
@@ -19,19 +21,50 @@ gamma_name_list = ["Eagle", "Crow", "Hawk", "Falcon", "Hummingbird", "Owl", "Tig
 
 
 @dataclass
-class Shidpit:
+class Shidpit(Fusion):
     """A shidpit is a space ship from a reddit post, to be piloted by a redilot."""
     alpha_name: str
     beta_name: str
     gamma_name: str
     name: str
     submission_id: str
+
     creation_date: int
     upvote_ratio: float
+
+    ship_dict: {}
+
     nose_dict: {}
+    nose_part_num: int
+    firePower: int
+    fireRate: int
+    deployRate: int
+    dropRate: int
+    maxCharge: int
+
     body_dict: {}
+    body_part_num: int
+    chargeRate: int
+    max_hull_points: int
+    max_shield_points: int
+    max_bombs: int
+    alpha_num: int
+
     wings_dict: {}
+    wings_part_num: int
+    min_x_speed: int
+    max_x_speed: int
+    max_missiles: int
+    beta_num: int
+
     engine_dict: {}
+    engine_part_num: int
+    min_y_speed: int
+    max_y_speed: int
+    zodiac: str
+    zodiac_timer: int
+    gamma_num: int
+
     ship_img: pg.Surface((128, 128))
     info_img: pg.Surface((128, 128))
 
@@ -42,6 +75,7 @@ class Shidpit:
     ship_rank: int
 
     def __init__(self, sub_id="pry1bu", from_reddit=False):
+        super().__init__(sub_id)
         self.from_reddit = from_reddit
         self.submission = None
         self.submission_id = sub_id
@@ -49,10 +83,10 @@ class Shidpit:
 
         self.nose_part_num = random.randint(0, 9)
         self.firePower = random.randint(15, 222)
-        self.fireRate = random.random() * 200
+        self.fireRate = int(random.random()) * 200
         self.deployRate = random.randint(22, 133) * 23
-        self.dropRate = (random.random() + 5) * 241
-        self.maxCharge = random.randint(250, 415)
+        self.dropRate = (int(random.random()) + 5) * 241
+        self.max_charge = random.randint(250, 415)
 
         self.body_part_num = random.randint(0, 9)
         self.chargeRate = random.randint(50, 132)
@@ -60,21 +94,22 @@ class Shidpit:
         self.max_shield_points = random.randint(643, 1294)
         self.max_bombs = random.randint(0, 9)
         self.alpha_num = random.randint(0, 9)
-        self.alpha_name = "alpha-" + sub_id[1].upper()
+        self.alpha_name = sub_id[0:2].upper()
 
         self.wings_part_num = random.randint(0, 9)
         self.min_x_speed = random.randint(-9, -6)
         self.max_x_speed = random.randint(6, 9)
         self.max_missiles = random.randint(0, 9)
         self.beta_num = random.randint(0, 9)
-        self.beta_name = "beta-" + sub_id[2].upper()
+        self.beta_name = sub_id[2:4].upper()
 
         self.engine_part_num = random.randint(0, 9)
         self.min_y_speed = random.randint(-4, -2)
         self.max_y_speed = random.randint(-10, -7)
-        self.zodiac_strength = random.randint(0, 9)
+        self.zodiac = "Gemini"
+        self.zodiac_timer = random.randint(0, 9)
         self.gamma_num = random.randint(0, 9)
-        self.gamma_name = "gamma-" + sub_id[3].upper()
+        self.gamma_name = sub_id[4:6].upper()
 
         self.left_blaster = Blaster(self, (24, 12), pg.Surface((10, 10)))
         self.middle_blaster = Blaster(self, (32, 12), pg.Surface((10, 10)))
@@ -97,37 +132,31 @@ class Shidpit:
             self.generate_reddit_shidpit()
 
         self.nose_dict = {
-            "Nose part#": self.nose_part_num,
             "Fire Power": self.firePower,
+            "Charge Rate": self.chargeRate,
             "Fire Rate": self.fireRate,
-            "Deploy Rate": self.deployRate,
-            "Drop Rate": self.dropRate,
-            "Max Charge": self.maxCharge
+            "Max Charge": self.max_charge
         }
         self.body_dict = {
-            "Body part#": self.body_part_num,
-            "Charge Rate": self.chargeRate,
-            "Max Hull Points": self.max_hull_points,
-            "Max shield Points": self.max_shield_points,
+            "Hull Points": self.max_hull_points,
+            "Shield Points": self.max_shield_points,
+            "Drop Rate": self.dropRate,
             "Max Bombs": self.max_bombs,
-            "Alpha Number": self.alpha_num,
-            "Alpha Name": self.alpha_name,
+            "Alpha": self.alpha_name,
         }
         self.wings_dict = {
-            "Wings part#": self.wings_part_num,
             "Min X Speed": self.min_x_speed,
             "Max X Speed": self.max_x_speed,
+            "Deploy Rate": self.deployRate,
             "Max Missiles": self.max_missiles,
-            "Beta Number": self.beta_num,
-            "Beta Name": self.beta_name
+            "Beta": self.beta_name
         }
         self.engine_dict = {
-            "Engine part#": self.engine_part_num,
             "Min Y Speed": self.min_y_speed,
             "Max Y Speed": self.max_y_speed,
-            "Zodiac Strength": self.zodiac_strength,
-            "Gamma Number": self.gamma_num,
-            "Gamma Name": self.gamma_name,
+            "Zodirok": self.zodiac,
+            "Zodirok Timer": self.zodiac_timer,
+            "Gamma": self.gamma_name,
         }
 
         self.weapons_dict = {
@@ -153,11 +182,11 @@ class Shidpit:
             x = 0
             for c in map(int, str(int(submission.created_utc))):
                 if x == 1:
-                    self.maxCharge = submission.score * c
+                    self.max_charge = submission.score * c
                 if x == 2:
                     self.dropRate = c
                 if x == 3:
-                    self.fireRate = submission.upvote_ratio * 100 + (c * 22)
+                    self.fireRate = round(submission.upvote_ratio * 100 + (c * 22))
                 if x == 4:
                     self.chargeRate = random.randint(50, 132)
                 if x == 6:
@@ -171,9 +200,9 @@ class Shidpit:
             x = 0
             for c in map(int, str(int(submission.created_utc))):
                 if x == 2:
-                    self.max_hull_points = submission.score + (submission.score * self.upvote_ratio * c)
+                    self.max_hull_points = submission.score + round(submission.score * self.upvote_ratio * c)
                 if x == 5:
-                    self.max_shield_points = submission.score * (self.upvote_ratio * c)
+                    self.max_shield_points = submission.score * round(self.upvote_ratio * c)
                 if x == 7:
                     self.body_part_num = c
                 if x == 8:
@@ -207,7 +236,9 @@ class Shidpit:
                 if x == 4 and not (c == 1 or c == 0):
                     self.max_y_speed = -c
                 if x == 6:
-                    self.zodiac_strength = c + 11
+                    self.zodiac = "Gemini"
+                if x == 5:
+                    self.zodiac_timer = c + 22
                 if x == 7:
                     self.gamma_num = c
                 if x == 9:
@@ -243,11 +274,11 @@ class Shidpit:
         }
         self.ship_rank = 1
         self.name = self.alpha_name + " " + self.beta_name + "-" + self.gamma_name
-        self.left_blaster = Blaster(self, (24, 12), pg.Surface((10, 10)), maxCharge=self.maxCharge,
+        self.left_blaster = Blaster(self, (24, 12), pg.Surface((10, 10)), maxCharge=self.max_charge,
                                     power=self.firePower, fire_rate=self.fireRate)
-        self.middle_blaster = Blaster(self, (32, 12), pg.Surface((10, 10)), maxCharge=self.maxCharge,
+        self.middle_blaster = Blaster(self, (32, 12), pg.Surface((10, 10)), maxCharge=self.max_charge,
                                       power=self.firePower, fire_rate=self.fireRate)
-        self.right_blaster = Blaster(self, (40, 12), pg.Surface((10, 10)), maxCharge=self.maxCharge,
+        self.right_blaster = Blaster(self, (40, 12), pg.Surface((10, 10)), maxCharge=self.max_charge,
                                      power=self.firePower, fire_rate=self.fireRate)
         self.left_missle_pod = MissilePod(self, (14, 48), pg.Surface((10, 10)), maxMissiles=self.max_missiles,
                                           power=self.firePower, fire_rate=self.fireRate)

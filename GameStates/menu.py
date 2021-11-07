@@ -1,3 +1,5 @@
+import random
+
 from settings import *
 from GameStates.gamestate import GameState
 
@@ -6,6 +8,15 @@ class Menu(GameState):
     def __init__(self):
         super().__init__()
         pg.init()
+        self.BGn = random.randint(0, 9)
+        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        gamestatesAssetsPath = os.path.join(sourceFileDir, "assets")
+        backgroundPath = os.path.join(gamestatesAssetsPath, "backgrounds")
+        self.background_image = pg.image.load(os.path.join(backgroundPath, f"MenuBG{self.BGn}.png"))
+        self.background_credit = pg.image.load(os.path.join(backgroundPath, "deep-foldcredit.png"))
+        self.BGx = random.randint(-241, 0)
+        self.background_image.blit(self.background_credit, (-self.BGx + random.randint(-15, 390),
+                                                            DISPLAY_HEIGHT - self.background_credit.get_height()))
         self.is_active = True
         self.mouse_pos = (0, 0)
 
@@ -27,8 +38,6 @@ class Menu(GameState):
         pass
 
     def draw(self, screen):
-        screen.fill(DARK_SALMON)
-        player_draw_text(screen, "Basic menu", DARK_BROWN, 36, DISPLAY_TOP_CENTER)
         pg.display.flip()
 
     def activate(self):

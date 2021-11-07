@@ -3,9 +3,9 @@ from GameStates.home_menu import HomeMenu
 from GameStates.home_menu2 import HomeMenu2
 from GameStates.dead_menu import DeadMenu
 from GameStates.pause_menu import PauseMenu
-from GameStates.game_dog_fight import DogFight
-from GameStates.game_alien_swarm import AlienSwarm
-from GameStates.game_mine_astroiding import MineAstroiding
+from GameStates.game_racing import Racing
+from GameStates.game_fighting import Fighting
+from GameStates.game_mining import Mining
 from GameStates.game import Game
 
 """
@@ -93,9 +93,9 @@ if __name__ == '__main__':
         "HOME_MENU2": HomeMenu2(),
         "DEAD_MENU": DeadMenu(),
         "PAUSE_MENU": PauseMenu(),
-        "DOG_FIGHT": DogFight(),
-        "ALIEN_SWARM": AlienSwarm(),
-        "MINE_ASTROIDING": MineAstroiding(),
+        "RACING": Racing(),
+        "FIGHTING": Fighting(),
+        "MINING": Mining(),
         }
     app = App(SCREEN, GAME_STATES)
     app.run()

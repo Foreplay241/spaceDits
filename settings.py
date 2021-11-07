@@ -54,8 +54,7 @@ submission_list = ["pt7pca", "ptgmem", "ptk8gf", "psf4kh",
                    "pq6fff", "ppz69h", "orgmx4", "ot4wde", "otfni1",
                    "orftl9", "owqd87", "owqfc0", "otm03o", "otgnxo"]
 
-redditor_list = ["Foreplay241", "Big-mac_sauce", "Camel-of_Chicken", "Camel_this_Chicken",
-                 "Camel_and_Chicken", "Camel_of_Chicken", "3MuchLikeLA", "ACC15ORD", "antianit",
+redditor_list = ["Foreplay241", "Big-mac_sauce", "3MuchLikeLA", "ACC15ORD", "Deep-Fold",
                  "bot_neen", "BlurrZ8", "coby----", "atobitt", "Gena1548"]
 
 # PRIMARY COLORS
@@ -71,6 +70,7 @@ DARK_BLUE = (47, 47, 79)
 
 # SHADES
 BLACK = (0, 0, 0)
+SPACE_GREY = (22, 22, 22, 69)
 DARK_GREY = (60, 60, 60)
 DARK_SLATE_GREY = (47, 79, 79)
 DIM_GREY = (105, 105, 105)

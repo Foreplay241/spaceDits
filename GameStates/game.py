@@ -7,6 +7,14 @@ import praw
 class Game(GameState):
     def __init__(self):
         super().__init__()
+        self.BGn = random.randint(0, 9)
+        self.sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+        self.gamestatesAssetsPath = os.path.join(self.sourceFileDir, "assets")
+        self.backgroundPath = os.path.join(self.gamestatesAssetsPath, "backgrounds")
+        self.background_image = pg.image.load(os.path.join(self.backgroundPath, f"FighterBG{self.BGn}.png"))
+        self.background_credit = pg.image.load(os.path.join(self.backgroundPath, "deep-foldcredit.png"))
+        self.BGx = random.randint(-241, 0)
+        self.background_image.blit(self.background_credit, (-self.BGx + random.randint(-15, 390), 0))
         self.running = False
         pg.init()
         pg.mixer.init()
@@ -100,8 +108,7 @@ class Game(GameState):
             self.done = True
 
     def draw(self, screen):
-        screen.fill(LIGHT_GREY)
-        screen.blit(BG, (0, 0))
+        screen.blit(self.background_image, (self.BGx, 0))
         self.all_sprites.draw(self.screen)
         for laser in self.player.lasers:
             laser.draw(self.screen)

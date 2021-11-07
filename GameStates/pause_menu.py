@@ -10,19 +10,23 @@ class PauseMenu(Menu):
         self.pause_menu_label = Text("Pause menu for spaceDits",
                                      (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 3 // 22), DARK_SLATE_BLUE)
         self.all_buttons = []
-        self.return_to_game_button = TextButton(0, DISPLAY_CENTER, "blank", text="Return to Game", textcolor=LIGHT_PINK,
+        self.return_to_game_button = TextButton(0, DISPLAY_CENTER, "blank", "frame",
+                                                text="Return to Game", textcolor=LIGHT_PINK,
                                                 optiontext="Game", optioncolor=RANDOM_GREEN,
                                                 fontsize=16, col=1, max_col=2, row=16, max_row=22)
 
-        self.text_edit_button = TextButton(1, DISPLAY_CENTER, "blank", text="Change my Text", textcolor=LIGHT_PINK,
+        self.text_edit_button = TextButton(1, DISPLAY_CENTER, "blank", "frame",
+                                           text="Change my Text", textcolor=LIGHT_PINK,
                                            optiontext="False", optioncolor=RANDOM_GREEN,
                                            fontsize=16, col=1, max_col=2, row=13, max_row=22)
 
-        self.text_edit_button_2 = TextButton(2, DISPLAY_CENTER, "blank", text="Change my Text 2", textcolor=LIGHT_PINK,
+        self.text_edit_button_2 = TextButton(2, DISPLAY_CENTER, "blank", "frame",
+                                             text="Change my Text 2", textcolor=LIGHT_PINK,
                                              optiontext="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=14, max_row=22, canEdit=True)
 
-        self.text_edit_button_3 = TextButton(3, DISPLAY_CENTER, "blank", text="Change my Text 3", textcolor=LIGHT_PINK,
+        self.text_edit_button_3 = TextButton(3, DISPLAY_CENTER, "blank", "frame",
+                                             text="Change my Text 3", textcolor=LIGHT_PINK,
                                              optiontext="False", optioncolor=RANDOM_GREEN,
                                              fontsize=16, col=1, max_col=2, row=15, max_row=22, canEdit=True)
         self.paused_player = None
@@ -48,12 +52,11 @@ class PauseMenu(Menu):
                         b.active = True
                     b.set_button_option(DARK_BLUE, str(b.active))
                     b.render()
-                print(b.text + str(b.active))
             if self.return_to_game_button.rect.collidepoint(self.mouse_pos):
                 self.persist = {
                     "Player": self.paused_player,
                 }
-                self.next_state_name = "DOG_FIGHT"
+                self.next_state_name = "FIGHTING"
                 self.done = True
         if event.type == pg.KEYDOWN:
             for b in self.all_buttons:
@@ -72,7 +75,7 @@ class PauseMenu(Menu):
                 self.persist = {
                     "Player": self.paused_player
                 }
-                self.next_state_name = "DOG_FIGHT"
+                self.next_state_name = "FIGHTING"
                 self.done = True
 
     def update(self, dt):

@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+
+from RedditFusions.create_fusion import Fusion
 from settings import *
 import time
 import pygame as pg
@@ -30,29 +32,30 @@ MONTH_LIST = [
 ZODIAC_LIST = ["Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
                "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"]
 ZODIAC_DICT = {
-    "Aquarius": ["Shield", "Extra Shields.", "Air", "Garnet", (1, 20), (2, 18)],
-    "Pisces": ["Shield", "Jet stream.", "Water", "Amethyst", (2, 19), (3, 20)],
-    "Aries": ["Health", "Ram Dash.", "Fire", "Bloodstone", (3, 21), (4, 19)],
-    "Taurus": ["Health", "Stronger Hull.", "Earth", "Sapphire", (4, 20), (5, 20)],
-    "Gemini": ["Shield", "Twin for a min.", "Air", "Agate", (5, 21), (6, 20)],
-    "Cancer": ["Shield", "Tidal wave blast.", "Water", "Emerald", (6, 21), (7, 22)],
-    "Leo": ["Health", "Sonic boom stun.", "Fire", "Onyx", (7, 23), (8, 22)],
-    "Virgo": ["Health", "Life after Death.", "Earth", "Carnelian", (8, 23), (9, 22)],
-    "Libra": ["Shield", "Set hull_points equal to shield.", "Air", "Chrysolite", (9, 23), (10, 22)],
-    "Scorpio": ["Shield", "Medium Arrow angled.", "Water", "Beryl", (10, 23), (11, 21)],
-    "Sagittarius": ["Health", "Giant Arrow.", "Fire", "Topaz", (11, 22), (12, 21)],
-    "Capricorn": ["Health", "Drop Bombs.", "Earth", "Ruby", (12, 22), (1, 19)]
+    "Aquarius": ["Shield", "Extra Shields", "Air", "Garnet", (1, 20), (2, 18)],
+    "Pisces": ["Shield", "Jet stream", "Water", "Amethyst", (2, 19), (3, 20)],
+    "Aries": ["Health", "Ram Dash", "Fire", "Bloodstone", (3, 21), (4, 19)],
+    "Taurus": ["Health", "Stronger Hull", "Earth", "Sapphire", (4, 20), (5, 20)],
+    "Gemini": ["Shield", "Twin for a min", "Air", "Agate", (5, 21), (6, 20)],
+    "Cancer": ["Shield", "Tidal wave blast", "Water", "Emerald", (6, 21), (7, 22)],
+    "Leo": ["Health", "Sonic boom stun", "Fire", "Onyx", (7, 23), (8, 22)],
+    "Virgo": ["Health", "Life after Death", "Earth", "Carnelian", (8, 23), (9, 22)],
+    "Libra": ["Shield", "Set hull_points equal to shield", "Air", "Chrysolite", (9, 23), (10, 22)],
+    "Scorpio": ["Shield", "Medium Arrow angled", "Water", "Beryl", (10, 23), (11, 21)],
+    "Sagittarius": ["Health", "Giant Arrow", "Fire", "Topaz", (11, 22), (12, 21)],
+    "Capricorn": ["Health", "Drop Bombs", "Earth", "Ruby", (12, 22), (1, 19)]
 }
 
 
 @dataclass
-class Redilot:
+class Redilot(Fusion):
     """A redilot is a redditor pilot for a shidpit from reddit."""
     name: str
     redditor: None
     cake_day: int
     constellation: str
     pilot_rank: int
+    medallion_dict: {}
     square_dict: {}
     triangle_dict: {}
     circle_dict: {}
@@ -61,12 +64,16 @@ class Redilot:
     info_img: pg.Surface((128, 128))
 
     def __init__(self, name=random.choice(redditor_name_list), from_reddit=False, pilot_rank=1):
+        super().__init__("r4nd0m")
+        self.redbit_dict = self.redditor_dict
+        self.creation_date = random.randint(1119553200, 1633120253)
         self.cake_day = random.randint(1119553200, 1633120253)
         self.redditor = None
         self.name = name
 
         self.square_num = random.randint(0, 9)
         self.zodiac_sign = "Gemini"
+        self.zodiac_rock = "Agate"
         self.pilot_rank = 1
 
         self.triangle_num = random.randint(0, 9)
@@ -91,7 +98,7 @@ class Redilot:
 
         self.square_dict = {
             "Star Sign": self.constellation,
-            "Pilot Rank": self.pilot_rank
+            "Zodirok": ZODIAC_DICT[self.constellation][3]
         }
 
         self.triangle_dict = {
@@ -109,7 +116,7 @@ class Redilot:
             "Max Y Velocity": self.max_y_velocity,
         }
 
-        self.statistics = {
+        self.save_data_dict = {
             "Name": self.name,
             "Cake Day": self.cake_day,
             "Square Dictionary": self.square_dict,

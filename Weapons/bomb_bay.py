@@ -14,7 +14,7 @@ class BombBay(pg.sprite.Sprite):
         self.is_player = False
 
         self.max_bombs = maxBombs
-        self.current_charge = maxBombs
+        self.current_bombs = maxBombs
         self.power_hull = power
         self.power_shield = power
         self.fire_rate = drop_rate

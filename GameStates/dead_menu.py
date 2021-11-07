@@ -11,12 +11,12 @@ class DeadMenu(Menu):
                                     (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 3 // 22), DARK_SLATE_BLUE)
         self.player_label = Text("Player", (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 8 // 22), DARK_PURPLE)
         self.enemy_label = Text("Enemy", (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 9 // 22), DARK_PURPLE)
-        self.home_menu_button = TextButton(0, (0, DISPLAY_HEIGHT * 13 // 22), "blank",
+        self.home_menu_button = TextButton(0, (0, DISPLAY_HEIGHT * 13 // 22), "blank", "frame",
                                            text="Home Menu", textcolor=LIGHT_GOLDENROD_YELLOW,
                                            optioncolor=MEDIUM_PURPLE, optiontext="Menu",
                                            col=1, max_col=2, row=22, max_row=24)
-        self.retry_button = TextButton(1, (0, DISPLAY_HEIGHT * 14 // 22),
-                                       "blank", text="Retry", textcolor=LIGHT_GOLDENROD_YELLOW,
+        self.retry_button = TextButton(1, (0, DISPLAY_HEIGHT * 14 // 22), "blank", "frame",
+                                       text="Retry", textcolor=LIGHT_GOLDENROD_YELLOW,
                                        optioncolor=GAINSBORO, optiontext="Game",
                                        col=1, max_col=2, row=23, max_row=24)
 

@@ -30,6 +30,8 @@ class Text:
 
     def render(self):
         """Render the text into an image."""
+        self.img = pg.Surface((10, 6))
+        # self.img.fill(BLACK)
         self.img = self.font.render(self.text, True, self.font_color)
         self.rect = self.img.get_rect()
         self.rect.center = self.pos
