@@ -9,7 +9,7 @@ from GameStates.game_mining import Mining
 from GameStates.game import Game
 
 """
-T1258O00393 confirmation number for Fidelity transfer 09/15/2021
+This is why, this is why, this is why I'm hot.
 """
 
 
