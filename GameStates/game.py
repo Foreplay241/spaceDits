@@ -1,7 +1,6 @@
-from player import Player
 from settings import *
 from GameStates.gamestate import GameState
-import praw
+import pygame as pg
 
 
 class Game(GameState):
@@ -32,6 +31,7 @@ class Game(GameState):
         self.player = None
         self.HUD = None
         self.playing = False
+        self.game_type = "MINING"
         pg.key.set_repeat(250, 50)
 
     def startup(self, persistent):
@@ -42,10 +42,8 @@ class Game(GameState):
         """
         if "Player" in persistent:
             self.player = persistent["Player"]
-        else:
-            self.player = Player(self, persistent["Player Redilot"], persistent["Player Shidpit"])
-            self.player.is_player = True
-        self.all_sprites.add(self.player)
+            self.game_type = persistent["Game Type"]
+            self.all_sprites.add(self.player)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
@@ -58,51 +56,28 @@ class Game(GameState):
                 print("Clicked player")
         if event.type == pg.MOUSEMOTION:
             self.mouse_pos = pg.mouse.get_pos()
+        if event.type == pg.KEYUP:
+            pass
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 pg.quit()
-            if event.key == pg.K_a:
-                self.player.x_velocity -= 1
-            if event.key == pg.K_d:
-                self.player.x_velocity += 1
-            if event.key == pg.K_w:
-                self.player.y_velocity -= 1
-                self.player.fuel_usage = -self.player.y_velocity
-            if event.key == pg.K_s:
-                self.player.y_velocity += 1
-                self.player.fuel_usage = -self.player.y_velocity
             if event.key == pg.K_p:
                 self.persist = {
                     "Player Redilot": self.player.redilot,
                     "Player Ship": self.player.shidpit,
+                    "Game Type": self.game_type,
                     "Player": self.player,
                 }
                 self.next_state_name = "PAUSE_MENU"
                 self.done = True
 
-        keys = pg.key.get_pressed()
-        if keys[pg.K_u]:
-            self.player.shoot(self.player.shidpit.left_blaster)
-        if keys[pg.K_i]:
-            self.player.shoot(self.player.shidpit.middle_blaster)
-        if keys[pg.K_o]:
-            self.player.shoot(self.player.shidpit.right_blaster)
-        if keys[pg.K_j]:
-            self.player.deploy(self.player.shidpit.left_missle_pod)
-        if keys[pg.K_k]:
-            self.player.deploy(self.player.shidpit.right_missle_pod)
-        if keys[pg.K_m]:
-            self.player.deploy(self.player.shidpit.bomb_bay)
-
     def update(self, dt):
         self.all_sprites.update()
-        for laser in self.player.lasers:
-            laser.update()
 
         if self.player.hull_points <= 0:
             self.player.death()
             self.persist = {
-                "Player": self.player,
+                "Player": self.player
             }
             self.next_state_name = "DEAD_MENU"
             self.done = True
@@ -110,6 +85,4 @@ class Game(GameState):
     def draw(self, screen):
         screen.blit(self.background_image, (self.BGx, 0))
         self.all_sprites.draw(self.screen)
-        for laser in self.player.lasers:
-            laser.draw(self.screen)
         self.player.draw(self.screen)

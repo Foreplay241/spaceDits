@@ -2,7 +2,8 @@ from GameStates.game import Game
 import pygame as pg
 import os
 import random
-from RedditFusions.create_subteroid import Subteroid
+
+from Player.miner import Miner
 
 
 class Mining(Game):
@@ -15,6 +16,9 @@ class Mining(Game):
 
     def startup(self, persistent):
         super(Mining, self).startup(persistent)
+        if "Player Redilot" in persistent:
+            self.player = Miner(self, persistent["Player Redilot"], persistent["Player Shidpit"])
+        self.all_sprites.add(self.player)
 
     def get_event(self, event):
         super(Mining, self).get_event(event)

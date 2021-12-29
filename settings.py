@@ -5,6 +5,12 @@ import os
 TITLE = "spaceDits - Reddit space shooter"
 pg.font.init()
 
+ALPHANUMERIC = "abcdefghijklmnopqrstuvwxyz0123456789"
+MIN_CREATION_UTC = 1119553200
+MAX_CREATION_UTC = 1633120253
+REDBIT_LIST = ["Submission", "Comment", "Redditor", "Subreddit"]
+SPACEBIT_LIST = ["Spaceship", "Alien", "Pilot", "Asteroid"]
+
 # SCALING AND FPS
 FULL_SCREEN = 0
 SCALE = 1
@@ -54,8 +60,8 @@ submission_list = ["pt7pca", "ptgmem", "ptk8gf", "psf4kh",
                    "pq6fff", "ppz69h", "orgmx4", "ot4wde", "otfni1",
                    "orftl9", "owqd87", "owqfc0", "otm03o", "otgnxo"]
 
-redditor_list = ["Foreplay241", "Big-mac_sauce", "3MuchLikeLA", "ACC15ORD", "Deep-Fold",
-                 "bot_neen", "BlurrZ8", "coby----", "atobitt", "Gena1548"]
+redditor_list = ["Foreplay241", "3MuchLikeLA", "ACC15ORD", "Deep-Fold",
+                 "imma_invincible", "coby----", "atobitt", "Gena1548"]
 
 # PRIMARY COLORS
 LIGHT_RED = (230, 173, 216)
@@ -262,7 +268,6 @@ RANDOM_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0
 RANDOM_COLOR2 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 RANDOM_COLOR3 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
-
 RANDOM_RED = (random.randint(185, 255), random.randint(0, 125), random.randint(0, 125))
 RANDOM_GREEN = (random.randint(0, 125), random.randint(185, 255), random.randint(0, 125))
 RANDOM_BLUE = (random.randint(0, 125), random.randint(0, 125), random.randint(185, 255))
@@ -275,12 +280,15 @@ ship_color_list = [RANDOM_COLOR, RANDOM_COLOR2, RANDOM_COLOR3,
 BG = pg.transform.scale(pg.image.load(os.path.join("assets", "background-black.png")), (DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
 # FILE PATH SETUP
-WEAPONS_ASSETS_PATH = os.path.join("Weapons/assets/")
+WEAPONS_ASSETS_PATH = os.path.join("Player/Weapons/Weapons/assets/")
 MEDALLION_ASSETS_PATH = os.path.join("RedditFusions/assets/medallion_parts")
 SQUARE_MEDAL_PATH = os.path.join(MEDALLION_ASSETS_PATH, "square")
 
-
 fontname = pg.font.match_font('ariel')
+
+
+def clamp(n, minn, maxn):
+    return max(min(maxn, n), minn)
 
 
 def player_draw_text(surf, text: str, color: tuple, size: int, pos: tuple):
@@ -315,3 +323,10 @@ def enemy_draw_text(surf, text: str, color: tuple, size: int, pos: tuple):
     text_rect = text_surface.get_rect()
     text_rect.topleft = pos
     surf.blit(text_surface, text_rect)
+
+
+def generateIDString(string_length, char_set):
+    ID_string = ""
+    for i in range(string_length):
+        ID_string += char_set[random.randint(0, len(char_set) - 1)]
+    return ID_string

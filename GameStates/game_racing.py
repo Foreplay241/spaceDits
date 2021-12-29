@@ -3,6 +3,9 @@ from GameStates.game import Game
 import pygame as pg
 import os
 
+from Player.racer import Racer
+
+
 class Racing(Game):
     def __init__(self):
         super(Racing, self).__init__()
@@ -13,6 +16,9 @@ class Racing(Game):
 
     def startup(self, persistent):
         super(Racing, self).startup(persistent)
+        if "Player Redilot" in persistent:
+            self.player = Racer(self, persistent["Player Redilot"], persistent["Player Shidpit"])
+        self.all_sprites.add(self.player)
 
     def get_event(self, event):
         super(Racing, self).get_event(event)

@@ -17,9 +17,9 @@ class HomeMenu2(Menu):
         super(HomeMenu2, self).__init__()
         self.all_buttons = []
         self.shidpit_preview_buttons = []
-        self.all_text_buttons = []
+        self.text_buttons = []
         self.shidpit_dict = {}
-        self.num_of_posts = 1
+        self.num_of_posts = 4
         self.nop = self.num_of_posts
         self.true_max_row = 24
         self.max_preview_scale = 1.4
@@ -27,41 +27,45 @@ class HomeMenu2(Menu):
         self.selected_shidpit_sub_id = None
         self.player_redilot = None
         self.player_shidpit = None
+        self.ships_path = os.path.join("assets", "ships")
+        self.ship_path_strings = [os.path.join(self.ships_path, f) for f in os.listdir(self.ships_path) if
+                                  f.endswith("_ship.jpeg")]
 
         self.title_label = Text("", (DISPLAY_WIDTH // 2, 50), FLORAL_WHITE, 42)
-        self.go_back_button = TextButton(0, (0, 0), "blank", "frame", text="Choose different Redilot.", textcolor=FLORAL_WHITE,
+        self.go_back_button = TextButton("H20", (0, 0), (1, 1), "frame", text="Choose different Redilot.",
+                                         textcolor=FLORAL_WHITE,
                                          col=1, max_col=3, row=22, max_row=self.true_max_row)
 
-        self.start_game_button = TextButton(0, (0, 0), "blank", "frame", text="Start Game", textcolor=FLORAL_WHITE,
+        self.start_game_button = TextButton("H21", (0, 0), (1, 1), "frame", text="Start Game", textcolor=FLORAL_WHITE,
                                             col=2, max_col=3, row=22, max_row=self.true_max_row)
 
-        self.collect_top_posts_button = TextButton(0, (0, 0), "blank", "frame",
+        self.collect_top_posts_button = TextButton("H22", (0, 0), (1, 1), "frame",
                                                    text=f"Collect top {self.num_of_posts} posts",
                                                    textcolor=FLORAL_WHITE, maxWidth=200,
                                                    col=1, max_col=4, row=20, max_row=self.true_max_row)
-        self.collect_hot_posts_button = TextButton(0, (0, 0), "blank", "frame",
+        self.collect_hot_posts_button = TextButton("H23", (0, 0), (1, 1), "frame",
                                                    text=f"Collect {self.num_of_posts} hot posts",
                                                    textcolor=FLORAL_WHITE, maxWidth=200,
                                                    col=2, max_col=4, row=19, max_row=self.true_max_row)
-        self.collect_new_posts_button = TextButton(0, (0, 0), "blank", "frame",
+        self.collect_new_posts_button = TextButton("H24", (0, 0), (1, 1), "frame",
                                                    text=f"Collect {self.num_of_posts} new posts",
                                                    textcolor=FLORAL_WHITE, maxWidth=200,
                                                    col=3, max_col=4, row=20, max_row=self.true_max_row)
         for r in range(3):
             for c in range(4):
                 if self.nop >= 1:
-                    shidpit_button = FusionPreview(0, (0, 0), "fusionBG", "fusionFG",
+                    shidpit_button = FusionPreview(f"NoP{self.nop}", (0, 0), "fusionBG", "fusionFG",
                                                    col=c + 1, max_col=5, row=(r + 1) * 4,
                                                    max_row=self.true_max_row)
                     self.shidpit_preview_buttons.append(shidpit_button)
                     self.nop -= 1
 
-        self.all_text_buttons.append(self.go_back_button)
-        self.all_text_buttons.append(self.start_game_button)
-        self.all_text_buttons.append(self.collect_top_posts_button)
-        self.all_text_buttons.append(self.collect_hot_posts_button)
-        self.all_text_buttons.append(self.collect_new_posts_button)
-        self.all_buttons.append(self.all_text_buttons)
+        self.text_buttons.append(self.go_back_button)
+        self.text_buttons.append(self.start_game_button)
+        self.text_buttons.append(self.collect_top_posts_button)
+        self.text_buttons.append(self.collect_hot_posts_button)
+        self.text_buttons.append(self.collect_new_posts_button)
+        self.all_buttons.append(self.text_buttons)
         self.all_buttons.append(self.shidpit_preview_buttons)
         self.reddit = praw.Reddit(
             user_agent="(by u/Foreplay241)",
@@ -149,6 +153,8 @@ class HomeMenu2(Menu):
                         self.persist = {
                             "Player Redilot": self.player_redilot,
                             "Player Shidpit": self.player_shidpit,
+                            "Game Type": self.next_state_name,
+                            "Num of Comments": 10
                         }
                         self.done = True
 
@@ -156,14 +162,14 @@ class HomeMenu2(Menu):
         super(HomeMenu2, self).update(dt)
         for spb in self.shidpit_preview_buttons:
             spb.update()
-        for tb in self.all_text_buttons:
+        for tb in self.text_buttons:
             tb.update()
 
     def draw(self, screen):
         screen.blit(self.background_image, (self.BGx, 0))
         for spb in self.shidpit_preview_buttons:
             spb.draw(screen)
-        for tb in self.all_text_buttons:
+        for tb in self.text_buttons:
             tb.draw(screen)
         self.title_label.draw(screen)
         pg.display.flip()
@@ -174,43 +180,54 @@ class HomeMenu2(Menu):
         if selected_shidpit:
             for key in selected_shidpit.statistics:
                 if key.endswith("Dictionary"):
-                    dictbtn = TextButton(0, (0, 0), "blank", "frame", text=key.split(" ")[0], textcolor=GHOST_WHITE,
+                    dictbtn = TextButton(0, (0, 0), (1, 1), "frame", text=key.split(" ")[0], textcolor=GHOST_WHITE,
                                          col=c, max_col=5, row=11, max_row=24,
                                          maxWidth=120)
-                    self.all_text_buttons.append(dictbtn)
+                    self.text_buttons.append(dictbtn)
                     r2 = 1
                     for key2 in selected_shidpit.statistics[key]:
-                        txtbtn = TextButton(0, (0, 0), "blank", "frame", text="",
+                        txtbtn = TextButton(0, (0, 0), (1, 1), "frame", text="",
                                             valuetext=str(selected_shidpit.statistics[key][key2]),
                                             valuecolor=NAVAJO_WHITE,
                                             optiontext=key2, optioncolor=NAVAJO_WHITE,
                                             col=c, max_col=5, row=r + r2, max_row=24,
                                             maxWidth=120)
-                        self.all_text_buttons.append(txtbtn)
+                        self.text_buttons.append(txtbtn)
                         r2 += 1
                     c += 1
 
     def set_player_shidpit(self):
-        for ssb in self.shidpit_preview_buttons:
-            if ssb.selected:
-                self.player_shidpit = self.shidpit_dict[ssb.submission_id]
+        for spb in self.shidpit_preview_buttons:
+            if spb.selected:
+                self.player_shidpit = self.shidpit_dict[spb.submission_id]
 
     def collect_redilot_top_posts(self, num_of_posts):
-        for submission in self.player_redilot.redditor.submissions.top(limit=num_of_posts):
-            self.shidpit_dict[submission.id] = Shidpit(sub_id=submission.id, from_reddit=True)
+        # for submission in self.player_redilot.redditor.submissions.top(limit=num_of_posts):
+        #     self.shidpit_dict[submission.id] = Shidpit(sub_id=submission.id, from_reddit=True)
+        pass
 
     def collect_redilot_hot_posts(self, num_of_posts):
-        for submission in self.player_redilot.redditor.submissions.hot(limit=num_of_posts):
-            self.shidpit_dict[submission.id] = Shidpit(sub_id=submission.id, from_reddit=True)
+        x = num_of_posts
+        for ship_path in self.ship_path_strings:
+            shidpit_time = ship_path.split("_")[0][13:-1]
+            shidpit_id = ship_path.split("_")[1]
+            newShidpit = Shidpit(creation_time=shidpit_time, id_string=shidpit_id)
+            newShidpit.ship_img = newShidpit.generate_img_img()
+            # newShidpit.ship_img = ship_img
+            self.shidpit_dict[shidpit_id] = newShidpit
+            x -= 1
+        # self.update_shidpit_previews()
 
     def collect_redilot_new_posts(self, num_of_posts):
-        for submission in self.player_redilot.redditor.submissions.new(limit=num_of_posts):
-            self.shidpit_dict[submission.id] = Shidpit(sub_id=submission.id, from_reddit=True)
+        # for submission in self.player_redilot.redditor.submissions.new(limit=num_of_posts):
+        #     self.shidpit_dict[submission.id] = Shidpit(sub_id=submission.id, from_reddit=True)
+        pass
 
     def update_shidpit_previews(self):
         s = 0
         for shidpit in self.shidpit_dict:
-            self.shidpit_preview_buttons[s].set_img(self.shidpit_dict[shidpit].generate_ship_img())
+            self.shidpit_dict[shidpit].type = self.next_state_name
+            self.shidpit_preview_buttons[s].set_img(self.shidpit_dict[shidpit].ship_img)
             self.shidpit_preview_buttons[s].set_info(self.shidpit_dict[shidpit].generate_info_img())
             self.shidpit_preview_buttons[s].flip_to_img()
             self.shidpit_preview_buttons[s].submission_id = self.shidpit_dict[shidpit].submission_id

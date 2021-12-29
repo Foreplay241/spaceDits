@@ -8,7 +8,7 @@ class FusionPreview(Button):
         self.id_num = id_num
         self.pos = pos
         self.image = pg.transform.scale(self.image, (int(128 * scale[0]), int(128 * scale[1])))
-        self.image.set_colorkey(BLACK)
+        self.image.set_colorkey(GREY75)
         self.rect = self.image.get_rect()
         self.orig_image = self.image
         self.orig_rect = self.rect
@@ -65,7 +65,7 @@ class FusionPreview(Button):
             self.rotate_center(window, self.FGimage, (self.pos[0] + 64, self.pos[1] + 64), (64, 64), self.fusion_angle)
             self.fusion_angle += 1
         if self.selected:
-            pg.draw.rect(window, GREY50, self.rect, 2)
+            pg.draw.rect(window, GREY25, self.rect, 4)
 
     def draw_selection_outline(self):
         pg.draw.rect(self.image, GOLDENROD, self.rect)

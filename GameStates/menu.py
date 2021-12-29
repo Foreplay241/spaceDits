@@ -7,7 +7,6 @@ from GameStates.gamestate import GameState
 class Menu(GameState):
     def __init__(self):
         super().__init__()
-        pg.init()
         self.BGn = random.randint(0, 9)
         sourceFileDir = os.path.dirname(os.path.abspath(__file__))
         gamestatesAssetsPath = os.path.join(sourceFileDir, "assets")

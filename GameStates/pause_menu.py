@@ -10,34 +10,24 @@ class PauseMenu(Menu):
         self.pause_menu_label = Text("Pause menu for spaceDits",
                                      (DISPLAY_WIDTH // 2, DISPLAY_HEIGHT * 3 // 22), DARK_SLATE_BLUE)
         self.all_buttons = []
+
+        self.return_to_home_menu = TextButton(3, DISPLAY_CENTER, "blank", "frame",
+                                              text="Home Menu", textcolor=LIGHT_PINK,
+                                              optiontext="Game", optioncolor=RANDOM_GREEN,
+                                              fontsize=16, col=1, max_col=2, row=13, max_row=22)
         self.return_to_game_button = TextButton(0, DISPLAY_CENTER, "blank", "frame",
                                                 text="Return to Game", textcolor=LIGHT_PINK,
                                                 optiontext="Game", optioncolor=RANDOM_GREEN,
-                                                fontsize=16, col=1, max_col=2, row=16, max_row=22)
+                                                fontsize=16, col=1, max_col=2, row=14, max_row=22)
 
-        self.text_edit_button = TextButton(1, DISPLAY_CENTER, "blank", "frame",
-                                           text="Change my Text", textcolor=LIGHT_PINK,
-                                           optiontext="False", optioncolor=RANDOM_GREEN,
-                                           fontsize=16, col=1, max_col=2, row=13, max_row=22)
-
-        self.text_edit_button_2 = TextButton(2, DISPLAY_CENTER, "blank", "frame",
-                                             text="Change my Text 2", textcolor=LIGHT_PINK,
-                                             optiontext="False", optioncolor=RANDOM_GREEN,
-                                             fontsize=16, col=1, max_col=2, row=14, max_row=22, canEdit=True)
-
-        self.text_edit_button_3 = TextButton(3, DISPLAY_CENTER, "blank", "frame",
-                                             text="Change my Text 3", textcolor=LIGHT_PINK,
-                                             optiontext="False", optioncolor=RANDOM_GREEN,
-                                             fontsize=16, col=1, max_col=2, row=15, max_row=22, canEdit=True)
         self.paused_player = None
-        self.paused_enemy = None
+        self.paused_game_type = None
         self.all_buttons.append(self.return_to_game_button)
-        self.all_buttons.append(self.text_edit_button)
-        self.all_buttons.append(self.text_edit_button_2)
-        self.all_buttons.append(self.text_edit_button_3)
+        self.all_buttons.append(self.return_to_home_menu)
 
     def startup(self, persistent):
         self.paused_player = persistent["Player"]
+        self.paused_game_type = persistent["Game Type"]
 
     def get_event(self, event):
         if event.type == pg.QUIT:
@@ -52,11 +42,19 @@ class PauseMenu(Menu):
                         b.active = True
                     b.set_button_option(DARK_BLUE, str(b.active))
                     b.render()
+            if self.return_to_home_menu.rect.collidepoint(self.mouse_pos):
+                self.persist = {}
+                self.paused_player.hull_points = 0
+                self.next_state_name = "HOME_MENU"
+                self.done = True
+
             if self.return_to_game_button.rect.collidepoint(self.mouse_pos):
                 self.persist = {
                     "Player": self.paused_player,
+                    "Game Type": self.paused_game_type,
+                    "Num of Comments": 0
                 }
-                self.next_state_name = "FIGHTING"
+                self.next_state_name = self.paused_game_type
                 self.done = True
         if event.type == pg.KEYDOWN:
             for b in self.all_buttons:
@@ -73,9 +71,11 @@ class PauseMenu(Menu):
                 pg.quit()
             if event.key == pg.K_p:
                 self.persist = {
-                    "Player": self.paused_player
+                    "Player": self.paused_player,
+                    "Game Type": self.paused_game_type,
+                    "Num of Comments": 0
                 }
-                self.next_state_name = "FIGHTING"
+                self.next_state_name = self.paused_game_type
                 self.done = True
 
     def update(self, dt):
@@ -84,7 +84,7 @@ class PauseMenu(Menu):
             b.update()
 
     def draw(self, screen):
-        screen.fill(FIREBRICK)
+        screen.fill(DARK_RED)
         for b in self.all_buttons:
             b.draw(screen)
 

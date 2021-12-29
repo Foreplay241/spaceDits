@@ -29,8 +29,6 @@ class Button(pg.sprite.Sprite):
         self.max_column = max_col
         self.max_row = max_row
         self.image = self.BGimage
-        # self.image.set_colorkey(BLACK)
-        # self.image.blit(self.FGimage, (0, 0))
         self.rect = self.image.get_rect()
         self.clicked = False
         self.active = False
@@ -38,7 +36,7 @@ class Button(pg.sprite.Sprite):
     def update_image(self, newBGimg, newFGimg):
         self.BGimage = newBGimg
         self.FGimage = newFGimg
-        self.image.fill(BLACK)
+        # self.image.fill(BLACK)
         self.image.blit(self.BGimage, (0, 0))
         self.image.blit(self.FGimage, (0, 0))
         self.image.set_colorkey(BLACK)

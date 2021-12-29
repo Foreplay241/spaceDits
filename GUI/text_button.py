@@ -85,7 +85,7 @@ class TextButton(Button):
         self.val_rect = self.val_img.get_rect()
         self.image = pg.transform.scale(self.image, (self.max_width, 32))
         self.BGimage = pg.transform.scale(self.BGimage, (self.max_width, 32))
-        self.image.set_colorkey(BLACK)
+        self.BGimage.fill(self.bgColor)
         self.rect = self.image.get_rect()
         self.image.blit(self.txt_img,
                         ((self.image.get_width() // 2) - (self.txt_rect.width // 2),

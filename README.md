@@ -20,7 +20,7 @@ A redilot is the pilot of the shidpit. They have certain skills based on their b
 - __Pisces-__ Extra Shield, can use Jet stream, associated with Water.
 
 
-A shidpit can hold up to 3 blasters, 2 missle pods and a bomb bay.
+A shidpit weapons system contains 3 blasters, 2 missle pods and a bomb bay.
 
 - __Lasbat Blaster.__ Attached on the nose, can have up to 3 blasters attached at once.
 - __Missle Pod.__ Attached on the wings, can be loaded with explosive missles or Mila-mirror barrels.

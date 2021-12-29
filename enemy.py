@@ -1,4 +1,5 @@
-from ship import *
+from Player.Weapons.Weapons.missile import Missile
+from Player.ship import *
 
 
 class Enemy(Ship):
@@ -51,7 +52,7 @@ class Enemy(Ship):
         if now - self.prev_missile_time > self.missile_cool_down:
             self.prev_missile_time = pg.time.get_ticks()
             missile = Missile(self.game, self.rect.x + (self.image.get_width() / 2),
-                              self.rect.y + ((self.image.get_height() * 2) / 3), self.missile_img, colormask=ORANGE_RED)
+                              self.rect.y + ((self.image.get_height() * 2) / 3), self.missile_img)
             missile.is_AI = True
             self.missiles.append(missile)
             self.game.all_sprites.add(missile)
@@ -65,5 +66,5 @@ class Enemy(Ship):
             dx_vel = random.randint(-1, 1)
         if dy_vel == 0:
             dy_vel = random.randint(-1, 1)
-        self.x_vel += dx_vel
-        self.y_vel += dy_vel
+        # self.x_vel += dx_vel
+        # self.y_vel += dy_vel
