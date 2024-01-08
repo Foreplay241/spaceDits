@@ -23,6 +23,6 @@ A redilot is the pilot of the shidpit. They have certain skills based on their b
 A shidpit weapons system contains 3 blasters, 2 missle pods and a bomb bay.
 
 - __Lasbat Blaster.__ Attached on the nose, can have up to 3 blasters attached at once.
-- __Missle Pod.__ Attached on the wings, can be loaded with explosive missles or Mila-mirror barrels.
+- __Missle Pod.__ Attached on the wings, can be loaded with explosive missles or Mirrila barrels.
 - __Bomb Bay.__ Attached on the body, can be armed with charged orb or EMP-pulsar.
 - __Afterburners.__ Attached to the engine, is equipped with the redilots birth stone with constellation imprint.
